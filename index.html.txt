@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recorrido Interactivo: Sesión de Asesoría Laboral</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Professional Teal -->
+    <!-- Application Structure Plan: Se ha diseñado una SPA con un enfoque de "Recorrido Interactivo" o "Timeline". La estructura principal consta de una barra lateral de navegación (que se convierte en superior en móviles) que representa los 7 pasos de la presentación. Al hacer clic en un paso, el área de contenido principal se actualiza dinámicamente. Esta estructura fue elegida porque transforma un guion lineal en una experiencia explorable y controlada por el usuario, mejorando la usabilidad y el engagement. Se complementa con un gráfico circular que visualiza la distribución del tiempo, ofreciendo una comprensión rápida y visual de la sesión. El flujo está diseñado para guiar al usuario desde el conocimiento hasta la acción (agendar la cita). -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Estructura de 7 pasos con tiempos. -> Goal: Mostrar el flujo y la estructura. -> Viz/Method: Timeline interactivo (HTML/Tailwind/JS) y Gráfico de Dona (Chart.js). -> Interaction: Clic en el paso del timeline actualiza el contenido. -> Justification: Transforma un guion en una experiencia interactiva y visualmente atractiva.
+        - Report Info: Áreas clave de la asesoría. -> Goal: Detallar los servicios sin abrumar. -> Viz/Method: Sistema de tarjetas o "acordeón" (HTML/Tailwind/JS). -> Interaction: Clic para expandir y ver el detalle de cada área. -> Justification: Fomenta la interacción y permite al usuario enfocarse en lo que más le interesa.
+        - Report Info: Contenido de cada sección (quién soy, cómo trabajaremos, etc.). -> Goal: Presentar la información de forma clara y digerible. -> Viz/Method: Tarjetas de contenido con iconos y texto estructurado. -> Interaction: Contenido estático pero bien presentado que aparece dinámicamente. -> Justification: Mejora la legibilidad y el atractivo visual en comparación con párrafos largos.
+        - Library/Method: Tailwind CSS para el layout, Chart.js para la visualización de datos, Vanilla JS para la interactividad.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: auto;
+            max-height: 400px;
+        }
+        .nav-item.active {
+            background-color: #0d9488; /* teal-600 */
+            color: white;
+            transform: translateX(4px);
+        }
+        .nav-item.active .step-circle {
+            background-color: white;
+            color: #0d9488; /* teal-600 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-800">Recorrido Interactivo de la Sesión de Asesoría</h1>
+            <p class="mt-2 text-lg text-slate-600">Descubre en 30 minutos cómo puedo impulsar tu carrera profesional.</p>
+        </header>
+
+        <div class="flex flex-col md:flex-row gap-8">
+            
+            <!-- Barra de Navegación / Timeline -->
+            <aside class="w-full md:w-1/3 lg:w-1/4">
+                <div class="bg-white p-4 rounded-xl shadow-lg sticky top-8">
+                    <h3 class="font-bold text-lg mb-4 text-center">Etapas de la Sesión</h3>
+                    <nav id="timeline-nav" class="flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-x-visible pb-2">
+                        <!-- Los items de navegación se insertarán aquí con JS -->
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Contenido Principal -->
+            <main class="w-full md:w-2/3 lg:w-3/4">
+                <div id="content-panels">
+                    <!-- Los paneles de contenido se insertarán aquí con JS -->
+                </div>
+            </main>
+
+        </div>
+
+        <!-- Sección de Llamada a la Acción -->
+        <footer class="mt-12 text-center bg-white p-8 rounded-xl shadow-xl border border-teal-100">
+            <h2 class="text-2xl font-bold text-teal-800">¿Listo/a para dar el siguiente paso?</h2>
+            <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Si esta estructura resuena contigo y crees que mi asesoría es lo que necesitas, agenda tu sesión de 1 hora para empezar a trabajar en tus metas.</p>
+            <a href="https://calendly.com/juan-jaccard-ps" class="mt-6 inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
+                Agendar Asesoría Completa
+            </a>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const presentationData = [
+                {
+                    title: "Bienvenida y Rompehielos",
+                    duration: 2,
+                    icon: '👋',
+                    content: `
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">1. Bienvenida y Rompehielos</h3>
+                        <p class="text-slate-600 mb-4">El objetivo es crear un ambiente cálido y de confianza desde el primer momento. Empezaremos con un saludo cordial y te preguntaré qué te motivó a agendar la sesión. Esto me permite entender tu interés principal y asegurar que nuestra conversación sea productiva.</p>
+                        <div class="bg-teal-50 border-l-4 border-teal-500 text-teal-800 p-4 rounded-r-lg">
+                            <p class="font-semibold">"¡Hola! Gracias por tu tiempo. Mi objetivo hoy es que te lleves una idea clara de cómo puedo apoyarte en tu camino profesional."</p>
+                        </div>
+                    `
+                },
+                {
+                    title: "Propósito de la Sesión",
+                    duration: 3,
+                    icon: '🎯',
+                    content: `
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">2. Propósito de la Sesión Exploratoria</h3>
+                        <p class="text-slate-600 mb-4">Estableceremos las expectativas y el plan para nuestros 30 minutos. La transparencia es clave para asegurar que ambos estemos en la misma página.</p>
+                        <ul class="list-none space-y-3">
+                            <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex items-center justify-center mr-3 flex-shrink-0">1</span><span>Entender tu situación y tus desafíos laborales.</span></li>
+                            <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex items-center justify-center mr-3 flex-shrink-0">2</span><span>Explicarte mi servicio de asesoría personalizada.</span></li>
+                            <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex items-center justify-center mr-3 flex-shrink-0">3</span><span>Responder todas tus dudas.</span></li>
+                            <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex items-center justify-center mr-3 flex-shrink-0">4</span><span>Definir los próximos pasos si decides avanzar.</span></li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "¿Quién Soy y Mi Enfoque?",
+                    duration: 5,
+                    icon: '👤',
+                    content: `
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">3. ¿Quién Soy y Mi Enfoque?</h3>
+                        <p class="text-slate-600 mb-6">Quiero que sepas quién te acompañará en este proceso. Mi objetivo es generar credibilidad y mostrarte la pasión detrás de mi trabajo.</p>
+                        <div class="grid md:grid-cols-3 gap-4 text-center">
+                            <div class="bg-slate-100 p-4 rounded-lg">
+                                <span class="text-3xl">💼</span>
+                                <h4 class="font-bold mt-2">Mi Experiencia</h4>
+                                <p class="text-sm text-slate-600 mt-1">Años de experiencia en reclutamiento y desarrollo de carrera me dan una visión 360° del mundo laboral.</p>
+                            </div>
+                            <div class="bg-slate-100 p-4 rounded-lg">
+                                <span class="text-3xl">💡</span>
+                                <h4 class="font-bold mt-2">Mi Filosofía</h4>
+                                <p class="text-sm text-slate-600 mt-1">No doy fórmulas mágicas. Te empodero con estrategias personalizadas para que tomes las riendas de tu carrera.</p>
+                            </div>
+                            <div class="bg-slate-100 p-4 rounded-lg">
+                                <span class="text-3xl">❤️</span>
+                                <h4 class="font-bold mt-2">Mi Propósito</h4>
+                                <p class="text-sm text-slate-600 mt-1">Ayudar a las personas a encontrar un trabajo que no solo pague las cuentas, sino que les apasione y dé propósito.</p>
+                            </div>
+                        </div>
+                    `
+                },
+                {
+                    title: "La Asesoría Personalizada",
+                    duration: 7,
+                    icon: '🛠️',
+                    content: `
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">4. ¿Qué es la "Asesoría Laboral Personalizada"?</h3>
+                        <p class="text-slate-600 mb-4">Aquí te detallo el corazón de mi servicio. Es un acompañamiento estratégico diseñado para darte resultados concretos. Estas son las áreas clave en las que podemos trabajar:</p>
+                        <div class="space-y-3">
+                            <details class="bg-slate-50 p-3 rounded-lg cursor-pointer group">
+                                <summary class="font-semibold flex justify-between items-center">Optimización de CV y LinkedIn <span class="group-open:rotate-90 transition-transform transform">-&gt;</span></summary>
+                                <p class="mt-2 text-slate-600 text-sm">Transformamos tus documentos en herramientas de marketing que captan la atención de reclutadores, destacando tus logros y habilidades.</p>
+                            </details>
+                            <details class="bg-slate-50 p-3 rounded-lg cursor-pointer group">
+                                <summary class="font-semibold flex justify-between items-center">Preparación de Entrevistas <span class="group-open:rotate-90 transition-transform transform">-&gt;</span></summary>
+                                <p class="mt-2 text-slate-600 text-sm">Practicaremos entrevistas, te daré técnicas para responder preguntas difíciles, negociar salarios y proyectar máxima confianza.</p>
+                            </details>
+                            <details class="bg-slate-50 p-3 rounded-lg cursor-pointer group">
+                                <summary class="font-semibold flex justify-between items-center">Estrategia de Búsqueda de Empleo <span class="group-open:rotate-90 transition-transform transform">-&gt;</span></summary>
+                                <p class="mt-2 text-slate-600 text-sm">Definiremos un plan de acción claro y efectivo, identificando empresas y roles ideales, y potenciando tu red de contactos.</p>
+                            </details>
+                             <details class="bg-slate-50 p-3 rounded-lg cursor-pointer group">
+                                <summary class="font-semibold flex justify-between items-center">Desarrollo de Carrera y Marca Personal <span class="group-open:rotate-90 transition-transform transform">-&gt;</span></summary>
+                                <p class="mt-2 text-slate-600 text-sm">Si buscas un cambio o potenciar tu trayectoria, trabajaremos en tus objetivos a largo plazo y construiremos una marca personal auténtica.</p>
+                            </details>
+                        </div>
+                        <p class="mt-4 p-4 bg-teal-50 border-l-4 border-teal-500 rounded-r-lg text-sm"><strong>Mi diferenciador:</strong> A diferencia de la información genérica, mi asesoría es 100% adaptada a ti, a tu experiencia y a tus metas.</p>
+                    `
+                },
+                {
+                    title: "¿Cómo Trabajaremos?",
+                    duration: 3,
+                    icon: '🤝',
+                    content: `
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">5. ¿Cómo Trabajaremos Juntos/as?</h3>
+                        <p class="text-slate-600 mb-4">Si decides avanzar, el proceso es sencillo y enfocado en la acción. Las sesiones de 1 hora son el núcleo de nuestro trabajo.</p>
+                        <ol class="list-none space-y-4">
+                            <li class="flex items-start">
+                                <div class="bg-teal-100 text-teal-800 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 flex-shrink-0">1</div>
+                                <div><span class="font-semibold">Preparación Previa:</span> Antes de la sesión, te enviaré un breve cuestionario para maximizar nuestro tiempo juntos.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-teal-100 text-teal-800 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 flex-shrink-0">2</div>
+                                <div><span class="font-semibold">Sesión Enfocada:</span> Durante la hora, nos concentraremos en un tema específico (tu CV, una entrevista, etc.) para lograr avances concretos.</div>
+                            </li>
+                             <li class="flex items-start">
+                                <div class="bg-teal-100 text-teal-800 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 flex-shrink-0">3</div>
+                                <div><span class="font-semibold">Plan de Acción:</span> Al finalizar, te llevarás tareas y recursos claros para implementar lo aprendido de inmediato.</div>
+                            </li>
+                        </ol>
+                    `
+                },
+                {
+                    title: "Preguntas y Respuestas",
+                    duration: 7,
+                    icon: '❓',
+                    content: `
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">6. Preguntas y Respuestas</h3>
+                        <p class="text-slate-600 mb-4">Este es tu espacio. Quiero aclarar cualquier duda que tengas para que tomes una decisión informada. ¡No hay preguntas tontas!</p>
+                        <div class="bg-slate-100 p-6 rounded-lg text-center">
+                            <p class="text-lg font-semibold">"¿Hay algo que te gustaría que profundizara o alguna duda sobre el servicio?"</p>
+                            <p class="text-sm text-slate-500 mt-2">(En la sesión real, aquí es donde conversamos abiertamente. Las preguntas muy específicas se abordan en la asesoría de 1 hora para darles la profundidad que merecen).</p>
+                        </div>
+                    `
+                },
+                {
+                    title: "Próximos Pasos",
+                    duration: 3,
+                    icon: '🚀',
+                    content: `
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">7. Próximos Pasos y Llamada a la Acción</h3>
+                        <p class="text-slate-600 mb-4">Espero que este recorrido te haya dado una visión clara de cómo puedo ser tu aliado/a. Si sientes que mi asesoría es lo que necesitas, el siguiente paso es muy sencillo.</p>
+                        <div class="bg-teal-50 border-t-4 border-teal-500 rounded-b-lg p-6 text-center shadow-md">
+                            <h4 class="text-xl font-bold text-teal-800">Agenda tu Sesión de 1 Hora</h4>
+                            <p class="my-2">Haz clic en el botón de abajo para ir a mi Calendly y elegir el horario que mejor se adapte a ti.</p>
+                            <a href="https://calendly.com/juan-jaccard-ps" class="mt-4 inline-block bg-teal-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-teal-700 transition-colors">Agendar Ahora</a>
+                        </div>
+                    `
+                }
+            ];
+
+            const navContainer = document.getElementById('timeline-nav');
+            const contentContainer = document.getElementById('content-panels');
+
+            presentationData.forEach((item, index) => {
+                const navItem = document.createElement('a');
+                navItem.href = '#';
+                navItem.className = 'nav-item flex-shrink-0 md:flex-shrink w-full flex items-center gap-3 p-3 rounded-lg text-left font-medium text-slate-700 hover:bg-teal-100 transition-all duration-200';
+                navItem.dataset.index = index;
+                navItem.innerHTML = `
+                    <span class="step-circle flex-shrink-0 w-8 h-8 rounded-full bg-teal-100 text-teal-800 font-bold flex items-center justify-center transition-colors duration-200">${item.icon}</span>
+                    <span class="hidden sm:inline">${item.title}</span>
+                `;
+                navContainer.appendChild(navItem);
+
+                const contentPanel = document.createElement('div');
+                contentPanel.id = `panel-${index}`;
+                contentPanel.className = 'content-panel bg-white p-6 md:p-8 rounded-xl shadow-lg';
+                if (index > 0) {
+                    contentPanel.classList.add('hidden');
+                }
+                contentPanel.innerHTML = item.content;
+                contentContainer.appendChild(contentPanel);
+            });
+            
+            const chartPanel = document.createElement('div');
+            chartPanel.className = 'bg-white p-6 md:p-8 rounded-xl shadow-lg mt-8';
+            chartPanel.innerHTML = `
+                <h3 class="text-xl font-bold text-center mb-4 text-teal-700">Distribución de la Sesión de 30 Minutos</h3>
+                <div class="chart-container">
+                    <canvas id="timeDistributionChart"></canvas>
+                </div>
+            `;
+            contentContainer.appendChild(chartPanel);
+
+            const navItems = document.querySelectorAll('.nav-item');
+            const contentPanels = document.querySelectorAll('.content-panel');
+
+            function switchTab(index) {
+                navItems.forEach(item => item.classList.remove('active'));
+                navItems[index].classList.add('active');
+
+                contentPanels.forEach(panel => panel.classList.add('hidden'));
+                document.getElementById(`panel-${index}`).classList.remove('hidden');
+            }
+
+            navContainer.addEventListener('click', function(e) {
+                e.preventDefault();
+                const navLink = e.target.closest('.nav-item');
+                if (navLink) {
+                    const index = parseInt(navLink.dataset.index);
+                    switchTab(index);
+                }
+            });
+
+            switchTab(0);
+
+            const ctx = document.getElementById('timeDistributionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: presentationData.map(item => item.title),
+                    datasets: [{
+                        label: 'Minutos',
+                        data: presentationData.map(item => item.duration),
+                        backgroundColor: [
+                            '#ccfbf1', '#99f6e4', '#5eead4', '#2dd4bf', '#14b8a6', '#0d9488', '#0f766e'
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + ' min';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
