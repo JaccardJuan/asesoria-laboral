@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recorrido Interactivo: Asesorías Laborales</title>
+    <title>Recorrido Interactivo: Sesión de Asesoría Laboral</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -87,7 +87,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const presentationData = [
                 {
-                    title: "Bienvenidos y Bienvenidas",
+                    title: "Bienvenida y Rompehielos",
                     duration: 2,
                     icon: '👋',
                     content: `
@@ -170,7 +170,7 @@
                 {
                     title: "¿Cómo Trabajaremos?",
                     duration: 3,
-                    icon: '🤝',
+                    icon: '�',
                     content: `
                         <h3 class="text-2xl font-bold text-teal-700 mb-4">5. ¿Cómo Trabajaremos Juntos/as?</h3>
                         <p class="text-slate-600 mb-4">Si decides avanzar, el proceso es sencillo y enfocado en la acción. Las sesiones de 1 hora son el núcleo de nuestro trabajo.</p>
@@ -229,7 +229,7 @@
                 navItem.dataset.index = index;
                 navItem.innerHTML = `
                     <span class="step-circle flex-shrink-0 w-8 h-8 rounded-full bg-teal-100 text-teal-800 font-bold flex items-center justify-center transition-colors duration-200">${item.icon}</span>
-                    <span class="hidden sm:inline">${item.title}</span>
+                    <span>${item.title}</span> <!-- CAMBIO AQUÍ: Eliminada la clase hidden sm:inline -->
                 `;
                 navContainer.appendChild(navItem);
 
