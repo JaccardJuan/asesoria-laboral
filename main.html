@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome para iconos consistentes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Chosen Palette: Warm Neutrals & Professional Teal (with Analogous Emerald Accent) -->
     <!-- Application Structure Plan: La SPA se centra en un "Recorrido Interactivo de la Sesión Exploratoria". La navegación principal es una barra global (visible en todas las páginas) que enlaza a Inicio, Mis Servicios y esta página. Dentro de esta página, una barra lateral (o superior en móvil) guía al usuario por las etapas de la sesión exploratoria. El contenido se actualiza dinámicamente al seleccionar una etapa. Se ha añadido una sección introductoria clara y el gráfico de distribución de tiempo se ha integrado en la primera etapa para una comprensión inmediata del valor. -->
     <!-- Visualization & Content Choices: 
@@ -45,9 +47,12 @@
             flex-shrink: 0; /* Evita que los ítems se compriman demasiado */
         }
         #timeline-nav .nav-item .step-circle {
-            width: 1.75rem; /* w-7 */
-            height: 1.75rem; /* h-7 */
-            font-size: 0.75rem; /* text-xs */
+            width: 2rem; /* w-8 */
+            height: 2rem; /* h-8 */
+            font-size: 1rem; /* text-base, aumentado para iconos */
+            display: flex; /* Asegura que el ícono Font Awesome se centre */
+            align-items: center;
+            justify-content: center;
         }
         #timeline-nav .nav-item span:last-child {
             font-size: 0.875rem; /* text-sm */
@@ -60,6 +65,13 @@
         #timeline-nav .nav-item:hover .step-circle {
             background-color: white;
             color: #0f766e; /* teal-700 */
+        }
+        /* Estilo para el ícono flotante en la primera sección */
+        .icon-float-right {
+            float: right;
+            margin-left: 1rem;
+            font-size: 3.5rem; /* Ajusta el tamaño del ícono, un poco más grande */
+            color: #0d9488; /* Color teal-600 */
         }
     </style>
 </head>
@@ -160,11 +172,11 @@
                 {
                     title: "Propósito de la Sesión",
                     duration: 3,
-                    icon: '🎯',
+                    icon: '<i class="fa-solid fa-bullseye"></i>', // Ícono Font Awesome
                     content: `
                         <h3 class="text-2xl font-bold text-teal-700 mb-4">1. Propósito de la Sesión Exploratoria</h3>
                         <p class="text-slate-600 mb-4">
-                            <span class="text-5xl float-right ml-4 text-teal-600">💡</span>
+                            <i class="fa-solid fa-lightbulb icon-float-right"></i> <!-- Ícono Font Awesome flotante -->
                             Estableceremos las expectativas y el plan para nuestros 30 minutos. Esta sesión es clave para que entiendas cómo podemos trabajar juntos y para que yo comprenda tus necesidades.
                         </p>
                         <ul class="list-none space-y-3 mb-6">
@@ -180,9 +192,9 @@
                     `
                 },
                 {
-                    title: "¿Quién Soy y Mi Enfoque?", <!-- Título corregido aquí -->
+                    title: "¿Quién Soy y Mi Enfoque?",
                     duration: 5,
-                    icon: '🧑‍💼',
+                    icon: '<i class="fa-solid fa-user-tie"></i>', // Ícono Font Awesome
                     content: `
                         <h3 class="text-2xl font-bold text-teal-700 mb-4">2. ¿Quién Soy y Mi Enfoque?</h3>
                         <p class="text-slate-600 mb-6">Quiero que sepas quién te acompañará en este proceso. Mi objetivo es generar credibilidad y mostrarte la pasión detrás de mi trabajo.</p>
@@ -208,7 +220,7 @@
                 {
                     title: "La Asesoría Personalizada",
                     duration: 7,
-                    icon: '🛠️',
+                    icon: '<i class="fa-solid fa-screwdriver-wrench"></i>', // Ícono Font Awesome
                     content: `
                         <h3 class="text-2xl font-bold text-teal-700 mb-4">3. ¿Qué es la "Asesoría Laboral Personalizada"?</h3>
                         <p class="text-slate-600 mb-4">Aquí te detallo el corazón de mi servicio. Es un acompañamiento estratégico diseñado para darte resultados concretos. Estas son las áreas clave en las que podemos trabajar:</p>
@@ -234,9 +246,9 @@
                     `
                 },
                 {
-                    title: "¿Cómo Trabajaremos Juntos/as?", <!-- Título del paso actualizado aquí -->
+                    title: "¿Cómo Trabajaremos Juntos/as?",
                     duration: 3,
-                    icon: '�',
+                    icon: '<i class="fa-solid fa-handshake"></i>', // Ícono Font Awesome
                     content: `
                         <h3 class="text-2xl font-bold text-teal-700 mb-4">4. ¿Cómo Trabajaremos Juntos/as?</h3>
                         <p class="text-slate-600 mb-4">Si decides avanzar, el proceso es sencillo y enfocado en la acción. Las sesiones de 1 hora son el núcleo de nuestro trabajo.</p>
@@ -259,7 +271,7 @@
                 {
                     title: "Preguntas y Respuestas",
                     duration: 7,
-                    icon: '❓',
+                    icon: '<i class="fa-solid fa-circle-question"></i>', // Ícono Font Awesome
                     content: `
                         <h3 class="text-2xl font-bold text-teal-700 mb-4">5. Preguntas y Respuestas</h3>
                         <p class="text-slate-600 mb-4">Este es tu espacio. Quiero aclarar cualquier duda que tengas para que tomes una decisión informada. ¡No hay preguntas tontas!</p>
@@ -272,7 +284,7 @@
                 {
                     title: "Siguientes Pasos",
                     duration: 5, // Duración ajustada para reflejar la importancia de las opciones
-                    icon: '🚀',
+                    icon: '<i class="fa-solid fa-rocket"></i>', // Ícono Font Awesome
                     content: `
                         <h3 class="text-2xl font-bold text-teal-700 mb-4">6. Siguientes Pasos</h3>
                         <p class="text-slate-600 mb-4">Espero que este recorrido te haya dado una visión clara de cómo puedo ser tu aliado/a. Ahora, tienes dos caminos claros para seguir impulsando tu carrera:</p>
@@ -301,7 +313,7 @@
                 navItem.className = 'nav-item flex-shrink-0 md:flex-shrink w-full flex items-center gap-3 p-2 rounded-lg text-left font-medium text-slate-700 transition-all duration-200';
                 navItem.dataset.index = index;
                 navItem.innerHTML = `
-                    <span class="step-circle flex-shrink-0 w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-bold flex items-center justify-center text-xs transition-colors duration-200">${item.icon}</span>
+                    <span class="step-circle flex-shrink-0 w-8 h-8 rounded-full bg-teal-100 text-teal-800 font-bold flex items-center justify-center text-sm transition-colors duration-200">${item.icon}</span>
                     <span class="text-sm">${item.title}</span>
                 `;
                 navContainer.appendChild(navItem);
