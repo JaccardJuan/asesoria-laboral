@@ -180,9 +180,9 @@
                     `
                 },
                 {
-                    title: "¿Quién Soy y Mi Enfoque?",
+                    title: "¿Quién Soy y Mi Enfoque?", <!-- Título corregido aquí -->
                     duration: 5,
-                    icon: '🧑‍💼', <!-- Ícono actualizado aquí -->
+                    icon: '🧑‍💼',
                     content: `
                         <h3 class="text-2xl font-bold text-teal-700 mb-4">2. ¿Quién Soy y Mi Enfoque?</h3>
                         <p class="text-slate-600 mb-6">Quiero que sepas quién te acompañará en este proceso. Mi objetivo es generar credibilidad y mostrarte la pasión detrás de mi trabajo.</p>
@@ -234,9 +234,9 @@
                     `
                 },
                 {
-                    title: "Próximos Pasos",
+                    title: "¿Cómo Trabajaremos Juntos/as?", <!-- Título del paso actualizado aquí -->
                     duration: 3,
-                    icon: '🤝',
+                    icon: '�',
                     content: `
                         <h3 class="text-2xl font-bold text-teal-700 mb-4">4. ¿Cómo Trabajaremos Juntos/as?</h3>
                         <p class="text-slate-600 mb-4">Si decides avanzar, el proceso es sencillo y enfocado en la acción. Las sesiones de 1 hora son el núcleo de nuestro trabajo.</p>
@@ -298,11 +298,11 @@
             presentationData.forEach((item, index) => {
                 const navItem = document.createElement('a');
                 navItem.href = '#';
-                navItem.className = 'nav-item flex-shrink-0 md:flex-shrink w-full flex items-center gap-3 p-2 rounded-lg text-left font-medium text-slate-700 transition-all duration-200'; // Eliminado hover:bg-teal-100 aquí
+                navItem.className = 'nav-item flex-shrink-0 md:flex-shrink w-full flex items-center gap-3 p-2 rounded-lg text-left font-medium text-slate-700 transition-all duration-200';
                 navItem.dataset.index = index;
                 navItem.innerHTML = `
-                    <span class="step-circle flex-shrink-0 w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-bold flex items-center justify-center text-xs transition-colors duration-200">${item.icon}</span> <!-- Tamaño de círculo y texto ajustado -->
-                    <span class="text-sm">${item.title}</span> <!-- Tamaño de texto ajustado -->
+                    <span class="step-circle flex-shrink-0 w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-bold flex items-center justify-center text-xs transition-colors duration-200">${item.icon}</span>
+                    <span class="text-sm">${item.title}</span>
                 `;
                 navContainer.appendChild(navItem);
 
