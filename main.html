@@ -14,7 +14,6 @@
     <!-- Visualization & Content Choices: 
         - Report Info: Estructura de 7 pasos con tiempos. -> Goal: Mostrar el flujo y la estructura. -> Viz/Method: Timeline interactivo (HTML/Tailwind/JS) y Gráfico de Dona (Chart.js). -> Interaction: Clic en el paso del timeline actualiza el contenido. -> Justification: Transforma un guion en una experiencia interactiva y visualmente atractiva.
         - Report Info: Áreas clave de la asesoría. -> Goal: Detallar los servicios sin abrumar. -> Viz/Method: Sistema de tarjetas o "acordeón" (HTML/Tailwind/JS). -> Interaction: Clic para expandir y ver el detalle de cada área. -> Justification: Fomenta la interacción y permite al usuario enfocarse en lo que más le interesa.
-        - Report Info: Contenido de cada sección (quién soy, cómo trabajaremos, etc.). -> Goal: Presentar la información de forma clara y digerible. -> Viz/Method: Tarjetas de contenido con iconos y texto estructurado. -> Interaction: Contenido estático pero bien presentado que aparece dinámicamente. -> Justification: Mejora la legibilidad y el atractivo visual en comparación con párrafos largos.
         - Library/Method: Tailwind CSS para el layout, Chart.js para la visualización de datos, Vanilla JS para la interactividad.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
@@ -43,6 +42,33 @@
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
+
+    <!-- Barra de Navegación Global -->
+    <nav class="bg-teal-700 p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-white text-xl font-bold flex items-center space-x-2">
+                <img src="https://i.gyazo.com/ecf4e31761935d239d551a0390454e7e.png" alt="Foto de perfil de Juan Jaccard" class="rounded-full w-8 h-8 object-cover border border-white">
+                <span>Juan Jaccard</span>
+            </a>
+            <div class="hidden md:flex space-x-6">
+                <a href="index.html" class="text-white hover:text-teal-200 transition-colors">Inicio</a>
+                <a href="servicios.html" class="text-white hover:text-teal-200 transition-colors">Mis Servicios</a>
+                <a href="main.html" class="text-white hover:text-teal-200 transition-colors">Asesoría Interactiva</a>
+                <!-- Agrega más enlaces aquí si creas más páginas (ej. Sobre Mí, Contacto) -->
+            </div>
+            <!-- Menú hamburguesa para móvil -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <!-- Menú desplegable para móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-teal-800 mt-4 rounded-md">
+            <a href="index.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Inicio</a>
+            <a href="servicios.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Mis Servicios</a>
+            <a href="main.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Asesoría Interactiva</a>
+            <!-- Agrega más enlaces aquí para móvil -->
+        </div>
+    </nav>
 
     <div class="container mx-auto p-4 md:p-8">
         
@@ -85,6 +111,15 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Lógica para el menú móvil (hamburguesa)
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+
             const presentationData = [
                 {
                     title: "Bienvenida y Rompehielos",
@@ -168,9 +203,9 @@
                     `
                 },
                 {
-                    title: "¿Cómo Trabajaremos?",
+                    title: "Próximos Pasos",
                     duration: 3,
-                    icon: '�',
+                    icon: '🤝',
                     content: `
                         <h3 class="text-2xl font-bold text-teal-700 mb-4">5. ¿Cómo Trabajaremos Juntos/as?</h3>
                         <p class="text-slate-600 mb-4">Si decides avanzar, el proceso es sencillo y enfocado en la acción. Las sesiones de 1 hora son el núcleo de nuestro trabajo.</p>
@@ -229,7 +264,7 @@
                 navItem.dataset.index = index;
                 navItem.innerHTML = `
                     <span class="step-circle flex-shrink-0 w-8 h-8 rounded-full bg-teal-100 text-teal-800 font-bold flex items-center justify-center transition-colors duration-200">${item.icon}</span>
-                    <span>${item.title}</span> <!-- CAMBIO AQUÍ: Eliminada la clase hidden sm:inline -->
+                    <span>${item.title}</span> 
                 `;
                 navContainer.appendChild(navItem);
 
