@@ -27,7 +27,11 @@
     <nav class="bg-teal-700 p-4 shadow-lg">
         <div class="container mx-auto flex justify-between items-center">
             <a href="index.html" class="text-white text-xl font-bold flex items-center space-x-2">
-                <img src="https://i.gyazo.com/ecf4e317619935d239d551a0390454e7e.png" alt="Foto de perfil de Juan Jaccard" class="rounded-full w-8 h-8 object-cover border border-white">
+                <!-- Imagen de perfil en la barra de navegación con fallback -->
+                <img src="https://i.gyazo.com/ecf4e31761935d239d551a0390454e7e.png" 
+                     alt="Foto de perfil de Juan Jaccard" 
+                     class="rounded-full w-8 h-8 object-cover border border-white"
+                     onerror="this.onerror=null;this.src='https://placehold.co/32x32/cccccc/ffffff?text=JJ';">
                 <span>Juan Jaccard</span>
             </a>
             <div class="hidden md:flex space-x-6">
