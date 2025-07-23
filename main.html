@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome para iconos consistentes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Chosen Palette: Warm Neutrals & Professional Teal (with Analogous Emerald Accent) -->
+    <!-- Chosen Palette: Warm Neutrals & Professional Teal (con un acento Esmeralda Análogo) -->
     <!-- Application Structure Plan: La SPA se centra en un "Recorrido Interactivo de la Sesión Exploratoria". La navegación principal es una barra global (visible en todas las páginas) que enlaza a Inicio, Mis Servicios y esta página. Dentro de esta página, una barra lateral (o superior en móvil) guía al usuario por las etapas de la sesión exploratoria. El contenido se actualiza dinámicamente al seleccionar una etapa. Se ha añadido una sección introductoria clara y el gráfico de distribución de tiempo se ha integrado en la primera etapa para una comprensión inmediata del valor. -->
     <!-- Visualization & Content Choices: 
         - Report Info: Propósito y estructura de la sesión exploratoria de 30 minutos. -> Goal: Explicar el valor y el flujo de la sesión inicial. -> Viz/Method: Encabezado claro, texto introductorio, lista de etapas interactivas (HTML/Tailwind/JS), gráfico de dona (Chart.js) para distribución de tiempo. -> Interaction: Navegación por etapas, tooltip en el gráfico. -> Justification: Mejora la claridad sobre el objetivo de la sesión exploratoria y la hace más atractiva.
@@ -182,7 +182,7 @@
                         <ul class="list-none space-y-3 mb-6">
                             <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex items-center justify-center mr-3 flex-shrink-0">1</span><span>Entender tu situación y tus desafíos laborales.</span></li>
                             <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex items-center justify-center mr-3 flex-shrink-0">2</span><span>Explicarte mi servicio de asesoría personalizada.</span></li>
-                            <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex items-center justify-center mr-3 flex-shrink-0">3</span><span>Responder todas tus dudas.</span></li>
+                            <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex-center justify-center mr-3 flex-shrink-0">3</span><span>Responder todas tus dudas.</span></li>
                             <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex items-center justify-center mr-3 flex-shrink-0">4</span><span>Definir los próximos pasos según tus objetivos (agendar sesión de 1h o explorar otros servicios).</span></li>
                         </ul>
                         <h4 class="text-xl font-bold text-center mb-4 text-teal-700">Distribución de la Sesión de 30 Minutos</h4>
@@ -348,12 +348,15 @@
                 navItems[index].classList.add('active');
 
                 contentPanels.forEach(panel => panel.classList.add('hidden'));
-                document.getElementById(`panel-${index}`).classList.remove('hidden');
+                const targetPanel = document.getElementById(`panel-${index}`);
+                targetPanel.classList.remove('hidden');
                 
                 // Si el panel activo es el primero (donde está el gráfico), inicializa o actualiza el gráfico
                 if (index === 0) {
                     initializeChart();
                 }
+                // Desplazar la ventana al inicio de la sección de contenido activa
+                window.scrollTo({ top: targetPanel.offsetTop - 20, behavior: 'smooth' }); // Resta un poco para un margen superior
             }
 
             navContainer.addEventListener('click', function(e) {
