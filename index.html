@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido/a - Asesoría Laboral</title>
+    <title>Bienvenida/o - Asesoría Laboral</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,30 +21,70 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex items-center justify-center p-4">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-    <div class="bg-white p-8 md:p-12 rounded-xl shadow-xl max-w-2xl w-full text-center border border-teal-100">
-        
-        <!-- Sección de Fotografía -->
-        <div class="mb-6">
-            <img src="https://i.gyazo.com/ecf4e31761935d239d551a0390454e7e.png" alt="Fotografía Profesional de Juan José Jaccard" class="rounded-full mx-auto w-32 h-32 md:w-40 md:h-40 object-cover border-8 border-teal-600 shadow-md">
+    <!-- Barra de Navegación Global -->
+    <nav class="bg-teal-700 p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-white text-xl font-bold flex items-center space-x-2">
+                <img src="https://i.gyazo.com/ecf4e31761935d239d551a0390454e7e.png" alt="Foto de perfil de Juan Jaccard" class="rounded-full w-8 h-8 object-cover border border-white">
+                <span>Juan Jaccard</span>
+            </a>
+            <div class="hidden md:flex space-x-6">
+                <a href="index.html" class="text-white hover:text-teal-200 transition-colors">Inicio</a>
+                <a href="servicios.html" class="text-white hover:text-teal-200 transition-colors">Mis Servicios</a>
+                <a href="main.html" class="text-white hover:text-teal-200 transition-colors">Asesoría Interactiva</a>
+                <!-- Agrega más enlaces aquí si creas más páginas (ej. Sobre Mí, Contacto) -->
+            </div>
+            <!-- Menú hamburguesa para móvil -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
         </div>
+        <!-- Menú desplegable para móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-teal-800 mt-4 rounded-md">
+            <a href="index.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Inicio</a>
+            <a href="servicios.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Mis Servicios</a>
+            <a href="main.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Asesoría Interactiva</a>
+            <!-- Agrega más enlaces aquí para móvil -->
+        </div>
+    </nav>
 
-        <!-- Mensaje de Bienvenida -->
-        <h1 class="text-3xl md:text-4xl font-bold text-teal-800 mb-4">¡Bienvenida/o a tu Futuro Profesional!</h1>
-        <p class="text-lg text-slate-600 mb-6">
-            Hola, soy <strong>Juan José Jaccard</strong>, psicólogo, y estoy aquí para acompañarte en tu camino hacia el éxito laboral. Ya sea que busques un nuevo empleo, quieras potenciar tu carrera o necesites orientación, estoy listo/a para ayudarte a alcanzar tus metas.
-        </p>
+    <div class="flex-grow flex items-center justify-center p-4">
+        <div class="bg-white p-8 md:p-12 rounded-xl shadow-xl max-w-2xl w-full text-center border border-teal-100">
+            
+            <!-- Sección de Fotografía -->
+            <div class="mb-6">
+                <img src="https://i.gyazo.com/ecf4e31761935d239d551a0390454e7e.png" alt="Fotografía Profesional de Juan José Jaccard" class="rounded-full mx-auto w-32 h-32 md:w-40 md:h-40 object-cover border-8 border-teal-600 shadow-md">
+            </div>
 
-        <!-- Llamada a la Acción -->
-        <a href="servicios.html" class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
-            Conoce Mis Servicios de Asesoría
-        </a>
+            <!-- Mensaje de Bienvenida -->
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-800 mb-4">¡Bienvenida/o a tu Futuro Profesional!</h1>
+            <p class="text-lg text-slate-600 mb-6">
+                Hola, soy <strong>Juan José Jaccard</strong>, psicólogo, y estoy aquí para acompañarte en tu camino hacia el éxito laboral. Ya sea que busques un nuevo empleo, quieras potenciar tu carrera o necesites orientación, estoy listo/a para ayudarte a alcanzar tus metas.
+            </p>
 
-        <p class="mt-8 text-sm text-slate-500">
-            © 2025 Juan José Jaccard. Todos los derechos reservados.
-        </p>
+            <!-- Llamada a la Acción -->
+            <a href="servicios.html" class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
+                Conoce Mis Servicios de Asesoría
+            </a>
+
+            <p class="mt-8 text-sm text-slate-500">
+                © 2025 Juan José Jaccard. Todos los derechos reservados.
+            </p>
+        </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lógica para el menú móvil (hamburguesa)
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
+    </script>
 </body>
 </html>
