@@ -33,11 +33,25 @@
         .nav-item.active {
             background-color: #0d9488; /* teal-600 */
             color: white;
-            transform: translateX(4px);
+            /* Eliminado transform: translateX(4px); para mejor visualización en scroll móvil */
         }
         .nav-item.active .step-circle {
             background-color: white;
             color: #0d9488; /* teal-600 */
+        }
+        /* Estilos específicos para el menú de navegación lateral en móvil */
+        #timeline-nav .nav-item {
+            padding: 0.5rem; /* Ajustado para hacerlo más compacto */
+            font-size: 0.875rem; /* text-sm */
+            flex-shrink: 0; /* Evita que los ítems se compriman demasiado */
+        }
+        #timeline-nav .nav-item .step-circle {
+            width: 1.75rem; /* w-7 */
+            height: 1.75rem; /* h-7 */
+            font-size: 0.75rem; /* text-xs */
+        }
+        #timeline-nav .nav-item span:last-child {
+            font-size: 0.875rem; /* text-sm */
         }
     </style>
 </head>
@@ -109,7 +123,7 @@
         <!-- Sección de Llamada a la Acción -->
         <footer class="mt-12 text-center bg-white p-8 rounded-xl shadow-xl border border-teal-100">
             <h2 class="text-2xl font-bold text-teal-800">¿Listo/a para dar el siguiente paso?</h2>
-            <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Si esta estructura resuena contigo y crees que mi asesoría es lo que necesitas, agenda tu sesión de 1 hora o explora mis servicios completos.</p>
+            <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Si esta estructura resuena contigo y crees que mi asesoría es lo que necesitas, agenda tu sesión de 30 minutos o explora mis servicios completos.</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
                 <a href="https://calendly.com/juan-jaccard-ps" class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
                     Agendar Sesión Exploratoria (30 min)
@@ -160,7 +174,7 @@
                 {
                     title: "¿Quién Soy y Mi Enfoque?",
                     duration: 5,
-                    icon: '�',
+                    icon: '🧑‍💼', <!-- Ícono actualizado aquí -->
                     content: `
                         <h3 class="text-2xl font-bold text-teal-700 mb-4">2. ¿Quién Soy y Mi Enfoque?</h3>
                         <p class="text-slate-600 mb-6">Quiero que sepas quién te acompañará en este proceso. Mi objetivo es generar credibilidad y mostrarte la pasión detrás de mi trabajo.</p>
@@ -250,7 +264,7 @@
                 {
                     title: "Siguientes Pasos",
                     duration: 5, // Duración ajustada para reflejar la importancia de las opciones
-                    icon: '🚀',
+                    icon: '�',
                     content: `
                         <h3 class="text-2xl font-bold text-teal-700 mb-4">6. Siguientes Pasos</h3>
                         <p class="text-slate-600 mb-4">Espero que este recorrido te haya dado una visión clara de cómo puedo ser tu aliado/a. Ahora, tienes dos caminos claros para seguir impulsando tu carrera:</p>
@@ -276,11 +290,11 @@
             presentationData.forEach((item, index) => {
                 const navItem = document.createElement('a');
                 navItem.href = '#';
-                navItem.className = 'nav-item flex-shrink-0 md:flex-shrink w-full flex items-center gap-3 p-3 rounded-lg text-left font-medium text-slate-700 hover:bg-teal-100 transition-all duration-200';
+                navItem.className = 'nav-item flex-shrink-0 md:flex-shrink w-full flex items-center gap-3 p-2 rounded-lg text-left font-medium text-slate-700 hover:bg-teal-100 transition-all duration-200'; // padding ajustado
                 navItem.dataset.index = index;
                 navItem.innerHTML = `
-                    <span class="step-circle flex-shrink-0 w-8 h-8 rounded-full bg-teal-100 text-teal-800 font-bold flex items-center justify-center transition-colors duration-200">${item.icon}</span>
-                    <span>${item.title}</span> 
+                    <span class="step-circle flex-shrink-0 w-7 h-7 rounded-full bg-teal-100 text-teal-800 font-bold flex items-center justify-center text-xs transition-colors duration-200">${item.icon}</span> <!-- Tamaño de círculo y texto ajustado -->
+                    <span class="text-sm">${item.title}</span> <!-- Tamaño de texto ajustado -->
                 `;
                 navContainer.appendChild(navItem);
 
@@ -292,10 +306,20 @@
                 }
                 contentPanel.innerHTML = item.content;
                 contentContainer.appendChild(contentPanel);
+
+                // Añadir botón "Ir a la Siguiente Etapa" si no es la última etapa
+                if (index < presentationData.length - 1) {
+                    const nextButtonContainer = document.createElement('div');
+                    nextButtonContainer.className = 'text-center mt-6';
+                    nextButtonContainer.innerHTML = `
+                        <button class="next-step-button inline-block bg-teal-500 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-teal-600 transition-transform transform hover:scale-105" data-next-index="${index + 1}">
+                            Ir a la Siguiente Etapa
+                        </button>
+                    `;
+                    contentPanel.appendChild(nextButtonContainer);
+                }
             });
             
-            // NO se añade el chartPanel aquí, ya que se ha movido dentro del content de la primera etapa.
-
             const navItems = document.querySelectorAll('.nav-item');
             const contentPanels = document.querySelectorAll('.content-panel');
 
@@ -318,6 +342,17 @@
                 if (navLink) {
                     const index = parseInt(navLink.dataset.index);
                     switchTab(index);
+                }
+            });
+
+            // Añadir event listeners para los botones "Ir a la Siguiente Etapa"
+            contentPanels.forEach(panel => {
+                const nextButton = panel.querySelector('.next-step-button');
+                if (nextButton) {
+                    nextButton.addEventListener('click', function() {
+                        const nextIndex = parseInt(this.dataset.nextIndex);
+                        switchTab(nextIndex);
+                    });
                 }
             });
 
