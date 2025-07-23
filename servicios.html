@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestros Servicios - Asesoría Laboral</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Professional Teal (with Analogous Emerald Accent) -->
+    <!-- Application Structure Plan: Esta página detalla los servicios ofrecidos. Su estructura se basa en un diseño centrado con una introducción, seguida de una cuadrícula de "tarjetas de servicio" para presentar cada oferta de manera clara y concisa. Al final, incluye una llamada a la acción para agendar. Se eligió esta estructura para facilitar la lectura y la comprensión de los servicios, permitiendo al usuario explorar cada uno de ellos. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Listado de servicios específicos. -> Goal: Detallar cada servicio. -> Viz/Method: Tarjetas individuales (HTML/Tailwind) con íconos Unicode y descripciones. -> Interaction: Claridad visual y fácil lectura. -> Justification: Permite una visión rápida de todas las ofertas y facilita la comparación.
+        - Library/Method: HTML y Tailwind CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4">
+
+    <div class="container mx-auto p-4 md:p-8 bg-white rounded-xl shadow-xl border border-teal-100 mt-8 mb-8">
+        
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-800 mb-4">Mis Servicios</h1>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+                Enfocado en tus necesidades, te ofrezco un acompañamiento estratégico para potenciar tu carrera y alcanzar tus objetivos laborales. Descubre cómo puedo ayudarte:
+            </p>
+        </header>
+
+        <!-- Sección de Servicios -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
+            
+            <!-- Servicio 1: Revisión y mejora de CV -->
+            <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col items-center text-center">
+                <span class="text-5xl mb-4">📄</span> <!-- Icono de documento/papel -->
+                <h3 class="text-xl font-bold text-teal-700 mb-2">Revisión y Mejora de CV</h3>
+                <p class="text-slate-600">
+                    Transforma tu currículum en una herramienta poderosa que destaque tus habilidades y logros. Te ayudaré a optimizar su estructura, contenido y palabras clave para captar la atención de los reclutadores.
+                </p>
+            </div>
+
+            <!-- Servicio 2: Preparación para entrevistas psicolaborales -->
+            <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col items-center text-center">
+                <span class="text-5xl mb-4">🗣️</span> <!-- Icono de conversación/hablar -->
+                <h3 class="text-xl font-bold text-teal-700 mb-2">Preparación para Entrevistas Psicolaborales</h3>
+                <p class="text-slate-600">
+                    Aprende las claves para enfrentar con éxito las entrevistas que evalúan tus competencias y personalidad. Te brindaré estrategias para responder preguntas difíciles y mostrar tu mejor versión.
+                </p>
+            </div>
+
+            <!-- Servicio 3: Simulación de entrevistas -->
+            <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col items-center text-center">
+                <span class="text-5xl mb-4">🎭</span> <!-- Icono de máscara/teatro (simulación) -->
+                <h3 class="text-xl font-bold text-teal-700 mb-2">Simulación de Entrevistas</h3>
+                <p class="text-slate-600">
+                    Practica en un entorno real y recibe feedback constructivo. Identificaremos tus fortalezas y áreas de mejora para que te sientas seguro/a y preparado/a el día de la entrevista real.
+                </p>
+            </div>
+
+            <!-- Servicio 4: Acompañamiento personalizado -->
+            <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col items-center text-center">
+                <span class="text-5xl mb-4">🤝</span> <!-- Icono de apretón de manos/acompañamiento -->
+                <h3 class="text-xl font-bold text-teal-700 mb-2">Acompañamiento Personalizado</h3>
+                <p class="text-slate-600">
+                    Recibe apoyo continuo y estratégico durante todo tu proceso de búsqueda de empleo y entrevistas. Desde la definición de objetivos hasta la negociación salarial, estaré a tu lado.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- Nueva Sección: Otras Áreas de Apoyo (Colores ajustados a la paleta) -->
+        <section class="bg-emerald-50 p-8 rounded-xl shadow-inner border border-emerald-200 text-center mb-12">
+            <h2 class="text-2xl font-bold text-emerald-800 mb-4">¿Buscas apoyo en otra área?</h2>
+            <p class="text-emerald-700 max-w-2xl mx-auto">
+                Si tus necesidades van más allá de los servicios aquí detallados, o tienes alguna consulta específica, no dudes en escribirme. Estoy abierto/a a explorar cómo puedo ayudarte de otras maneras.
+            </p>
+            <a href="mailto:consultas@jaccard-asesorias.cl" class="mt-6 inline-block bg-emerald-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-emerald-700 transition-transform transform hover:scale-105">
+                Escríbeme a consultas@jaccard-asesorias.cl
+            </a>
+        </section>
+
+        <!-- Llamada a la Acción -->
+        <footer class="text-center bg-teal-50 p-8 rounded-xl shadow-inner border border-teal-200">
+            <h2 class="text-2xl font-bold text-teal-800 mb-4">¿Listo/a para impulsar tu carrera?</h2>
+            <p class="text-slate-700 mb-6 max-w-2xl mx-auto">
+                Agenda una sesión exploratoria gratuita de 30 minutos para conversar sobre tus necesidades y cómo puedo ayudarte a alcanzar tus metas laborales.
+            </p>
+            <a href="https://calendly.com/juan-jaccard-ps" class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
+                Agendar Sesión Exploratoria
+            </a>
+            <p class="mt-8 text-sm text-slate-500">
+                © 2025 Juan José Jaccard. Todos los derechos reservados.
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
