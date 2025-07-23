@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recorrido Interactivo: Sesión de Asesoría Laboral</title>
+    <title>Recorrido Interactivo: Sesión Exploratoria</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutrals & Professional Teal -->
-    <!-- Application Structure Plan: Se ha diseñado una SPA con un enfoque de "Recorrido Interactivo" o "Timeline". La estructura principal consta de una barra lateral de navegación (que se convierte en superior en móviles) que representa los 7 pasos de la presentación. Al hacer clic en un paso, el área de contenido principal se actualiza dinámicamente. Esta estructura fue elegida porque transforma un guion lineal en una experiencia explorable y controlada por el usuario, mejorando la usabilidad y el engagement. Se complementa con un gráfico circular que visualiza la distribución del tiempo, ofreciendo una comprensión rápida y visual de la sesión. El flujo está diseñado para guiar al usuario desde el conocimiento hasta la acción (agendar la cita). -->
+    <!-- Chosen Palette: Warm Neutrals & Professional Teal (with Analogous Emerald Accent) -->
+    <!-- Application Structure Plan: La SPA se centra en un "Recorrido Interactivo de la Sesión Exploratoria". La navegación principal es una barra global (visible en todas las páginas) que enlaza a Inicio, Mis Servicios y esta página. Dentro de esta página, una barra lateral (o superior en móvil) guía al usuario por las etapas de la sesión exploratoria. El contenido se actualiza dinámicamente al seleccionar una etapa. Se ha añadido una sección introductoria clara y el gráfico de distribución de tiempo se ha integrado en la primera etapa para una comprensión inmediata del valor. -->
     <!-- Visualization & Content Choices: 
-        - Report Info: Estructura de 7 pasos con tiempos. -> Goal: Mostrar el flujo y la estructura. -> Viz/Method: Timeline interactivo (HTML/Tailwind/JS) y Gráfico de Dona (Chart.js). -> Interaction: Clic en el paso del timeline actualiza el contenido. -> Justification: Transforma un guion en una experiencia interactiva y visualmente atractiva.
-        - Report Info: Áreas clave de la asesoría. -> Goal: Detallar los servicios sin abrumar. -> Viz/Method: Sistema de tarjetas o "acordeón" (HTML/Tailwind/JS). -> Interaction: Clic para expandir y ver el detalle de cada área. -> Justification: Fomenta la interacción y permite al usuario enfocarse en lo que más le interesa.
+        - Report Info: Propósito y estructura de la sesión exploratoria de 30 minutos. -> Goal: Explicar el valor y el flujo de la sesión inicial. -> Viz/Method: Encabezado claro, texto introductorio, lista de etapas interactivas (HTML/Tailwind/JS), gráfico de dona (Chart.js) para distribución de tiempo. -> Interaction: Navegación por etapas, tooltip en el gráfico. -> Justification: Mejora la claridad sobre el objetivo de la sesión exploratoria y la hace más atractiva.
+        - Report Info: Áreas de asesoría y próximos pasos. -> Goal: Detallar los servicios y guiar al usuario a la acción. -> Viz/Method: Secciones de contenido con acordeones para detalles, botones de llamada a la acción. -> Interaction: Expandir/contraer detalles, clic en botones para agendar o explorar servicios. -> Justification: Permite al usuario explorar a su ritmo y ofrece opciones claras de siguiente paso.
         - Library/Method: Tailwind CSS para el layout, Chart.js para la visualización de datos, Vanilla JS para la interactividad.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
@@ -53,7 +53,7 @@
             <div class="hidden md:flex space-x-6">
                 <a href="index.html" class="text-white hover:text-teal-200 transition-colors">Inicio</a>
                 <a href="servicios.html" class="text-white hover:text-teal-200 transition-colors">Mis Servicios</a>
-                <a href="main.html" class="text-white hover:text-teal-200 transition-colors">Asesoría Interactiva</a>
+                <a href="main.html" class="text-white hover:text-teal-200 transition-colors">Tu Sesión Exploratoria</a>
                 <!-- Agrega más enlaces aquí si creas más páginas (ej. Sobre Mí, Contacto) -->
             </div>
             <!-- Menú hamburguesa para móvil -->
@@ -65,7 +65,7 @@
         <div id="mobile-menu" class="hidden md:hidden bg-teal-800 mt-4 rounded-md">
             <a href="index.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Inicio</a>
             <a href="servicios.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Mis Servicios</a>
-            <a href="main.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Asesoría Interactiva</a>
+            <a href="main.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Tu Sesión Exploratoria</a>
             <!-- Agrega más enlaces aquí para móvil -->
         </div>
     </nav>
@@ -73,9 +73,17 @@
     <div class="container mx-auto p-4 md:p-8">
         
         <header class="text-center mb-8 md:mb-12">
-            <h1 class="text-3xl md:text-4xl font-bold text-teal-800">Recorrido Interactivo de la Sesión de Asesoría</h1>
-            <p class="mt-2 text-lg text-slate-600">Descubre en 30 minutos cómo puedo impulsar tu carrera profesional.</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-800">Recorrido Interactivo de la Sesión Exploratoria</h1>
+            <p class="mt-2 text-lg text-slate-600">Descubre en 30 minutos cómo puedo ayudarte a impulsar tus desafíos profesionales.</p>
         </header>
+
+        <!-- Nuevo Cuadro Introductorio -->
+        <div class="bg-teal-50 p-6 md:p-8 rounded-xl shadow-md border border-teal-200 text-center mb-8">
+            <h2 class="text-2xl font-bold text-teal-800 mb-4">Así es tu Sesión Exploratoria Gratuita</h2>
+            <p class="text-slate-700 max-w-3xl mx-auto">
+                En esta sesión de 30 minutos, te ofrezco un espacio para conversar sobre tu situación actual, tus inquietudes y tus metas laborales. Es una oportunidad para que conozcas mi enfoque y para que juntos/as definamos cómo mis servicios pueden ser el impulso que necesitas. A continuación, te cuento cómo se estructura esta sesión y para qué sirve cada parte.
+            </p>
+        </div>
 
         <div class="flex flex-col md:flex-row gap-8">
             
@@ -101,10 +109,15 @@
         <!-- Sección de Llamada a la Acción -->
         <footer class="mt-12 text-center bg-white p-8 rounded-xl shadow-xl border border-teal-100">
             <h2 class="text-2xl font-bold text-teal-800">¿Listo/a para dar el siguiente paso?</h2>
-            <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Si esta estructura resuena contigo y crees que mi asesoría es lo que necesitas, agenda tu sesión de 1 hora para empezar a trabajar en tus metas.</p>
-            <a href="https://calendly.com/juan-jaccard-ps" class="mt-6 inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
-                Agendar Asesoría Completa
-            </a>
+            <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Si esta estructura resuena contigo y crees que mi asesoría es lo que necesitas, agenda tu sesión de 1 hora o explora mis servicios completos.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+                <a href="https://calendly.com/juan-jaccard-ps" class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
+                    Agendar Sesión Exploratoria (30 min)
+                </a>
+                <a href="servicios.html" class="inline-block bg-slate-200 text-teal-800 font-bold py-3 px-8 rounded-lg shadow-md hover:bg-slate-300 transition-transform transform hover:scale-105">
+                    Explorar Mis Servicios
+                </a>
+            </div>
         </footer>
 
     </div>
@@ -119,41 +132,37 @@
                 mobileMenu.classList.toggle('hidden');
             });
 
+            let timeDistributionChart; // Se movió la declaración aquí para asegurar que esté disponible antes de ser accedida.
 
             const presentationData = [
-                {
-                    title: "Bienvenida y Rompehielos",
-                    duration: 2,
-                    icon: '👋',
-                    content: `
-                        <h3 class="text-2xl font-bold text-teal-700 mb-4">1. Bienvenida y Rompehielos</h3>
-                        <p class="text-slate-600 mb-4">El objetivo es crear un ambiente cálido y de confianza desde el primer momento. Empezaremos con un saludo cordial y te preguntaré qué te motivó a agendar la sesión. Esto me permite entender tu interés principal y asegurar que nuestra conversación sea productiva.</p>
-                        <div class="bg-teal-50 border-l-4 border-teal-500 text-teal-800 p-4 rounded-r-lg">
-                            <p class="font-semibold">"¡Hola! Gracias por tu tiempo. Mi objetivo hoy es que te lleves una idea clara de cómo puedo apoyarte en tu camino profesional."</p>
-                        </div>
-                    `
-                },
                 {
                     title: "Propósito de la Sesión",
                     duration: 3,
                     icon: '🎯',
                     content: `
-                        <h3 class="text-2xl font-bold text-teal-700 mb-4">2. Propósito de la Sesión Exploratoria</h3>
-                        <p class="text-slate-600 mb-4">Estableceremos las expectativas y el plan para nuestros 30 minutos. La transparencia es clave para asegurar que ambos estemos en la misma página.</p>
-                        <ul class="list-none space-y-3">
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">1. Propósito de la Sesión Exploratoria</h3>
+                        <p class="text-slate-600 mb-4">
+                            <span class="text-5xl float-right ml-4 text-teal-600">💡</span>
+                            Estableceremos las expectativas y el plan para nuestros 30 minutos. Esta sesión es clave para que entiendas cómo podemos trabajar juntos y para que yo comprenda tus necesidades.
+                        </p>
+                        <ul class="list-none space-y-3 mb-6">
                             <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex items-center justify-center mr-3 flex-shrink-0">1</span><span>Entender tu situación y tus desafíos laborales.</span></li>
                             <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex items-center justify-center mr-3 flex-shrink-0">2</span><span>Explicarte mi servicio de asesoría personalizada.</span></li>
                             <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex items-center justify-center mr-3 flex-shrink-0">3</span><span>Responder todas tus dudas.</span></li>
-                            <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex items-center justify-center mr-3 flex-shrink-0">4</span><span>Definir los próximos pasos si decides avanzar.</span></li>
+                            <li class="flex items-start"><span class="bg-teal-500 text-white rounded-full w-6 h-6 text-sm flex items-center justify-center mr-3 flex-shrink-0">4</span><span>Definir los próximos pasos según tus objetivos (agendar sesión de 1h o explorar otros servicios).</span></li>
                         </ul>
+                        <h4 class="text-xl font-bold text-center mb-4 text-teal-700">Distribución de la Sesión de 30 Minutos</h4>
+                        <div class="chart-container">
+                            <canvas id="timeDistributionChart"></canvas>
+                        </div>
                     `
                 },
                 {
                     title: "¿Quién Soy y Mi Enfoque?",
                     duration: 5,
-                    icon: '👤',
+                    icon: '�',
                     content: `
-                        <h3 class="text-2xl font-bold text-teal-700 mb-4">3. ¿Quién Soy y Mi Enfoque?</h3>
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">2. ¿Quién Soy y Mi Enfoque?</h3>
                         <p class="text-slate-600 mb-6">Quiero que sepas quién te acompañará en este proceso. Mi objetivo es generar credibilidad y mostrarte la pasión detrás de mi trabajo.</p>
                         <div class="grid md:grid-cols-3 gap-4 text-center">
                             <div class="bg-slate-100 p-4 rounded-lg">
@@ -179,7 +188,7 @@
                     duration: 7,
                     icon: '🛠️',
                     content: `
-                        <h3 class="text-2xl font-bold text-teal-700 mb-4">4. ¿Qué es la "Asesoría Laboral Personalizada"?</h3>
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">3. ¿Qué es la "Asesoría Laboral Personalizada"?</h3>
                         <p class="text-slate-600 mb-4">Aquí te detallo el corazón de mi servicio. Es un acompañamiento estratégico diseñado para darte resultados concretos. Estas son las áreas clave en las que podemos trabajar:</p>
                         <div class="space-y-3">
                             <details class="bg-slate-50 p-3 rounded-lg cursor-pointer group">
@@ -207,7 +216,7 @@
                     duration: 3,
                     icon: '🤝',
                     content: `
-                        <h3 class="text-2xl font-bold text-teal-700 mb-4">5. ¿Cómo Trabajaremos Juntos/as?</h3>
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">4. ¿Cómo Trabajaremos Juntos/as?</h3>
                         <p class="text-slate-600 mb-4">Si decides avanzar, el proceso es sencillo y enfocado en la acción. Las sesiones de 1 hora son el núcleo de nuestro trabajo.</p>
                         <ol class="list-none space-y-4">
                             <li class="flex items-start">
@@ -230,7 +239,7 @@
                     duration: 7,
                     icon: '❓',
                     content: `
-                        <h3 class="text-2xl font-bold text-teal-700 mb-4">6. Preguntas y Respuestas</h3>
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">5. Preguntas y Respuestas</h3>
                         <p class="text-slate-600 mb-4">Este es tu espacio. Quiero aclarar cualquier duda que tengas para que tomes una decisión informada. ¡No hay preguntas tontas!</p>
                         <div class="bg-slate-100 p-6 rounded-lg text-center">
                             <p class="text-lg font-semibold">"¿Hay algo que te gustaría que profundizara o alguna duda sobre el servicio?"</p>
@@ -239,17 +248,23 @@
                     `
                 },
                 {
-                    title: "Próximos Pasos",
-                    duration: 3,
+                    title: "Siguientes Pasos",
+                    duration: 5, // Duración ajustada para reflejar la importancia de las opciones
                     icon: '🚀',
                     content: `
-                        <h3 class="text-2xl font-bold text-teal-700 mb-4">7. Próximos Pasos y Llamada a la Acción</h3>
-                        <p class="text-slate-600 mb-4">Espero que este recorrido te haya dado una visión clara de cómo puedo ser tu aliado/a. Si sientes que mi asesoría es lo que necesitas, el siguiente paso es muy sencillo.</p>
-                        <div class="bg-teal-50 border-t-4 border-teal-500 rounded-b-lg p-6 text-center shadow-md">
-                            <h4 class="text-xl font-bold text-teal-800">Agenda tu Sesión de 1 Hora</h4>
-                            <p class="my-2">Haz clic en el botón de abajo para ir a mi Calendly y elegir el horario que mejor se adapte a ti.</p>
-                            <a href="https://calendly.com/juan-jaccard-ps" class="mt-4 inline-block bg-teal-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-teal-700 transition-colors">Agendar Ahora</a>
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4">6. Siguientes Pasos</h3>
+                        <p class="text-slate-600 mb-4">Espero que este recorrido te haya dado una visión clara de cómo puedo ser tu aliado/a. Ahora, tienes dos caminos claros para seguir impulsando tu carrera:</p>
+                        <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+                            <a href="https://calendly.com/juan-jaccard-ps" class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
+                                Agendar Sesión Exploratoria (30 min)
+                            </a>
+                            <a href="servicios.html" class="inline-block bg-slate-200 text-teal-800 font-bold py-3 px-8 rounded-lg shadow-md hover:bg-slate-300 transition-transform transform hover:scale-105">
+                                Explorar Mis Servicios
+                            </a>
                         </div>
+                        <p class="mt-4 text-sm text-slate-500">
+                            (En la sesión real, te guiaré personalmente para elegir el camino que mejor se adapte a tus objetivos).
+                        </p>
                     `
                 }
             ];
@@ -257,6 +272,7 @@
             const navContainer = document.getElementById('timeline-nav');
             const contentContainer = document.getElementById('content-panels');
 
+            // Lógica para generar los elementos de navegación y los paneles de contenido
             presentationData.forEach((item, index) => {
                 const navItem = document.createElement('a');
                 navItem.href = '#';
@@ -278,15 +294,7 @@
                 contentContainer.appendChild(contentPanel);
             });
             
-            const chartPanel = document.createElement('div');
-            chartPanel.className = 'bg-white p-6 md:p-8 rounded-xl shadow-lg mt-8';
-            chartPanel.innerHTML = `
-                <h3 class="text-xl font-bold text-center mb-4 text-teal-700">Distribución de la Sesión de 30 Minutos</h3>
-                <div class="chart-container">
-                    <canvas id="timeDistributionChart"></canvas>
-                </div>
-            `;
-            contentContainer.appendChild(chartPanel);
+            // NO se añade el chartPanel aquí, ya que se ha movido dentro del content de la primera etapa.
 
             const navItems = document.querySelectorAll('.nav-item');
             const contentPanels = document.querySelectorAll('.content-panel');
@@ -297,6 +305,11 @@
 
                 contentPanels.forEach(panel => panel.classList.add('hidden'));
                 document.getElementById(`panel-${index}`).classList.remove('hidden');
+                
+                // Si el panel activo es el primero (donde está el gráfico), inicializa o actualiza el gráfico
+                if (index === 0) {
+                    initializeChart();
+                }
             }
 
             navContainer.addEventListener('click', function(e) {
@@ -308,48 +321,58 @@
                 }
             });
 
-            switchTab(0);
+            switchTab(0); // Activa el primer panel al cargar la página
 
-            const ctx = document.getElementById('timeDistributionChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: presentationData.map(item => item.title),
-                    datasets: [{
-                        label: 'Minutos',
-                        data: presentationData.map(item => item.duration),
-                        backgroundColor: [
-                            '#ccfbf1', '#99f6e4', '#5eead4', '#2dd4bf', '#14b8a6', '#0d9488', '#0f766e'
-                        ],
-                        borderColor: '#ffffff',
-                        borderWidth: 2,
-                        hoverOffset: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
+            function initializeChart() {
+                const ctx = document.getElementById('timeDistributionChart');
+                if (ctx) {
+                    // Destruir la instancia anterior si existe para evitar duplicados
+                    if (timeDistributionChart) {
+                        timeDistributionChart.destroy();
+                    }
+                    timeDistributionChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: presentationData.map(item => item.title),
+                            datasets: [{
+                                label: 'Minutos',
+                                data: presentationData.map(item => item.duration),
+                                backgroundColor: [
+                                    '#ccfbf1', '#99f6e4', '#5eead4', '#2dd4bf', '#14b8a6', '#0d9488', '#0f766e'
+                                ],
+                                borderColor: '#ffffff',
+                                borderWidth: 2,
+                                hoverOffset: 8
+                            }]
                         },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.label || '';
-                                    if (label) {
-                                        label += ': ';
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            let label = context.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed !== null) {
+                                                label += context.parsed + ' min';
+                                            }
+                                            return label;
+                                        }
                                     }
-                                    if (context.parsed !== null) {
-                                        label += context.parsed + ' min';
-                                    }
-                                    return label;
                                 }
                             }
                         }
-                    }
+                    });
                 }
-            });
+            }
+            // Llama a initializeChart al cargar la página para el primer panel
+            initializeChart();
         });
     </script>
 </body>
