@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Empresas - Asesoría Laboral</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome para iconos consistentes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Paleta de colores: Neutros cálidos y Teal profesional -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Barra de Navegación Global -->
+    <nav class="bg-teal-700 p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-white text-xl font-bold flex items-center space-x-2">
+                <img src="https://i.gyazo.com/ecf4e31761935d239d551a0390454e7e.png" alt="Foto de perfil de Juan Jaccard" class="rounded-full w-8 h-8 object-cover border border-white">
+                <span>Juan Jaccard</span>
+            </a>
+            <div class="hidden md:flex space-x-6">
+                <a href="index.html" class="text-white hover:text-teal-200 transition-colors">Inicio</a>
+                <a href="servicios.html" class="text-white hover:text-teal-200 transition-colors">Mis Servicios</a>
+                <a href="main.html" class="text-white hover:text-teal-200 transition-colors">Tu Sesión Exploratoria</a>
+                <a href="contacto.html" class="text-white hover:text-teal-200 transition-colors">Comunícate conmigo</a>
+                <!-- El enlace a "Para Empresas" se añadirá aquí al final -->
+            </div>
+            <!-- Menú hamburguesa para móvil -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <!-- Menú desplegable para móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-teal-800 mt-4 rounded-md">
+            <a href="index.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Inicio</a>
+            <a href="servicios.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Mis Servicios</a>
+            <a href="main.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Tu Sesión Exploratoria</a>
+            <a href="contacto.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Comunícate conmigo</a>
+            <!-- El enlace a "Para Empresas" se añadirá aquí al final -->
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-4 md:p-8 flex-grow">
+        
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-800">Servicios para Empresas</h1>
+            <p class="mt-2 text-lg text-slate-600">Soluciones estratégicas para la gestión del talento y el desarrollo organizacional de tu empresa.</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+            <!-- Servicio 1: Hunting (Reclutamiento y Selección) -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-teal-100 flex flex-col items-center text-center">
+                <div class="bg-teal-100 text-teal-700 rounded-full w-16 h-16 flex items-center justify-center text-3xl mb-4">
+                    <i class="fa-solid fa-user-tie"></i>
+                </div>
+                <h2 class="text-xl font-bold text-teal-800 mb-3">Hunting (Reclutamiento y Selección)</h2>
+                <p class="text-slate-600 mb-4">
+                    Identificamos y atraemos el talento clave que tu organización necesita, asegurando el mejor ajuste cultural y profesional.
+                </p>
+                <ul class="list-disc list-inside text-left text-slate-600 space-y-2 mb-6 w-full">
+                    <li>Búsqueda de perfiles especializados.</li>
+                    <li>Evaluación por competencias.</li>
+                    <li>Proceso de selección integral.</li>
+                    <li>Asesoría en incorporación de nuevos talentos.</li>
+                </ul>
+                <a href="contacto.html" class="mt-auto inline-block bg-teal-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
+                    Consultar Servicio
+                </a>
+            </div>
+
+            <!-- Servicio 2: Construcción de Instrumentos Organizacionales -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-orange-100 flex flex-col items-center text-center">
+                <div class="bg-orange-100 text-orange-700 rounded-full w-16 h-16 flex items-center justify-center text-3xl mb-4">
+                    <i class="fa-solid fa-building"></i>
+                </div>
+                <h2 class="text-xl font-bold text-orange-800 mb-3">Construcción de Instrumentos Organizacionales</h2>
+                <p class="text-slate-600 mb-4">
+                    Diseñamos herramientas a medida para optimizar la estructura y el funcionamiento de tu organización.
+                </p>
+                <ul class="list-disc list-inside text-left text-slate-600 space-y-2 mb-6 w-full">
+                    <li>Diccionario de Competencias.</li>
+                    <li>Manual de Organización y Funciones (MOF).</li>
+                    <li>Perfiles de Cargo detallados.</li>
+                    <li>Definición de estructuras y roles.</li>
+                </ul>
+                <a href="contacto.html" class="mt-auto inline-block bg-orange-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-orange-700 transition-transform transform hover:scale-105">
+                    Consultar Servicio
+                </a>
+            </div>
+
+            <!-- Servicio 3: Talento y Liderazgo (Gestión del Desempeño) -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-blue-100 flex flex-col items-center text-center">
+                <div class="bg-blue-100 text-blue-700 rounded-full w-16 h-16 flex items-center justify-center text-3xl mb-4">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <h2 class="text-xl font-bold text-blue-800 mb-3">Talento y Liderazgo: Gestión del Desempeño</h2>
+                <p class="text-slate-600 mb-4">
+                    Desarrollamos estrategias para potenciar el rendimiento individual y colectivo en tu equipo.
+                </p>
+                <ul class="list-disc list-inside text-left text-slate-600 space-y-2 mb-6 w-full">
+                    <li>Diseño e implementación de Evaluación del Desempeño.</li>
+                    <li>Planes de potenciación estratégica del rendimiento.</li>
+                    <li>Feedback 360 y desarrollo de habilidades de liderazgo.</li>
+                    <li>Programas de coaching ejecutivo.</li>
+                </ul>
+                <a href="contacto.html" class="mt-auto inline-block bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-blue-700 transition-transform transform hover:scale-105">
+                    Consultar Servicio
+                </a>
+            </div>
+
+            <!-- Servicio 4: Talento y Liderazgo (Mapeo de Talento y Sucesión) -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-purple-100 flex flex-col items-center text-center">
+                <div class="bg-purple-100 text-purple-700 rounded-full w-16 h-16 flex items-center justify-center text-3xl mb-4">
+                    <i class="fa-solid fa-sitemap"></i>
+                </div>
+                <h2 class="text-xl font-bold text-purple-800 mb-3">Talento y Liderazgo: Mapeo de Talento y Sucesión</h2>
+                <p class="text-slate-600 mb-4">
+                    Identificamos y preparamos a los futuros líderes de tu organización para asegurar la continuidad y el crecimiento.
+                </p>
+                <ul class="list-disc list-inside text-left text-slate-600 space-y-2 mb-6 w-full">
+                    <li>Detección de alto potencial.</li>
+                    <li>Planes de desarrollo de carrera y sucesión.</li>
+                    <li>Evaluación de liderazgo y potencial.</li>
+                    <li>Estrategias de retención de talento clave.</li>
+                </ul>
+                <a href="contacto.html" class="mt-auto inline-block bg-purple-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-purple-700 transition-transform transform hover:scale-105">
+                    Consultar Servicio
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Sección de Llamada a la Acción General para Empresas -->
+        <div class="mt-12 text-center bg-teal-50 p-8 rounded-xl shadow-xl border border-teal-100">
+            <h2 class="text-2xl font-bold text-teal-800">¿Listo/a para potenciar el talento en tu empresa?</h2>
+            <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Conversemos sobre las necesidades específicas de tu organización y cómo podemos diseñar una solución a medida.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+                <a href="contacto.html" class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
+                    Contactar para Servicios Empresas
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="mt-8 text-center text-sm text-slate-500 p-4">
+        © 2025 Juan José Jaccard. Todos los derechos reservados.
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lógica para el menú móvil (hamburguesa)
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
