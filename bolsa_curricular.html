@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolsa Curricular - Juan Jaccard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome para iconos consistentes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Paleta de colores: Neutros cálidos y Teal profesional -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        details summary {
+            cursor: pointer;
+            list-style: none; /* Elimina la flecha por defecto del summary */
+        }
+        details summary::-webkit-details-marker {
+            display: none; /* También para navegadores Webkit */
+        }
+        details summary::before {
+            content: "\f0da"; /* Código Unicode para Font Awesome fa-caret-right */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            margin-right: 0.75rem;
+            transition: transform 0.2s ease-in-out;
+            display: inline-block;
+        }
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
+        /* Estilo para el contador de perfiles */
+        .profile-count {
+            font-size: 0.8em; /* Un poco más pequeño que el título */
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px; /* Pill shape */
+            margin-left: 0.75rem;
+            color: inherit; /* Hereda el color del texto de la categoría */
+            font-weight: normal; /* Letra menos gruesa */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Barra de Navegación Global -->
+    <nav class="bg-teal-700 p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-white text-xl font-bold flex items-center space-x-2">
+                <img src="https://i.gyazo.com/ecf4e31761935d239d551a0390454e7e.png" alt="Foto de perfil de Juan Jaccard" class="rounded-full w-8 h-8 object-cover border border-white">
+                <span>Juan Jaccard</span>
+            </a>
+            <div class="hidden md:flex space-x-6">
+                <a href="index.html" class="text-white hover:text-teal-200 transition-colors">Inicio</a>
+                <a href="servicios.html" class="text-white hover:text-teal-200 transition-colors">Mis Servicios</a>
+                <a href="main.html" class="text-white hover:text-teal-200 transition-colors">Tu Sesión Exploratoria</a>
+                <a href="contacto.html" class="text-white hover:text-teal-200 transition-colors">Comunícate conmigo</a>
+                <a href="empresas.html" class="text-white hover:text-teal-200 transition-colors">Para Empresas</a>
+                <!-- El enlace a "Bolsa Curricular" se añadirá aquí al final -->
+            </div>
+            <!-- Menú hamburguesa para móvil -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <!-- Menú desplegable para móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-teal-800 mt-4 rounded-md">
+            <a href="index.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Inicio</a>
+            <a href="servicios.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Mis Servicios</a>
+            <a href="main.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Tu Sesión Exploratoria</a>
+            <a href="contacto.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Comunícate conmigo</a>
+            <a href="empresas.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Para Empresas</a>
+            <!-- El enlace a "Bolsa Curricular" se añadirá aquí al final -->
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-4 md:p-8 flex-grow">
+        
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-800">Bolsa Curricular Exclusiva</h1>
+            <p class="mt-2 text-lg text-slate-600">
+                Accede a una selección de perfiles de alto potencial, listos para integrarse a tu equipo.
+                <br class="hidden sm:inline">
+                Este servicio de intermediación es <strong>completamente gratuito para empresas y reclutadores</strong>.
+            </p>
+        </header>
+
+        <div class="space-y-6">
+            <!-- Categoría: Salud -->
+            <details class="bg-white p-4 rounded-xl shadow-lg border border-teal-200">
+                <summary class="text-xl font-bold text-teal-700 flex items-center">
+                    <i class="fa-solid fa-caret-right mr-3"></i> Salud <span class="profile-count bg-slate-200">2 perfiles</span>
+                </summary>
+                <div class="grid grid-cols-1 gap-6 mt-6">
+                    <!-- Ficha de Perfil 1 (Salud) - REALISTA (Odontólogo) -->
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Odontólogo/a</h3>
+                        <ul class="list-none text-slate-600 space-y-2 mb-4">
+                            <li class="flex items-center"><i class="fa-solid fa-briefcase text-teal-600 w-5 mr-2"></i> 6 años de experiencia</li>
+                            <li class="flex items-center"><i class="fa-solid fa-graduation-cap text-teal-600 w-5 mr-2"></i> Especialidad en Endodoncia (U. Mayor)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-teal-600 w-5 mr-2"></i> Otros: Manejo de radiografía digital, atención a pacientes pediátricos, inglés técnico</li>
+                            <li class="flex items-center"><i class="fa-solid fa-location-dot text-teal-600 w-5 mr-2"></i> Ubicación: Viña del Mar (disponibilidad para Valparaíso)</li>
+                        </ul>
+                        <p class="text-slate-700 text-sm mb-6 flex-grow">
+                            Profesional comprometido/a con la salud bucal integral, destacando por su precisión en procedimientos de endodoncia y su habilidad para generar confianza en pacientes ansiosos. Con experiencia en clínicas privadas de alto volumen y enfoque en tratamientos conservadores. Buscando una clínica que valore la excelencia clínica y el desarrollo continuo.
+                        </p>
+                        <a href="contacto.html" class="inline-block bg-teal-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105 text-center">
+                            Contáctame para más detalles (Servicio Gratuito)
+                        </a>
+                    </div>
+                    <!-- Ficha de Perfil 2 (Salud) - EJEMPLO -->
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Enfermera/o Universitaria/o</h3>
+                        <ul class="list-none text-slate-600 space-y-2 mb-4">
+                            <li class="flex items-center"><i class="fa-solid fa-briefcase text-teal-600 w-5 mr-2"></i> 8 años de experiencia</li>
+                            <li class="flex items-center"><i class="fa-solid fa-graduation-cap text-teal-600 w-5 mr-2"></i> Diplomado en Gestión de Calidad en Salud</li>
+                            <li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-teal-600 w-5 mr-2"></i> Otros: Certificación BLS/ACLS, liderazgo de equipos</li>
+                            <li class="flex items-center"><i class="fa-solid fa-location-dot text-teal-600 w-5 mr-2"></i> Ubicación: Valparaíso, Chile</li>
+                        </ul>
+                        <p class="text-slate-700 text-sm mb-6 flex-grow">
+                            Enfermera con amplia trayectoria en unidades críticas y gestión de equipos de enfermería. Proactiva en la implementación de protocolos de seguridad del paciente y mejora continua.
+                        </p>
+                        <a href="contacto.html" class="inline-block bg-teal-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105 text-center">
+                            Contáctame para conocer este perfil
+                        </a>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Categoría: Educación -->
+            <details class="bg-white p-4 rounded-xl shadow-lg border border-orange-200">
+                <summary class="text-xl font-bold text-orange-700 flex items-center">
+                    <i class="fa-solid fa-caret-right mr-3"></i> Educación <span class="profile-count bg-slate-200">2 perfiles</span>
+                </summary>
+                <div class="grid grid-cols-1 gap-6 mt-6">
+                    <!-- Ficha de Perfil 1 (Educación) - REALISTA -->
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Profesor/a de Enseñanza Media (Historia)</h3>
+                        <ul class="list-none text-slate-600 space-y-2 mb-4">
+                            <li class="flex items-center"><i class="fa-solid fa-briefcase text-orange-600 w-5 mr-2"></i> 9 años de experiencia</li>
+                            <li class="flex items-center"><i class="fa-solid fa-graduation-cap text-orange-600 w-5 mr-2"></i> Magíster en Educación con mención en Currículum y Evaluación (PUC)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-orange-600 w-5 mr-2"></i> Otros: Diseño de proyectos educativos, manejo de plataformas e-learning (Moodle, Canvas), inglés intermedio</li>
+                            <li class="flex items-center"><i class="fa-solid fa-location-dot text-orange-600 w-5 mr-2"></i> Ubicación: Concepción (disponibilidad para otras regiones)</li>
+                        </ul>
+                        <p class="text-slate-700 text-sm mb-6 flex-grow">
+                            Docente apasionado/a por la historia y el desarrollo integral de sus estudiantes. Con experiencia en colegios de alto rendimiento y proyectos de innovación pedagógica. Destaca por su habilidad para motivar el aprendizaje significativo y su compromiso con la inclusión educativa. Buscando un entorno educativo que valore la creatividad y el desarrollo profesional continuo.
+                        </p>
+                        <a href="contacto.html" class="inline-block bg-orange-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-orange-700 transition-transform transform hover:scale-105 text-center">
+                            Contáctame para más detalles (Servicio Gratuito)
+                        </a>
+                    </div>
+                    <!-- Ficha de Perfil 2 (Educación) - EJEMPLO -->
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Profesor/a de Enseñanza Básica</h3>
+                        <ul class="list-none text-slate-600 space-y-2 mb-4">
+                            <li class="flex items-center"><i class="fa-solid fa-briefcase text-orange-600 w-5 mr-2"></i> 5 años de experiencia</li>
+                            <li class="flex items-center"><i class="fa-solid fa-graduation-cap text-orange-600 w-5 mr-2"></i> Diplomado en Neuroeducación</li>
+                            <li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-orange-600 w-5 mr-2"></i> Otros: Manejo de herramientas TIC, metodologías activas</li>
+                            <li class="flex items-center"><i class="fa-solid fa-location-dot text-orange-600 w-5 mr-2"></i> Ubicación: Temuco, Chile</li>
+                        </ul>
+                        <p class="text-slate-700 text-sm mb-6 flex-grow">
+                            Educador/a comprometido/a con el desarrollo integral de niños y niñas. Experiencia en aulas multigrado y proyectos de fomento lector. Busca un colegio con proyecto educativo innovador.
+                        </p>
+                        <a href="contacto.html" class="inline-block bg-orange-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-orange-700 transition-transform transform hover:scale-105 text-center">
+                            Contáctame para conocer este perfil
+                        </a>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Categoría: Informática -->
+            <details class="bg-white p-4 rounded-xl shadow-lg border border-blue-200">
+                <summary class="text-xl font-bold text-blue-700 flex items-center">
+                    <i class="fa-solid fa-caret-right mr-3"></i> Informática <span class="profile-count bg-slate-200">1 perfil</span>
+                </summary>
+                <div class="grid grid-cols-1 gap-6 mt-6">
+                    <!-- Ficha de Perfil 1 (Informática) - EJEMPLO -->
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Desarrollador/a Fullstack (Python/React)</h3>
+                        <ul class="list-none text-slate-600 space-y-2 mb-4">
+                            <li class="flex items-center"><i class="fa-solid fa-briefcase text-blue-600 w-5 mr-2"></i> 7 años de experiencia</li>
+                            <li class="flex items-center"><i class="fa-solid fa-graduation-cap text-blue-600 w-5 mr-2"></i> Certificación AWS Certified Developer</li>
+                            <li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-blue-600 w-5 mr-2"></i> Otros: Metodologías Ágiles (Scrum), Docker, CI/CD</li>
+                            <li class="flex items-center"><i class="fa-solid fa-location-dot text-blue-600 w-5 mr-2"></i> Ubicación: Remoto / Santiago, Chile</li>
+                        </ul>
+                        <p class="text-slate-700 text-sm mb-6 flex-grow">
+                            Experto en desarrollo de aplicaciones web escalables, con fuerte dominio de frontend y backend. Ha liderado equipos de desarrollo y contribuido a proyectos de alta complejidad en startups y empresas consolidadas.
+                        </p>
+                        <a href="contacto.html" class="inline-block bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-blue-700 transition-transform transform hover:scale-105 text-center">
+                            Contáctame para conocer este perfil
+                        </a>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Categoría: Ingeniería -->
+            <details class="bg-white p-4 rounded-xl shadow-lg border border-purple-200">
+                <summary class="text-xl font-bold text-purple-700 flex items-center">
+                    <i class="fa-solid fa-caret-right mr-3"></i> Ingeniería <span class="profile-count bg-slate-200">1 perfil</span>
+                </summary>
+                <div class="grid grid-cols-1 gap-6 mt-6">
+                    <!-- Ficha de Perfil 1 (Ingeniería) - EJEMPLO -->
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Ingeniero/a Civil Industrial</h3>
+                        <ul class="list-none text-slate-600 space-y-2 mb-4">
+                            <li class="flex items-center"><i class="fa-solid fa-briefcase text-purple-600 w-5 mr-2"></i> 6 años de experiencia</li>
+                            <li class="flex items-center"><i class="fa-solid fa-graduation-cap text-purple-600 w-5 mr-2"></i> MBA</li>
+                            <li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-purple-600 w-5 mr-2"></i> Otros: Gestión de Proyectos (PMI), Power BI</li>
+                            <li class="flex items-center"><i class="fa-solid fa-location-dot text-purple-600 w-5 mr-2"></i> Ubicación: Santiago, Chile</li>
+                        </ul>
+                        <p class="text-slate-700 text-sm mb-6 flex-grow">
+                            Profesional con experiencia en optimización de procesos y gestión estratégica en el sector manufacturero. Habilidad demostrada en análisis de datos y toma de decisiones basadas en evidencia.
+                        </p>
+                        <a href="contacto.html" class="inline-block bg-purple-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-purple-700 transition-transform transform hover:scale-105 text-center">
+                            Contáctame para conocer este perfil
+                        </a>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Nueva Categoría: Legal -->
+            <details class="bg-white p-4 rounded-xl shadow-lg border border-red-200">
+                <summary class="text-xl font-bold text-red-700 flex items-center">
+                    <i class="fa-solid fa-caret-right mr-3"></i> Legal <span class="profile-count bg-slate-200">1 perfil</span>
+                </summary>
+                <div class="grid grid-cols-1 gap-6 mt-6">
+                    <!-- Ficha de Perfil (Legal) - EJEMPLO -->
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Abogado/a Corporativo</h3>
+                        <ul class="list-none text-slate-600 space-y-2 mb-4">
+                            <li class="flex items-center"><i class="fa-solid fa-briefcase text-red-600 w-5 mr-2"></i> 4 años de experiencia</li>
+                            <li class="flex items-center"><i class="fa-solid fa-graduation-cap text-red-600 w-5 mr-2"></i> Diplomado en Derecho Laboral</li>
+                            <li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-red-600 w-5 mr-2"></i> Otros: Negociación, Compliance, Inglés legal</li>
+                            <li class="flex items-center"><i class="fa-solid fa-location-dot text-red-600 w-5 mr-2"></i> Ubicación: Santiago, Chile</li>
+                        </ul>
+                        <p class="text-slate-700 text-sm mb-6 flex-grow">
+                            Profesional del derecho con enfoque en asesoría corporativa y resolución de conflictos. Experiencia en redacción de contratos y cumplimiento normativo.
+                        </p>
+                        <a href="contacto.html" class="inline-block bg-red-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-red-700 transition-transform transform hover:scale-105 text-center">
+                            Contáctame para conocer este perfil
+                        </a>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Nueva Categoría: Recursos Humanos -->
+            <details class="bg-white p-4 rounded-xl shadow-lg border border-pink-200">
+                <summary class="text-xl font-bold text-pink-700 flex items-center">
+                    <i class="fa-solid fa-caret-right mr-3"></i> Recursos Humanos <span class="profile-count bg-slate-200">1 perfil</span>
+                </summary>
+                <div class="grid grid-cols-1 gap-6 mt-6">
+                    <!-- Ficha de Perfil (Recursos Humanos) - EJEMPLO -->
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Analista de Compensaciones</h3>
+                        <ul class="list-none text-slate-600 space-y-2 mb-4">
+                            <li class="flex items-center"><i class="fa-solid fa-briefcase text-pink-600 w-5 mr-2"></i> 3 años de experiencia</li>
+                            <li class="flex items-center"><i class="fa-solid fa-graduation-cap text-pink-600 w-5 mr-2"></i> Certificación en Gestión de Talento</li>
+                            <li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-pink-600 w-5 mr-2"></i> Otros: Excel Avanzado, SAP HR, Power BI</li>
+                            <li class="flex items-center"><i class="fa-solid fa-location-dot text-pink-600 w-5 mr-2"></i> Ubicación: Santiago, Chile</li>
+                        </ul>
+                        <p class="text-slate-700 text-sm mb-6 flex-grow">
+                            Profesional de RRHH con experiencia en diseño y administración de estructuras de compensaciones. Habilidad en análisis de datos y propuesta de mejoras.
+                        </p>
+                        <a href="contacto.html" class="inline-block bg-pink-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-pink-700 transition-transform transform hover:scale-105 text-center">
+                            Contáctame para conocer este perfil
+                        </a>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Nueva Categoría: Comercial y Ventas -->
+            <details class="bg-white p-4 rounded-xl shadow-lg border border-indigo-200">
+                <summary class="text-xl font-bold text-indigo-700 flex items-center">
+                    <i class="fa-solid fa-caret-right mr-3"></i> Comercial y Ventas <span class="profile-count bg-slate-200">1 perfil</span>
+                </summary>
+                <div class="grid grid-cols-1 gap-6 mt-6">
+                    <!-- Ficha de Perfil (Comercial y Ventas) - EJEMPLO -->
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Ejecutivo/a de Cuentas Senior</h3>
+                        <ul class="list-none text-slate-600 space-y-2 mb-4">
+                            <li class="flex items-center"><i class="fa-solid fa-briefcase text-indigo-600 w-5 mr-2"></i> 8 años de experiencia</li>
+                            <li class="flex items-center"><i class="fa-solid fa-graduation-cap text-indigo-600 w-5 mr-2"></i> Postgrado en Marketing Digital</li>
+                            <li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-indigo-600 w-5 mr-2"></i> Otros: CRM (Salesforce), prospección B2B, negociación avanzada</li>
+                            <li class="flex items-center"><i class="fa-solid fa-location-dot text-indigo-600 w-5 mr-2"></i> Ubicación: Santiago, Chile</li>
+                        </ul>
+                        <p class="text-slate-700 text-sm mb-6 flex-grow">
+                            Profesional de ventas con historial comprobado en el cierre de grandes cuentas y desarrollo de negocios. Habilidad para construir relaciones duraderas con clientes.
+                        </p>
+                        <a href="contacto.html" class="inline-block bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-indigo-700 transition-transform transform hover:scale-105 text-center">
+                            Contáctame para conocer este perfil
+                        </a>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Nueva Categoría: Diseño y Marketing -->
+            <details class="bg-white p-4 rounded-xl shadow-lg border border-cyan-200">
+                <summary class="text-xl font-bold text-cyan-700 flex items-center">
+                    <i class="fa-solid fa-caret-right mr-3"></i> Diseño y Marketing <span class="profile-count bg-slate-200">1 perfil</span>
+                </summary>
+                <div class="grid grid-cols-1 gap-6 mt-6">
+                    <!-- Ficha de Perfil (Diseño y Marketing) - EJEMPLO -->
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Diseñador/a Gráfico/a</h3>
+                        <ul class="list-none text-slate-600 space-y-2 mb-4">
+                            <li class="flex items-center"><i class="fa-solid fa-briefcase text-cyan-600 w-5 mr-2"></i> 5 años de experiencia</li>
+                            <li class="flex items-center"><i class="fa-solid fa-graduation-cap text-cyan-600 w-5 mr-2"></i> Diplomado en Diseño UX/UI</li>
+                            <li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-cyan-600 w-5 mr-2"></i> Otros: Suite Adobe (Photoshop, Illustrator, InDesign), Figma, Branding</li>
+                            <li class="flex items-center"><i class="fa-solid fa-location-dot text-cyan-600 w-5 mr-2"></i> Ubicación: Remoto / Valparaíso, Chile</li>
+                        </ul>
+                        <p class="text-slate-700 text-sm mb-6 flex-grow">
+                            Creativo/a con experiencia en diseño de interfaces y branding. Habilidad para traducir conceptos en soluciones visuales atractivas y funcionales.
+                        </p>
+                        <a href="contacto.html" class="inline-block bg-cyan-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-cyan-700 transition-transform transform hover:scale-105 text-center">
+                            Contáctame para conocer este perfil
+                        </a>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Nueva Categoría: Otros Oficios y Profesiones -->
+            <details class="bg-white p-4 rounded-xl shadow-lg border border-gray-200">
+                <summary class="text-xl font-bold text-gray-700 flex items-center">
+                    <i class="fa-solid fa-caret-right mr-3"></i> Otros Oficios y Profesiones <span class="profile-count bg-slate-200">1 perfil</span>
+                </summary>
+                <div class="grid grid-cols-1 gap-6 mt-6">
+                    <!-- Ficha de Perfil (Otros) - EJEMPLO -->
+                    <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3">Técnico/a de Mantenimiento</h3>
+                        <ul class="list-none text-slate-600 space-y-2 mb-4">
+                            <li class="flex items-center"><i class="fa-solid fa-briefcase text-gray-600 w-5 mr-2"></i> 7 años de experiencia</li>
+                            <li class="flex items-center"><i class="fa-solid fa-graduation-cap text-gray-600 w-5 mr-2"></i> Certificación en Electricidad Industrial</li>
+                            <li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-gray-600 w-5 mr-2"></i> Otros: Soldadura, manejo de herramientas eléctricas, licencia de conducir clase B</li>
+                            <li class="flex items-center"><i class="fa-solid fa-location-dot text-gray-600 w-5 mr-2"></i> Ubicación: Temuco, Chile</li>
+                        </ul>
+                        <p class="text-slate-700 text-sm mb-6 flex-grow">
+                            Profesional con experiencia en mantenimiento preventivo y correctivo de maquinaria industrial. Habilidad para diagnosticar fallas y ejecutar reparaciones eficientes.
+                        </p>
+                        <a href="contacto.html" class="inline-block bg-gray-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-gray-700 transition-transform transform hover:scale-105 text-center">
+                            Contáctame para conocer este perfil
+                        </a>
+                    </div>
+                    <!-- Puedes añadir más perfiles de "Otros" aquí -->
+                </div>
+            </details>
+
+        </div>
+
+        <!-- Sección de Llamada a la Acción General para la Bolsa Curricular -->
+        <div class="mt-12 text-center bg-teal-50 p-8 rounded-xl shadow-xl border border-teal-100">
+            <h2 class="text-2xl font-bold text-teal-800">¿Interesado/a en alguno de estos perfiles?</h2>
+            <p class="mt-2 text-slate-600 max-w-2xl mx-auto">
+                Si deseas conocer más detalles sobre estos profesionales o buscas un perfil específico, no dudes en contactarme.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+                <a href="contacto.html" class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
+                    Comunícate Conmigo
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="mt-8 text-center text-sm text-slate-500 p-4">
+        © 2025 Juan José Jaccard. Todos los derechos reservados.
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lógica para el menú móvil (hamburguesa)
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
