@@ -41,6 +41,7 @@
             margin-left: 0.75rem;
             color: inherit; /* Hereda el color del texto de la categoría */
             font-weight: normal; /* Letra menos gruesa */
+            white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
         }
     </style>
 </head>
@@ -92,7 +93,7 @@
             <!-- Categoría: Salud -->
             <details class="bg-white p-4 rounded-xl shadow-lg border border-teal-200">
                 <summary class="text-xl font-bold text-teal-700 flex items-center">
-                    <i class="fa-solid fa-caret-right mr-3"></i> Salud <span class="profile-count bg-slate-200">2 perfiles</span>
+                    <i class="fa-solid fa-caret-right mr-3"></i> Salud <span class="profile-count bg-slate-200 flex-shrink-0">2 perfiles</span>
                 </summary>
                 <div class="grid grid-cols-1 gap-6 mt-6">
                     <!-- Ficha de Perfil 1 (Salud) - REALISTA (Odontólogo) -->
@@ -133,7 +134,7 @@
             <!-- Categoría: Educación -->
             <details class="bg-white p-4 rounded-xl shadow-lg border border-orange-200">
                 <summary class="text-xl font-bold text-orange-700 flex items-center">
-                    <i class="fa-solid fa-caret-right mr-3"></i> Educación <span class="profile-count bg-slate-200">2 perfiles</span>
+                    <i class="fa-solid fa-caret-right mr-3"></i> Educación <span class="profile-count bg-slate-200 flex-shrink-0">2 perfiles</span>
                 </summary>
                 <div class="grid grid-cols-1 gap-6 mt-6">
                     <!-- Ficha de Perfil 1 (Educación) - REALISTA -->
@@ -174,7 +175,7 @@
             <!-- Categoría: Informática -->
             <details class="bg-white p-4 rounded-xl shadow-lg border border-blue-200">
                 <summary class="text-xl font-bold text-blue-700 flex items-center">
-                    <i class="fa-solid fa-caret-right mr-3"></i> Informática <span class="profile-count bg-slate-200">1 perfil</span>
+                    <i class="fa-solid fa-caret-right mr-3"></i> Informática <span class="profile-count bg-slate-200 flex-shrink-0">1 perfil</span>
                 </summary>
                 <div class="grid grid-cols-1 gap-6 mt-6">
                     <!-- Ficha de Perfil 1 (Informática) - EJEMPLO -->
@@ -199,7 +200,7 @@
             <!-- Categoría: Ingeniería -->
             <details class="bg-white p-4 rounded-xl shadow-lg border border-purple-200">
                 <summary class="text-xl font-bold text-purple-700 flex items-center">
-                    <i class="fa-solid fa-caret-right mr-3"></i> Ingeniería <span class="profile-count bg-slate-200">1 perfil</span>
+                    <i class="fa-solid fa-caret-right mr-3"></i> Ingeniería <span class="profile-count bg-slate-200 flex-shrink-0">1 perfil</span>
                 </summary>
                 <div class="grid grid-cols-1 gap-6 mt-6">
                     <!-- Ficha de Perfil 1 (Ingeniería) - EJEMPLO -->
@@ -224,7 +225,7 @@
             <!-- Nueva Categoría: Legal -->
             <details class="bg-white p-4 rounded-xl shadow-lg border border-red-200">
                 <summary class="text-xl font-bold text-red-700 flex items-center">
-                    <i class="fa-solid fa-caret-right mr-3"></i> Legal <span class="profile-count bg-slate-200">1 perfil</span>
+                    <i class="fa-solid fa-caret-right mr-3"></i> Legal <span class="profile-count bg-slate-200 flex-shrink-0">1 perfil</span>
                 </summary>
                 <div class="grid grid-cols-1 gap-6 mt-6">
                     <!-- Ficha de Perfil (Legal) - EJEMPLO -->
@@ -249,7 +250,7 @@
             <!-- Nueva Categoría: Recursos Humanos -->
             <details class="bg-white p-4 rounded-xl shadow-lg border border-pink-200">
                 <summary class="text-xl font-bold text-pink-700 flex items-center">
-                    <i class="fa-solid fa-caret-right mr-3"></i> Recursos Humanos <span class="profile-count bg-slate-200">1 perfil</span>
+                    <i class="fa-solid fa-caret-right mr-3"></i> Recursos Humanos <span class="profile-count bg-slate-200 flex-shrink-0">1 perfil</span>
                 </summary>
                 <div class="grid grid-cols-1 gap-6 mt-6">
                     <!-- Ficha de Perfil (Recursos Humanos) - EJEMPLO -->
@@ -274,7 +275,7 @@
             <!-- Nueva Categoría: Comercial y Ventas -->
             <details class="bg-white p-4 rounded-xl shadow-lg border border-indigo-200">
                 <summary class="text-xl font-bold text-indigo-700 flex items-center">
-                    <i class="fa-solid fa-caret-right mr-3"></i> Comercial y Ventas <span class="profile-count bg-slate-200">1 perfil</span>
+                    <i class="fa-solid fa-caret-right mr-3"></i> Comercial y Ventas <span class="profile-count bg-slate-200 flex-shrink-0">1 perfil</span>
                 </summary>
                 <div class="grid grid-cols-1 gap-6 mt-6">
                     <!-- Ficha de Perfil (Comercial y Ventas) - EJEMPLO -->
@@ -299,7 +300,7 @@
             <!-- Nueva Categoría: Diseño y Marketing -->
             <details class="bg-white p-4 rounded-xl shadow-lg border border-cyan-200">
                 <summary class="text-xl font-bold text-cyan-700 flex items-center">
-                    <i class="fa-solid fa-caret-right mr-3"></i> Diseño y Marketing <span class="profile-count bg-slate-200">1 perfil</span>
+                    <i class="fa-solid fa-caret-right mr-3"></i> Diseño y Marketing <span class="profile-count bg-slate-200 flex-shrink-0">1 perfil</span>
                 </summary>
                 <div class="grid grid-cols-1 gap-6 mt-6">
                     <!-- Ficha de Perfil (Diseño y Marketing) - EJEMPLO -->
@@ -324,7 +325,7 @@
             <!-- Nueva Categoría: Otros Oficios y Profesiones -->
             <details class="bg-white p-4 rounded-xl shadow-lg border border-gray-200">
                 <summary class="text-xl font-bold text-gray-700 flex items-center">
-                    <i class="fa-solid fa-caret-right mr-3"></i> Otros Oficios y Profesiones <span class="profile-count bg-slate-200">1 perfil</span>
+                    <i class="fa-solid fa-caret-right mr-3"></i> Otros Oficios y Profesiones <span class="profile-count bg-slate-200 flex-shrink-0">1 perfil</span>
                 </summary>
                 <div class="grid grid-cols-1 gap-6 mt-6">
                     <!-- Ficha de Perfil (Otros) - EJEMPLO -->
