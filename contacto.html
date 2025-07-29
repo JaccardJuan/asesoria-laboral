@@ -77,7 +77,7 @@
             
             <h1 class="text-3xl md:text-4xl font-bold text-teal-800 mb-4">Comunícate Conmigo</h1>
             <p class="text-lg text-slate-600 mb-8">
-                ¿Tienes preguntas, quieres agendar una reunión o simplemente deseas conversar? ¡Escríbeme!
+                ¿Tienes preguntas, quieres agendar una sesión o simplemente deseas conversar? ¡Escríbeme!
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -86,7 +86,7 @@
                     <h2 class="text-2xl font-bold text-teal-700 mb-4">Envíame un Mensaje</h2>
                     <!-- El 'action' del formulario será la URL de tu Apps Script para enviar emails -->
                     <!-- El 'target' apunta al iframe oculto para evitar recargar la página -->
-                    <form id="contact-form" action="https://script.google.com/macros/s/AKfycbxJFucvcUCp6JPd48kicEcFUE474v6oNn1ECIFJrnSD0oK5-GV2JpKEh3xK0nON1XCp/exec" method="POST" class="space-y-4 text-left" target="hidden_iframe">
+                    <form id="contact-form" action="https://script.google.com/macros/s/AKfycbzOFOUEm9t-dqrepz9gNPydRBE2beA6dwWPBdAullyzBectDc7R2jj-OUvbNCOatkU/exec" method="POST" class="space-y-4 text-left" target="hidden_iframe">
                         <div>
                             <label for="name" class="block text-slate-700 text-sm font-bold mb-2">Nombre:</label>
                             <input type="text" id="name" name="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-slate-700 leading-tight focus:outline-none focus:shadow-outline focus:border-teal-500" placeholder="Tu Nombre" required>
@@ -139,9 +139,14 @@
     </div>
 
     <!-- Iframe oculto para el envío del formulario -->
-    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="formSubmitted()"></iframe>
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
     <script>
+        // Declarar las variables globalmente para que formSubmitted pueda acceder a ellas
+        let contactForm;
+        let formMessage;
+        let hiddenIframe; // Declarar el iframe globalmente también
+
         document.addEventListener('DOMContentLoaded', function() {
             // Lógica para el menú móvil (hamburguesa)
             const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -151,43 +156,60 @@
                 mobileMenu.classList.toggle('hidden');
             });
 
-            const contactForm = document.getElementById('contact-form');
-            const formMessage = document.getElementById('form-message');
+            // Asignar los elementos a las variables globales una vez que el DOM esté cargado
+            contactForm = document.getElementById('contact-form');
+            formMessage = document.getElementById('form-message');
+            hiddenIframe = document.getElementById('hidden_iframe'); // Asignar el iframe
 
-            // Función que se ejecuta cuando el iframe recibe una respuesta
-            window.formSubmitted = function() {
-                const iframe = document.getElementById('hidden_iframe');
-                let responseText = '';
-                try {
-                    // Acceder al contenido del iframe (puede haber restricciones de CORS si el script no está bien configurado)
-                    responseText = iframe.contentDocument.body.innerText;
-                } catch (e) {
-                    console.error("Error al acceder al contenido del iframe:", e);
+            // Añadir el event listener al iframe después de que el DOM esté cargado
+            hiddenIframe.addEventListener('load', formSubmitted);
+        });
+
+        // Función que se ejecuta cuando el iframe recibe una respuesta
+        // Esta función es global y ahora es llamada por el event listener
+        window.formSubmitted = function() {
+            let responseText = '';
+            try {
+                // Acceder al contenido del iframe (puede haber restricciones de CORS si el script no está bien configurado)
+                responseText = hiddenIframe.contentDocument.body.innerText;
+            } catch (e) {
+                console.error("Error al acceder al contenido del iframe:", e);
+                if (formMessage) {
                     formMessage.textContent = 'Hubo un problema al enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.';
                     formMessage.className = 'message-box error';
                     formMessage.style.display = 'block';
-                    return;
                 }
+                return;
+            }
 
-                // Parsear la respuesta JSON del Apps Script
-                try {
-                    const response = JSON.parse(responseText);
-                    if (response.success) {
+            // Parsear la respuesta JSON del Apps Script
+            try {
+                const response = JSON.parse(responseText);
+                if (response.success) {
+                    if (formMessage) {
                         formMessage.textContent = '¡Mensaje enviado con éxito! Me pondré en contacto contigo a la brevedad.';
                         formMessage.className = 'message-box success';
+                    }
+                    if (contactForm) {
                         contactForm.reset(); // Limpiar el formulario
-                    } else {
+                    }
+                } else {
+                    if (formMessage) {
                         formMessage.textContent = 'Error al enviar el mensaje: ' + (response.error || 'Inténtalo de nuevo.');
                         formMessage.className = 'message-box error';
                     }
-                } catch (e) {
-                    console.error("Error al parsear la respuesta JSON:", e, "Respuesta recibida:", responseText);
+                }
+            } catch (e) {
+                console.error("Error al parsear la respuesta JSON:", e, "Respuesta recibida:", responseText);
+                if (formMessage) {
                     formMessage.textContent = 'Hubo un problema inesperado al procesar tu mensaje. Por favor, inténtalo de nuevo.';
                     formMessage.className = 'message-box error';
                 }
+            }
+            if (formMessage) {
                 formMessage.style.display = 'block'; // Mostrar el mensaje
-            };
-        });
+            }
+        };
     </script>
 </body>
 </html>
