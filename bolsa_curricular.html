@@ -202,10 +202,30 @@
                                     <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
                                         <h3 class="text-xl font-bold text-slate-800 mb-3">${profile.profesion}</h3>
                                         <ul class="list-none text-slate-600 space-y-2 mb-4">
-                                            <li class="flex items-center"><i class="fa-solid fa-briefcase text-${profile.color || 'teal'}-600 w-5 mr-2"></i> ${profile.experiencia}</li>
-                                            ${profile.postgrado ? `<li class="flex items-center"><i class="fa-solid fa-graduation-cap text-${profile.color || 'teal'}-600 w-5 mr-2"></i> ${profile.postgrado}</li>` : ''}
-                                            ${profile.otros ? `<li class="flex items-center"><i class="fa-solid fa-puzzle-piece text-${profile.color || 'teal'}-600 w-5 mr-2"></i> ${profile.otros}</li>` : ''}
-                                            ${profile.ubicacion ? `<li class="flex items-center"><i class="fa-solid fa-location-dot text-${profile.color || 'teal'}-600 w-5 mr-2"></i> ${profile.ubicacion}</li>` : ''}
+                                            <li class="flex items-center">
+                                                <div class="w-5 flex-shrink-0 flex justify-center items-center mr-2">
+                                                    <i class="fa-solid fa-briefcase text-${profile.color || 'teal'}-600"></i>
+                                                </div>
+                                                <span>${profile.experiencia}</span>
+                                            </li>
+                                            ${profile.postgrado ? `<li class="flex items-center">
+                                                <div class="w-5 flex-shrink-0 flex justify-center items-center mr-2">
+                                                    <i class="fa-solid fa-graduation-cap text-${profile.color || 'teal'}-600"></i>
+                                                </div>
+                                                <span>${profile.postgrado}</span>
+                                            </li>` : ''}
+                                            ${profile.otros ? `<li class="flex items-center">
+                                                <div class="w-5 flex-shrink-0 flex justify-center items-center mr-2">
+                                                    <i class="fa-solid fa-puzzle-piece text-${profile.color || 'teal'}-600"></i>
+                                                </div>
+                                                <span>${profile.otros}</span>
+                                            </li>` : ''}
+                                            ${profile.ubicacion ? `<li class="flex items-center">
+                                                <div class="w-5 flex-shrink-0 flex justify-center items-center mr-2">
+                                                    <i class="fa-solid fa-location-dot text-${profile.color || 'teal'}-600"></i>
+                                                </div>
+                                                <span>${profile.ubicacion}</span>
+                                            </li>` : ''}
                                         </ul>
                                         <p class="text-slate-700 text-sm mb-6 flex-grow text-justify">
                                             ${profile.descripcion}
