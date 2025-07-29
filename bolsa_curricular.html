@@ -15,6 +15,7 @@
         body {
             font-family: 'Inter', sans-serif;
         }
+        /* Estilos para las categorías (detalles principales) */
         details summary {
             cursor: pointer;
             list-style: none; /* Elimina la flecha por defecto del summary */
@@ -43,6 +44,60 @@
             font-weight: normal; /* Letra menos gruesa */
             white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
         }
+
+        /* ESTILOS PARA LOS DETALLES INDIVIDUALES DE CADA PERFIL */
+        .profile-card-details {
+            display: flex;
+            flex-direction: column;
+            width: 100%; /* Ocupa el ancho completo dentro de su grid */
+        }
+
+        .profile-card-details summary {
+            cursor: pointer;
+            list-style: none; /* Elimina la flecha por defecto del summary */
+            padding-bottom: 0; 
+            display: flex; 
+            align-items: center;
+            justify-content: space-between; /* Para alinear el título y la flecha */
+            padding-right: 0.5rem; /* Pequeño padding a la derecha para la flecha */
+        }
+        .profile-card-details summary::-webkit-details-marker {
+            display: none; /* También para navegadores Webkit */
+        }
+        .profile-card-details summary::before {
+            content: "\f0da"; /* Código Unicode para Font Awesome fa-caret-right */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            margin-right: 0.75rem; /* Espacio entre la flecha y el título */
+            transition: transform 0.2s ease-in-out;
+            display: inline-block;
+            color: #0d9488; /* Color teal para la flecha del perfil */
+            order: 2; /* Mueve la flecha a la derecha del título */
+        }
+        .profile-card-details[open] summary::before {
+            transform: rotate(90deg);
+        }
+        /* Estilo para el texto del título dentro del summary del perfil */
+        .profile-card-summary span {
+            font-weight: bold; /* Asegura que el título sea negrita */
+            color: #1a202c; /* slate-800, el color del texto principal */
+            flex-grow: 1; /* Permite que el título ocupe el espacio restante */
+        }
+        /* Asegura que el contenido desplegado tenga un margen superior */
+        .profile-card-content {
+            margin-top: 0.75rem; /* mt-3 */
+            display: flex; /* Añadido para que el contenido sea un flex container */
+            flex-direction: column; /* Organiza los elementos en columna */
+        }
+
+        /* ESTILOS PARA LA FLECHA INFERIOR */
+        .profile-toggle-arrow-button i {
+            transition: transform 0.2s ease-in-out; /* Suaviza la rotación de la flecha */
+        }
+        /* La flecha apunta hacia abajo cuando el perfil está colapsado */
+        .profile-card-details:not([open]) .profile-toggle-arrow-button i {
+            transform: rotate(180deg); 
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
@@ -59,8 +114,6 @@
                 <a href="servicios.html" class="text-white hover:text-teal-200 transition-colors">Mis Servicios</a>
                 <a href="main.html" class="text-white hover:text-teal-200 transition-colors">Tu Sesión Exploratoria</a>
                 <a href="contacto.html" class="text-white hover:text-teal-200 transition-colors">Comunícate conmigo</a>
-                <a href="empresas.html" class="text-white hover:text-teal-200 transition-colors">Para Empresas</a>
-                <!-- El enlace a "Bolsa Curricular" se añadirá aquí al final -->
             </div>
             <!-- Menú hamburguesa para móvil -->
             <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
@@ -73,8 +126,6 @@
             <a href="servicios.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Mis Servicios</a>
             <a href="main.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Tu Sesión Exploratoria</a>
             <a href="contacto.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Comunícate conmigo</a>
-            <a href="empresas.html" class="block px-4 py-2 text-white hover:bg-teal-700 rounded-md">Para Empresas</a>
-            <!-- El enlace a "Bolsa Curricular" se añadirá aquí al final -->
         </div>
     </nav>
 
@@ -200,45 +251,98 @@
                             <div class="grid grid-cols-1 gap-6 mt-6">
                                 ${categoryProfiles.map(profile => `
                                     <div class="bg-slate-50 p-6 rounded-lg shadow-md border border-slate-200 flex flex-col">
-                                        <h3 class="text-xl font-bold text-slate-800 mb-3">${profile.profesion}</h3>
-                                        <ul class="list-none text-slate-600 space-y-2 mb-4">
-                                            <li class="flex items-center">
-                                                <div class="w-5 flex-shrink-0 flex justify-center items-center mr-2">
-                                                    <i class="fa-solid fa-briefcase text-${profile.color || 'teal'}-600"></i>
+                                        <details class="profile-card-details" open> <!-- Perfil abierto por defecto -->
+                                            <summary class="profile-card-summary text-xl font-bold text-slate-800 cursor-pointer flex items-center justify-between">
+                                                <span>${profile.profesion}</span>
+                                            </summary>
+                                            <div class="profile-card-content">
+                                                <ul class="list-none text-slate-600 space-y-2 mb-4">
+                                                    <li class="flex items-center">
+                                                        <div class="w-5 flex-shrink-0 flex justify-center items-center mr-2">
+                                                            <i class="fa-solid fa-briefcase text-${profile.color || 'teal'}-600"></i>
+                                                        </div>
+                                                        <span>${profile.experiencia}</span>
+                                                    </li>
+                                                    ${profile.postgrado ? `<li class="flex items-center">
+                                                        <div class="w-5 flex-shrink-0 flex justify-center items-center mr-2">
+                                                            <i class="fa-solid fa-graduation-cap text-${profile.color || 'teal'}-600"></i>
+                                                        </div>
+                                                        <span>${profile.postgrado}</span>
+                                                    </li>` : ''}
+                                                    ${profile.otros ? `<li class="flex items-center">
+                                                        <div class="w-5 flex-shrink-0 flex justify-center items-center mr-2">
+                                                            <i class="fa-solid fa-puzzle-piece text-${profile.color || 'teal'}-600"></i>
+                                                        </div>
+                                                        <span>${profile.otros}</span>
+                                                    </li>` : ''}
+                                                    ${profile.ubicacion ? `<li class="flex items-center">
+                                                        <div class="w-5 flex-shrink-0 flex justify-center items-center mr-2">
+                                                            <i class="fa-solid fa-location-dot text-${profile.color || 'teal'}-600"></i>
+                                                        </div>
+                                                        <span>${profile.ubicacion}</span>
+                                                    </li>` : ''}
+                                                </ul>
+                                                <p class="text-slate-700 text-sm mb-6 flex-grow text-justify">
+                                                    ${profile.descripcion}
+                                                </p>
+                                                <!-- Contenedor para el botón de contacto y la flecha de toggle -->
+                                                <div class="flex flex-col items-center mt-auto w-full">
+                                                    <a href="contacto.html" class="inline-block bg-${profile.color || 'teal'}-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-${profile.color || 'teal'}-700 transition-transform transform hover:scale-105 text-center w-full">
+                                                        Contáctame para conocer y contactar con este perfil
+                                                    </a>
+                                                    <button class="profile-toggle-arrow-button text-${profile.color || 'teal'}-600 text-2xl p-2 rounded-full hover:bg-slate-200 transition-colors mt-2" aria-label="Toggle profile details">
+                                                        <i class="fa-solid fa-chevron-up"></i>
+                                                    </button>
                                                 </div>
-                                                <span>${profile.experiencia}</span>
-                                            </li>
-                                            ${profile.postgrado ? `<li class="flex items-center">
-                                                <div class="w-5 flex-shrink-0 flex justify-center items-center mr-2">
-                                                    <i class="fa-solid fa-graduation-cap text-${profile.color || 'teal'}-600"></i>
-                                                </div>
-                                                <span>${profile.postgrado}</span>
-                                            </li>` : ''}
-                                            ${profile.otros ? `<li class="flex items-center">
-                                                <div class="w-5 flex-shrink-0 flex justify-center items-center mr-2">
-                                                    <i class="fa-solid fa-puzzle-piece text-${profile.color || 'teal'}-600"></i>
-                                                </div>
-                                                <span>${profile.otros}</span>
-                                            </li>` : ''}
-                                            ${profile.ubicacion ? `<li class="flex items-center">
-                                                <div class="w-5 flex-shrink-0 flex justify-center items-center mr-2">
-                                                    <i class="fa-solid fa-location-dot text-${profile.color || 'teal'}-600"></i>
-                                                </div>
-                                                <span>${profile.ubicacion}</span>
-                                            </li>` : ''}
-                                        </ul>
-                                        <p class="text-slate-700 text-sm mb-6 flex-grow text-justify">
-                                            ${profile.descripcion}
-                                        </p>
-                                        <a href="contacto.html" class="inline-block bg-${profile.color || 'teal'}-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-${profile.color || 'teal'}-700 transition-transform transform hover:scale-105 text-center">
-                                            Contáctame para conocer y contactar con este perfil
-                                        </a>
+                                            </div>
+                                        </details>
                                     </div>
                                 `).join('')}
                             </div>
                         </details>
                     `;
                     profileCategoriesContainer.innerHTML += categoryHtml;
+                });
+
+                // Añadir event listener para los botones de colapsar/expandir perfil
+                profileCategoriesContainer.addEventListener('click', function(e) {
+                    const toggleArrowButton = e.target.closest('.profile-toggle-arrow-button');
+                    if (toggleArrowButton) {
+                        const profileDetails = toggleArrowButton.closest('.profile-card-details');
+                        if (profileDetails) {
+                            // Prevenir el comportamiento por defecto del botón para evitar doble toggle si el botón está dentro del summary
+                            e.preventDefault(); 
+                            profileDetails.toggleAttribute('open'); 
+                        }
+                    }
+                });
+
+                // Actualizar la rotación de la flecha inferior cuando el estado de details cambia
+                profileCategoriesContainer.addEventListener('toggle', function(e) {
+                    const profileDetails = e.target.closest('.profile-card-details');
+                    if (profileDetails && e.target === profileDetails) { // Asegura que el evento sea del details principal del perfil
+                        const arrowIcon = profileDetails.querySelector('.profile-toggle-arrow-button i');
+                        if (arrowIcon) {
+                            if (profileDetails.open) {
+                                arrowIcon.classList.remove('rotate-180'); // Flecha hacia arriba para abierto
+                            } else {
+                                arrowIcon.classList.add('rotate-180'); // Flecha hacia abajo para cerrado
+                            }
+                        }
+                    }
+                }, true); // Usar fase de captura para asegurar que el evento se propague correctamente
+
+                // Establecer el estado inicial de las flechas inferiores (ya que los perfiles inician abiertos)
+                // Esto se ejecuta después de que todos los perfiles han sido renderizados.
+                document.querySelectorAll('.profile-card-details').forEach(detailsElem => {
+                    const arrowIcon = detailsElem.querySelector('.profile-toggle-arrow-button i');
+                    if (arrowIcon) {
+                        if (detailsElem.open) {
+                            arrowIcon.classList.remove('rotate-180'); // Flecha hacia arriba para abierto
+                        } else {
+                            arrowIcon.classList.add('rotate-180'); // Flecha hacia abajo para cerrado
+                        }
+                    }
                 });
             }
 
