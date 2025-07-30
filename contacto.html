@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comunícate Conmigo - Asesoría Laboral</title>
+    <title>Comunícate Conmigo </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -194,7 +194,11 @@
                         throw new Error(`Error de red: ${response.status} ${response.statusText}`);
                     }
 
-                    const result = await response.json(); // Intentar parsear la respuesta JSON
+                    // Leer la respuesta como texto primero para depuración
+                    const responseText = await response.text();
+                    console.log("Respuesta raw del Apps Script:", responseText); // <-- ¡Esta es la línea clave para depurar!
+
+                    const result = JSON.parse(responseText); // Intentar parsear la respuesta JSON
 
                     if (result.success) {
                         formMessage.textContent = '¡Mensaje enviado con éxito! Me pondré en contacto contigo a la brevedad.';
@@ -205,7 +209,7 @@
                         formMessage.className = 'message-box error';
                     }
                 } catch (error) {
-                    console.error("Error en el envío del formulario con fetch:", error);
+                    console.error("Error en el envío del formulario con fetch o parseo JSON:", error);
                     formMessage.textContent = 'Hubo un problema inesperado al enviar tu mensaje. Por favor, inténtalo de nuevo.';
                     formMessage.className = 'message-box error';
                 } finally {
