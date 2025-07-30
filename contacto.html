@@ -168,57 +168,61 @@
         // Función que se ejecuta cuando el iframe recibe una respuesta
         // Esta función es global y ahora es llamada por el event listener
         window.formSubmitted = function() {
-            let responseText = '';
-            try {
-                // Verificar si el contentDocument y body existen antes de intentar acceder a innerText
-                if (hiddenIframe.contentDocument && hiddenIframe.contentDocument.body) {
-                    responseText = hiddenIframe.contentDocument.body.innerText;
-                } else {
-                    // Si no se pudo acceder al contenido, asumimos un problema y mostramos error
-                    throw new Error("No se pudo acceder al contenido del iframe.");
+            // Añadir un pequeño retraso para asegurar que el iframe haya cargado su contenido
+            setTimeout(() => {
+                let responseText = '';
+                try {
+                    // Verificar si el contentDocument y body existen antes de intentar acceder a innerText
+                    if (hiddenIframe.contentDocument && hiddenIframe.contentDocument.body) {
+                        responseText = hiddenIframe.contentDocument.body.innerText;
+                        console.log("Respuesta recibida del iframe:", responseText); // Log para depuración
+                    } else {
+                        // Si no se pudo acceder al contenido, asumimos un problema y mostramos error
+                        throw new Error("No se pudo acceder al contenido del iframe.");
+                    }
+                } catch (e) {
+                    console.error("Error al acceder al contenido del iframe o al procesar la respuesta:", e);
+                    if (formMessage) {
+                        formMessage.textContent = 'Hubo un problema al enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.';
+                        formMessage.className = 'message-box error';
+                        formMessage.style.display = 'block';
+                    }
+                    return;
                 }
-            } catch (e) {
-                console.error("Error al acceder al contenido del iframe o al procesar la respuesta:", e);
-                if (formMessage) {
-                    formMessage.textContent = 'Hubo un problema al enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.';
-                    formMessage.className = 'message-box error';
-                    formMessage.style.display = 'block';
-                }
-                return;
-            }
 
-            // Parsear la respuesta JSON del Apps Script
-            try {
-                // Solo intentar parsear si hay texto en la respuesta
-                if (responseText.trim() === '') {
-                    throw new Error("Respuesta vacía del script.");
-                }
-                const response = JSON.parse(responseText);
-                
-                if (response.success) {
-                    if (formMessage) {
-                        formMessage.textContent = '¡Mensaje enviado con éxito! Me pondré en contacto contigo a la brevedad.';
-                        formMessage.className = 'message-box success';
+                // Parsear la respuesta JSON del Apps Script
+                try {
+                    // Solo intentar parsear si hay texto en la respuesta
+                    if (responseText.trim() === '') {
+                        throw new Error("Respuesta vacía del script.");
                     }
-                    if (contactForm) {
-                        contactForm.reset(); // Limpiar el formulario
+                    const response = JSON.parse(responseText);
+                    
+                    if (response.success) {
+                        if (formMessage) {
+                            formMessage.textContent = '¡Mensaje enviado con éxito! Me pondré en contacto contigo a la brevedad.';
+                            formMessage.className = 'message-box success';
+                        }
+                        if (contactForm) {
+                            contactForm.reset(); // Limpiar el formulario
+                        }
+                    } else {
+                        if (formMessage) {
+                            formMessage.textContent = 'Error al enviar el mensaje: ' + (response.error || 'Inténtalo de nuevo.');
+                            formMessage.className = 'message-box error';
+                        }
                     }
-                } else {
+                } catch (e) {
+                    console.error("Error al parsear la respuesta JSON o respuesta inesperada:", e, "Respuesta recibida:", responseText);
                     if (formMessage) {
-                        formMessage.textContent = 'Error al enviar el mensaje: ' + (response.error || 'Inténtalo de nuevo.');
+                        formMessage.textContent = 'Hubo un problema inesperado al procesar tu mensaje. Por favor, inténtalo de nuevo.';
                         formMessage.className = 'message-box error';
                     }
                 }
-            } catch (e) {
-                console.error("Error al parsear la respuesta JSON o respuesta inesperada:", e, "Respuesta recibida:", responseText);
                 if (formMessage) {
-                    formMessage.textContent = 'Hubo un problema inesperado al procesar tu mensaje. Por favor, inténtalo de nuevo.';
-                    formMessage.className = 'message-box error';
+                    formMessage.style.display = 'block'; // Mostrar el mensaje
                 }
-            }
-            if (formMessage) {
-                formMessage.style.display = 'block'; // Mostrar el mensaje
-            }
+            }, 500); // Retraso de 500 milisegundos (0.5 segundos)
         };
     </script>
 </body>
