@@ -174,7 +174,7 @@
                 if (hiddenIframe.contentDocument && hiddenIframe.contentDocument.body) {
                     responseText = hiddenIframe.contentDocument.body.innerText;
                 } else {
-                    // Si no se puede acceder al contenido, asumimos un problema y mostramos error
+                    // Si no se pudo acceder al contenido, asumimos un problema y mostramos error
                     throw new Error("No se pudo acceder al contenido del iframe.");
                 }
             } catch (e) {
