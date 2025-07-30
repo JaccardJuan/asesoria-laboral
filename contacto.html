@@ -165,15 +165,20 @@
             hiddenIframe.addEventListener('load', formSubmitted);
         });
 
-        // Función que se ejecuta cuando el iframe recibe una una respuesta
+        // Función que se ejecuta cuando el iframe recibe una respuesta
         // Esta función es global y ahora es llamada por el event listener
         window.formSubmitted = function() {
             let responseText = '';
             try {
-                // Acceder al contenido del iframe (puede haber restricciones de CORS si el script no está bien configurado)
-                responseText = hiddenIframe.contentDocument.body.innerText;
+                // Verificar si el contentDocument y body existen antes de intentar acceder a innerText
+                if (hiddenIframe.contentDocument && hiddenIframe.contentDocument.body) {
+                    responseText = hiddenIframe.contentDocument.body.innerText;
+                } else {
+                    // Si no se puede acceder al contenido, asumimos un problema y mostramos error
+                    throw new Error("No se pudo acceder al contenido del iframe.");
+                }
             } catch (e) {
-                console.error("Error al acceder al contenido del iframe:", e);
+                console.error("Error al acceder al contenido del iframe o al procesar la respuesta:", e);
                 if (formMessage) {
                     formMessage.textContent = 'Hubo un problema al enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.';
                     formMessage.className = 'message-box error';
@@ -184,7 +189,12 @@
 
             // Parsear la respuesta JSON del Apps Script
             try {
+                // Solo intentar parsear si hay texto en la respuesta
+                if (responseText.trim() === '') {
+                    throw new Error("Respuesta vacía del script.");
+                }
                 const response = JSON.parse(responseText);
+                
                 if (response.success) {
                     if (formMessage) {
                         formMessage.textContent = '¡Mensaje enviado con éxito! Me pondré en contacto contigo a la brevedad.';
@@ -200,7 +210,7 @@
                     }
                 }
             } catch (e) {
-                console.error("Error al parsear la respuesta JSON:", e, "Respuesta recibida:", responseText);
+                console.error("Error al parsear la respuesta JSON o respuesta inesperada:", e, "Respuesta recibida:", responseText);
                 if (formMessage) {
                     formMessage.textContent = 'Hubo un problema inesperado al procesar tu mensaje. Por favor, inténtalo de nuevo.';
                     formMessage.className = 'message-box error';
