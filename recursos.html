@@ -19,6 +19,26 @@
         .text-15px {
             font-size: 15px; /* Equivalente a 0.9375rem */
         }
+        /* Estilos para las categorías (detalles principales) */
+        details summary {
+            cursor: pointer;
+            list-style: none; /* Elimina la flecha por defecto del summary */
+        }
+        details summary::-webkit-details-marker {
+            display: none; /* También para navegadores Webkit */
+        }
+        details summary::before {
+            content: "\f0da"; /* Código Unicode para Font Awesome fa-caret-right */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            margin-right: 0.75rem;
+            transition: transform 0.2s ease-in-out;
+            display: inline-block;
+            color: #475569; /* slate-600 para la flecha de la categoría */
+        }
+        details[open] summary::before {
+            transform: rotate(90deg);
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
@@ -35,9 +55,9 @@
             </p>
         </header>
 
-        <!-- Sección de Materiales Descargables (Estáticos) -->
+        <!-- Sección de Materiales Descargables (Estáticos - Grandes) -->
         <section class="mb-12">
-            <h2 class="text-2xl font-bold text-teal-700 mb-6 text-center">Materiales Descargables</h2>
+            <h2 class="text-2xl font-bold text-teal-700 mb-6 text-center">Materiales Destacados</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 
                 <!-- Recurso Descargable 1: Checklist de Búsqueda de Empleo -->
@@ -50,7 +70,6 @@
                         Organiza tu proceso de búsqueda con esta práctica checklist. Desde la optimización de tu perfil hasta el seguimiento de postulaciones, no dejes nada al azar.
                     </p>
                     <div class="mt-auto">
-                        <!-- ¡URL REAL DE TU PDF INSERTADA AQUÍ, USANDO TU DOMINIO DE GITHUB PAGES! -->
                         <a href="https://jaccardjuan.github.io/asesoria-laboral/assets/recursos/Checklist-de-Busqueda-de-Empleo-Efectiva.pdf" download="Checklist_Busqueda_JuanJaccard.pdf" class="inline-flex items-center justify-center bg-purple-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-purple-700 transition-transform transform hover:scale-105 text-sm w-full">
                             <i class="fa-solid fa-download mr-2"></i> Descargar Checklist (PDF)
                         </a>
@@ -148,18 +167,142 @@
             </div>
         </section>
 
-        <!-- Nueva Sección para Recursos Descargables Dinámicos -->
+        <!-- Nueva Sección para Otros Recursos Descargables (Estáticos y Más Pequeños) -->
         <section class="mb-12">
-            <h2 class="text-2xl font-bold text-teal-700 mb-6 text-center">Otros Recursos Descargables (Dinámicos)</h2>
+            <h2 class="text-2xl font-bold text-teal-700 mb-6 text-center">Otros Recursos y Guías</h2>
             <p class="mt-2 text-lg text-slate-600 text-center mb-8">
-                Explora más guías y plantillas en diversas áreas que te ayudarán en tu desarrollo profesional. Esta sección se actualizará constantemente.
+                Explora recursos adicionales y guías prácticas para tu desarrollo profesional.
             </p>
-            <div id="dynamic-resources-container" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Los recursos dinámicos se cargarán aquí -->
-                <div class="text-center py-8">
-                    <i class="fas fa-spinner fa-spin text-teal-600 text-4xl mb-4"></i>
-                    <p class="text-slate-600">Cargando recursos...</p>
-                </div>
+            
+            <div class="space-y-8"> <!-- Contenedor para las categorías -->
+
+                <!-- Categoría 1: Herramientas y Plantillas -->
+                <details class="bg-white p-4 rounded-xl shadow-md border border-gray-200">
+                    <summary class="text-xl font-bold text-gray-700 flex items-center cursor-pointer">
+                        <i class="fa-solid fa-caret-right mr-3"></i> Herramientas y Plantillas <span class="text-sm bg-slate-100 text-slate-600 px-2 py-1 rounded-full ml-3">3 documentos</span>
+                    </summary>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                        <!-- Documento 1 -->
+                        <div class="bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fa-solid fa-file-excel text-green-600 text-2xl mr-3"></i>
+                                <h3 class="text-lg font-semibold text-slate-800">Plantilla de Seguimiento de Postulaciones</h3>
+                            </div>
+                            <p class="text-slate-600 text-sm mb-3">Organiza tus candidaturas y no pierdas el rastro de tus procesos.</p>
+                            <a href="https://placehold.co/100x50/cccccc/ffffff?text=Plantilla_Seguimiento.xlsx" download="Plantilla_Seguimiento.xlsx" class="inline-flex items-center text-sm bg-green-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-green-700 transition-transform transform hover:scale-105">
+                                <i class="fa-solid fa-download mr-2"></i> Descargar
+                            </a>
+                        </div>
+                        <!-- Documento 2 -->
+                        <div class="bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fa-solid fa-file-word text-blue-600 text-2xl mr-3"></i>
+                                <h3 class="text-lg font-semibold text-slate-800">Modelo de Carta de Agradecimiento Post-Entrevista</h3>
+                            </div>
+                            <p class="text-slate-600 text-sm mb-3">Un ejemplo práctico para agradecer después de una entrevista.</p>
+                            <a href="https://placehold.co/100x50/cccccc/ffffff?text=Carta_Agradecimiento.docx" download="Carta_Agradecimiento.docx" class="inline-flex items-center text-sm bg-blue-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-blue-700 transition-transform transform hover:scale-105">
+                                <i class="fa-solid fa-download mr-2"></i> Descargar
+                            </a>
+                        </div>
+                        <!-- Documento 3 -->
+                        <div class="bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fa-solid fa-file-pdf text-purple-600 text-2xl mr-3"></i>
+                                <h3 class="text-lg font-semibold text-slate-800">Guía Rápida: Networking Efectivo</h3>
+                            </div>
+                            <p class="text-slate-600 text-sm mb-3">Consejos clave para construir y mantener tu red de contactos.</p>
+                            <a href="https://placehold.co/100x50/cccccc/ffffff?text=Guia_Networking.pdf" download="Guia_Networking.pdf" class="inline-flex items-center text-sm bg-purple-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-purple-700 transition-transform transform hover:scale-105">
+                                <i class="fa-solid fa-download mr-2"></i> Descargar
+                            </a>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Categoría 2: Artículos y Lecturas Recomendadas -->
+                <details class="bg-white p-4 rounded-xl shadow-md border border-gray-200">
+                    <summary class="text-xl font-bold text-gray-700 flex items-center cursor-pointer">
+                        <i class="fa-solid fa-caret-right mr-3"></i> Artículos y Lecturas <span class="text-sm bg-slate-100 text-slate-600 px-2 py-1 rounded-full ml-3">2 documentos</span>
+                    </summary>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                        <!-- Documento 1 -->
+                        <div class="bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fa-solid fa-book-open text-red-600 text-2xl mr-3"></i>
+                                <h3 class="text-lg font-semibold text-slate-800">Artículo: El Impacto de la Marca Personal</h3>
+                            </div>
+                            <p class="text-slate-600 text-sm mb-3">Descubre por qué tu marca personal es crucial hoy en día.</p>
+                            <a href="https://placehold.co/100x50/cccccc/ffffff?text=Articulo_Marca_Personal.pdf" download="Articulo_Marca_Personal.pdf" class="inline-flex items-center text-sm bg-red-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-red-700 transition-transform transform hover:scale-105">
+                                <i class="fa-solid fa-download mr-2"></i> Descargar
+                            </a>
+                        </div>
+                        <!-- Documento 2 -->
+                        <div class="bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fa-solid fa-file-alt text-yellow-600 text-2xl mr-3"></i>
+                                <h3 class="text-lg font-semibold text-slate-800">Ebook: Claves para una Transición de Carrera Exitosa</h3>
+                            </div>
+                            <p class="text-slate-600 text-sm mb-3">Guía completa para planificar tu cambio de rumbo profesional.</p>
+                            <a href="https://placehold.co/100x50/cccccc/ffffff?text=Ebook_Transicion.pdf" download="Ebook_Transicion.pdf" class="inline-flex items-center text-sm bg-yellow-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-yellow-700 transition-transform transform hover:scale-105">
+                                <i class="fa-solid fa-download mr-2"></i> Descargar
+                            </a>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- NUEVA CATEGORÍA: Leyes Laborales y Normativa -->
+                <details class="bg-white p-4 rounded-xl shadow-md border border-cyan-200">
+                    <summary class="text-xl font-bold text-cyan-700 flex items-center cursor-pointer">
+                        <i class="fa-solid fa-caret-right mr-3"></i> Leyes Laborales y Normativa <span class="text-sm bg-slate-100 text-slate-600 px-2 py-1 rounded-full ml-3">4 documentos</span>
+                    </summary>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                        <!-- Documento 1: Código del Trabajo -->
+                        <div class="bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fa-solid fa-scale-balanced text-cyan-600 text-2xl mr-3"></i>
+                                <h3 class="text-lg font-semibold text-slate-800">Código del Trabajo (Chile)</h3>
+                            </div>
+                            <p class="text-slate-600 text-sm mb-3">Acceso directo a la legislación laboral fundamental de Chile.</p>
+                            <!-- CAMBIO: Enlace actualizado con la ruta correcta -->
+                            <a href="assets/recursos/codigo-del-trabajo.pdf" target="_blank" class="inline-flex items-center text-sm bg-cyan-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-cyan-700 transition-transform transform hover:scale-105">
+                                <i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> Ver Documento
+                            </a>
+                        </div>
+                        <!-- Documento 2: Guía de Finiquito y Despido -->
+                        <div class="bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fa-solid fa-hand-holding-dollar text-cyan-600 text-2xl mr-3"></i>
+                                <h3 class="text-lg font-semibold text-slate-800">Guía: Finiquito y Despido</h3>
+                            </div>
+                            <p class="text-slate-600 text-sm mb-3">Información clave sobre los procesos de término de relación laboral.</p>
+                            <a href="https://placehold.co/100x50/cccccc/ffffff?text=Guia_Finiquito.pdf" download="Guia_Finiquito.pdf" class="inline-flex items-center text-sm bg-cyan-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-cyan-700 transition-transform transform hover:scale-105">
+                                <i class="fa-solid fa-download mr-2"></i> Descargar Guía
+                            </a>
+                        </div>
+                        <!-- Documento 3: Derechos y Deberes del Trabajador -->
+                        <div class="bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fa-solid fa-clipboard-question text-cyan-600 text-2xl mr-3"></i>
+                                <h3 class="text-lg font-semibold text-slate-800">Derechos y Deberes del Trabajador</h3>
+                            </div>
+                            <p class="text-slate-600 text-sm mb-3">Conoce tus derechos y obligaciones en el ámbito laboral.</p>
+                            <a href="https://placehold.co/100x50/cccccc/ffffff?text=Derechos_Deberes.pdf" download="Derechos_Deberes.pdf" class="inline-flex items-center text-sm bg-cyan-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-cyan-700 transition-transform transform hover:scale-105">
+                                <i class="fa-solid fa-download mr-2"></i> Descargar PDF
+                            </a>
+                        </div>
+                        <!-- Documento 4: Ley Nº 21.015 de Inclusión Laboral -->
+                        <div class="bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fa-solid fa-universal-access text-cyan-600 text-2xl mr-3"></i>
+                                <h3 class="text-lg font-semibold text-slate-800">Ley Nº 21.015 de Inclusión Laboral</h3>
+                            </div>
+                            <p class="text-slate-600 text-sm mb-3">Marco legal que fomenta la inclusión de personas con discapacidad en el ámbito laboral.</p>
+                            <a href="https://www.senadis.gob.cl/pag/421/1694/ley_de_inclusion_laboral" target="_blank" class="inline-flex items-center text-sm bg-cyan-600 text-white font-bold py-2 px-3 rounded-lg hover:bg-cyan-700 transition-transform transform hover:scale-105">
+                                <i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> Ver Ley
+                            </a>
+                        </div>
+                    </div>
+                </details>
+
             </div>
         </section>
 
@@ -219,81 +362,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Cargar la barra de navegación primero
             loadNavbar();
-
-            // Lógica para cargar recursos dinámicos
-            const dynamicResourcesContainer = document.getElementById('dynamic-resources-container');
-            // Esta URL será la de tu Google Apps Script para los recursos dinámicos
-            // AÚN NO LA HEMOS CREADO. Es un placeholder por ahora.
-            const DYNAMIC_RESOURCES_API_URL = 'URL_DE_TU_APPS_SCRIPT_PARA_RECURSOS_DINAMICOS'; 
-
-            async function fetchDynamicResources() {
-                // Mostrar spinner de carga
-                dynamicResourcesContainer.innerHTML = `
-                    <div class="text-center py-8 col-span-full">
-                        <i class="fas fa-spinner fa-spin text-teal-600 text-4xl mb-4"></i>
-                        <p class="text-slate-600">Cargando recursos dinámicos...</p>
-                    </div>
-                `;
-
-                try {
-                    // Si la URL aún no ha sido configurada, no intentamos el fetch
-                    if (DYNAMIC_RESOURCES_API_URL === 'URL_DE_TU_APPS_SCRIPT_PARA_RECURSOS_DINAMICOS') {
-                        throw new Error("La URL de la API de recursos dinámicos no ha sido configurada. Por favor, sigue los pasos para crearla.");
-                    }
-
-                    const response = await fetch(DYNAMIC_RESOURCES_API_URL);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const resources = await response.json();
-                    renderDynamicResources(resources);
-                } catch (error) {
-                    console.error("Error al cargar los recursos dinámicos:", error);
-                    dynamicResourcesContainer.innerHTML = `
-                        <div class="text-center py-8 text-red-600 col-span-full">
-                            <i class="fas fa-exclamation-triangle text-4xl mb-4"></i>
-                            <p>Error al cargar los recursos dinámicos. Por favor, asegúrate de haber configurado el Google Apps Script para esta sección.</p>
-                            <p class="text-sm text-slate-500 mt-2">Revisa la consola para más detalles sobre el error.</p>
-                        </div>
-                    `;
-                }
-            }
-
-            function renderDynamicResources(resources) {
-                dynamicResourcesContainer.innerHTML = ''; // Limpiar el mensaje de carga
-
-                if (resources.length === 0) {
-                    dynamicResourcesContainer.innerHTML = `
-                        <div class="text-center py-8 text-slate-600 col-span-full">
-                            <p>No hay recursos dinámicos disponibles en este momento.</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                resources.forEach(resource => {
-                    const resourceHtml = `
-                        <div class="bg-white p-6 rounded-xl shadow-lg border border-${resource.color || 'gray'}-100 flex flex-col">
-                            <div class="flex items-center mb-4">
-                                <i class="fa-solid fa-${resource.icon || 'file-arrow-down'} text-${resource.color || 'gray'}-600 text-3xl mr-4"></i>
-                                <h3 class="text-xl font-bold text-${resource.color || 'gray'}-800">${resource.title}</h3>
-                            </div>
-                            <p class="text-slate-600 mb-4 flex-grow">
-                                ${resource.description}
-                            </p>
-                            <div class="mt-auto">
-                                <a href="${resource.url}" download="${resource.filename}" class="inline-flex items-center justify-center bg-${resource.color || 'gray'}-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-${resource.color || 'gray'}-700 transition-transform transform hover:scale-105 text-sm w-full">
-                                    <i class="fa-solid fa-download mr-2"></i> Descargar ${resource.type || 'Archivo'}
-                                </a>
-                            </div>
-                        </div>
-                    `;
-                    dynamicResourcesContainer.innerHTML += resourceHtml;
-                });
-            }
-
-            // Iniciar la carga de recursos dinámicos al cargar la página
-            fetchDynamicResources();
         });
     </script>
 </body>
