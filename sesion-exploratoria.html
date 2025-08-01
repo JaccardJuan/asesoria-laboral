@@ -361,7 +361,8 @@
             const navItems = document.querySelectorAll('.nav-item');
             const contentPanels = document.querySelectorAll('.content-panel');
 
-            function switchTab(index) {
+            // Se añade un segundo parámetro 'shouldScroll' que por defecto es verdadero
+            function switchTab(index, shouldScroll = true) {
                 navItems.forEach(item => item.classList.remove('active'));
                 navItems[index].classList.add('active');
 
@@ -369,12 +370,14 @@
                 const targetPanel = document.getElementById(`panel-${index}`);
                 targetPanel.classList.remove('hidden');
                 
-                // Si el panel activo es el primero (donde está el gráfico), inicializa o actualiza el gráfico
                 if (index === 0) {
                     initializeChart();
                 }
-                // Desplazar la ventana al inicio de la sección de contenido activa
-                window.scrollTo({ top: targetPanel.offsetTop - 20, behavior: 'smooth' }); // Resta un poco para un margen superior
+                
+                // Solo se desplaza si shouldScroll es verdadero
+                if (shouldScroll) {
+                    window.scrollTo({ top: targetPanel.offsetTop - 20, behavior: 'smooth' }); 
+                }
             }
 
             navContainer.addEventListener('click', function(e) {
@@ -382,7 +385,7 @@
                 const navLink = e.target.closest('.nav-item');
                 if (navLink) {
                     const index = parseInt(navLink.dataset.index);
-                    switchTab(index);
+                    switchTab(index); // El desplazamiento está activado por defecto
                 }
             });
 
@@ -392,17 +395,17 @@
                 if (nextButton) {
                     nextButton.addEventListener('click', function() {
                         const nextIndex = parseInt(this.dataset.nextIndex);
-                        switchTab(nextIndex);
+                        switchTab(nextIndex); // El desplazamiento está activado por defecto
                     });
                 }
             });
 
-            switchTab(0); // Activa el primer panel al cargar la página
+            // Se llama a switchTab con 'false' para evitar el desplazamiento en la carga inicial
+            switchTab(0, false); 
 
             function initializeChart() {
                 const ctx = document.getElementById('timeDistributionChart');
                 if (ctx) {
-                    // Destruir la instancia anterior si existe para evitar duplicados
                     if (timeDistributionChart) {
                         timeDistributionChart.destroy();
                     }
