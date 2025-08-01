@@ -27,17 +27,17 @@
         details summary::-webkit-details-marker {
             display: none; /* También para navegadores Webkit */
         }
+        /* Usamos el pseudo-elemento para el ícono de flecha, pero lo ocultamos para usar el de Font Awesome en el HTML */
         details summary::before {
-            content: "\f0da"; /* Código Unicode para Font Awesome fa-caret-right */
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            margin-right: 0.75rem;
-            transition: transform 0.2s ease-in-out;
-            display: inline-block;
-            color: #475569; /* slate-600 para la flecha de la categoría */
+           content: "";
+           display: none;
         }
-        details[open] summary::before {
+        /* Rotación del ícono de Font Awesome cuando el details está abierto */
+        details[open] summary .fa-caret-right {
             transform: rotate(90deg);
+        }
+        .fa-caret-right {
+            transition: transform 0.2s ease-in-out;
         }
     </style>
 </head>
@@ -76,18 +76,18 @@
                     </div>
                 </div>
 
-                <!-- Nuevo Recurso Descargable 2: Consejos para Cartas de Presentación -->
+                <!-- Recurso Externo 2: Ejemplos de Cartas de Presentación (Canva) -->
                 <div class="bg-white p-6 rounded-xl shadow-lg border border-orange-100 flex flex-col">
                     <div class="flex items-center mb-4">
                         <i class="fa-solid fa-envelope-open-text text-orange-600 text-3xl mr-4"></i>
-                        <h3 class="text-xl font-bold text-orange-800">Consejos para Cartas de Presentación</h3>
+                        <h3 class="text-xl font-bold text-orange-800">Ejemplos de Cartas de Presentación (Canva)</h3>
                     </div>
                     <p class="text-slate-600 mb-4 flex-grow">
-                        Aprende a redactar cartas de presentación impactantes que complementen tu CV y te ayuden a destacar entre los candidatos.
+                        Explora ejemplos y consejos prácticos de Canva para redactar cartas de presentación impactantes que complementen tu CV.
                     </p>
                     <div class="mt-auto">
-                        <a href="https://placehold.co/100x50/cccccc/ffffff?text=Consejos_Cartas.pdf" download="Consejos_Cartas_Presentacion.pdf" class="inline-flex items-center justify-center bg-orange-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-orange-700 transition-transform transform hover:scale-105 text-sm w-full">
-                            <i class="fa-solid fa-download mr-2"></i> Descargar Guía (PDF)
+                        <a href="https://www.canva.com/es_mx/aprende/carta-presentacion-ejemplos/" target="_blank" class="inline-flex items-center justify-center bg-orange-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-orange-700 transition-transform transform hover:scale-105 text-sm w-full">
+                            <i class="fa-solid fa-arrow-up-right-from-square mr-2"></i> Ver Ejemplos en Canva
                         </a>
                     </div>
                 </div>
@@ -250,8 +250,8 @@
 
                 <!-- Categoría 1: Herramientas y Plantillas -->
                 <details class="bg-white p-4 rounded-xl shadow-md border border-gray-200">
-                    <summary class="text-xl font-bold text-gray-700 flex items-center cursor-pointer">
-                        <i class="fa-solid fa-caret-right mr-3"></i> Herramientas y Plantillas <span class="text-sm bg-slate-100 text-slate-600 px-2 py-1 rounded-full ml-3">3 documentos</span>
+                    <summary class="text-xl font-bold text-gray-700 flex items-center">
+                        <i class="fa-solid fa-caret-right mr-3 text-slate-600"></i> Herramientas y Plantillas <span class="text-sm bg-slate-100 text-slate-600 px-2 py-1 rounded-full ml-3">3 documentos</span>
                     </summary>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                         <!-- Documento 1 -->
@@ -292,8 +292,8 @@
 
                 <!-- Categoría 2: Artículos y Lecturas Recomendadas -->
                 <details class="bg-white p-4 rounded-xl shadow-md border border-gray-200">
-                    <summary class="text-xl font-bold text-gray-700 flex items-center cursor-pointer">
-                        <i class="fa-solid fa-caret-right mr-3"></i> Artículos y Lecturas <span class="text-sm bg-slate-100 text-slate-600 px-2 py-1 rounded-full ml-3">2 documentos</span>
+                    <summary class="text-xl font-bold text-gray-700 flex items-center">
+                        <i class="fa-solid fa-caret-right mr-3 text-slate-600"></i> Artículos y Lecturas <span class="text-sm bg-slate-100 text-slate-600 px-2 py-1 rounded-full ml-3">2 documentos</span>
                     </summary>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                         <!-- Documento 1 -->
@@ -323,8 +323,8 @@
 
                 <!-- Categoría 3: Leyes y Normativas Laborales -->
                 <details class="bg-white p-4 rounded-xl shadow-md border border-cyan-200">
-                    <summary class="text-xl font-bold text-cyan-700 flex items-center cursor-pointer">
-                        <i class="fa-solid fa-caret-right mr-3"></i> Leyes y Normativas Laborales <span class="text-sm bg-slate-100 text-slate-600 px-2 py-1 rounded-full ml-3">5 documentos</span> <!-- Contador actualizado -->
+                    <summary class="text-xl font-bold text-cyan-700 flex items-center">
+                        <i class="fa-solid fa-caret-right mr-3 text-cyan-600"></i> Leyes y Normativas Laborales <span class="text-sm bg-slate-100 text-slate-600 px-2 py-1 rounded-full ml-3">5 documentos</span> <!-- Contador actualizado -->
                     </summary>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
                         <!-- Documento 1: Código del Trabajo -->
