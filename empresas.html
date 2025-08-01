@@ -15,6 +15,28 @@
         body {
             font-family: 'Inter', sans-serif;
         }
+        /* Rotación de la flecha al abrir/cerrar los detalles */
+        details[open] .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        .modal-message {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .modal-message.success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .modal-message.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
@@ -25,101 +47,129 @@
     <div class="container mx-auto p-4 md:p-8 flex-grow">
         
         <header class="text-center mb-8 md:mb-12">
-            <h1 class="text-3xl md:text-4xl font-bold text-teal-800">Servicios para Empresas</h1>
-            <p class="mt-2 text-lg text-slate-600">Soluciones estratégicas para la gestión del talento y el desarrollo organizacional de tu empresa.</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-800">Mis Servicios para Empresas</h1>
+            <p class="mt-2 text-lg text-slate-600">Soluciones estratégicas para apoyar a tu empresa en la gestión del talento y el desarrollo organizacional.</p>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
             <!-- Servicio 1: Hunting (Reclutamiento y Selección) -->
-            <div class="bg-white p-6 rounded-xl shadow-lg border border-teal-100 flex flex-col items-center text-center">
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-teal-100 flex flex-col items-center text-center transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
                 <div class="bg-teal-100 text-teal-700 rounded-full w-16 h-16 flex items-center justify-center text-3xl mb-4">
                     <i class="fa-solid fa-user-tie"></i>
                 </div>
                 <h2 class="text-xl font-bold text-teal-800 mb-3">Hunting (Reclutamiento y Selección)</h2>
                 <p class="text-slate-600 mb-4">
-                    Identificamos y atraemos el talento clave que tu organización necesita, asegurando el mejor ajuste cultural y profesional.
+                    Te ayudo a identificar y atraer el talento clave que tu organización necesita, asegurando el mejor ajuste cultural y profesional.
                 </p>
-                <ul class="list-disc list-inside text-left text-slate-600 space-y-2 mb-6 w-full">
-                    <li>Búsqueda de perfiles especializados.</li>
-                    <li>Evaluación por competencias.</li>
-                    <li>Proceso de selección integral.</li>
-                    <li>Asesoría en incorporación de nuevos talentos.</li>
-                </ul>
-                <a href="contacto.html" class="mt-auto inline-block bg-teal-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
-                    Consultar Servicio
-                </a>
+                <!-- Contenido colapsable para detalles -->
+                <details class="text-left text-slate-600 space-y-2 mb-6 w-full" open>
+                    <summary class="font-bold text-teal-800 cursor-pointer list-none flex justify-between items-center">
+                        Puntos clave del servicio
+                        <i class="fa-solid fa-chevron-down arrow-icon transition-transform"></i>
+                    </summary>
+                    <ul class="list-disc list-inside mt-2">
+                        <li>Búsqueda de perfiles especializados.</li>
+                        <li>Evaluación por competencias.</li>
+                        <li>Proceso de selección integral.</li>
+                        <li>Asesoría en la incorporación de nuevos talentos.</li>
+                    </ul>
+                </details>
+                <button data-service="Hunting" class="mt-auto inline-block bg-teal-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105 open-modal-button">
+                    Consultar
+                </button>
             </div>
 
             <!-- Servicio 2: Construcción de Instrumentos Organizacionales -->
-            <div class="bg-white p-6 rounded-xl shadow-lg border border-orange-100 flex flex-col items-center text-center">
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-orange-100 flex flex-col items-center text-center transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
                 <div class="bg-orange-100 text-orange-700 rounded-full w-16 h-16 flex items-center justify-center text-3xl mb-4">
                     <i class="fa-solid fa-building"></i>
                 </div>
                 <h2 class="text-xl font-bold text-orange-800 mb-3">Construcción de Instrumentos Organizacionales</h2>
                 <p class="text-slate-600 mb-4">
-                    Diseñamos herramientas a medida para optimizar la estructura y el funcionamiento de tu organización.
+                    Diseño herramientas a medida para optimizar la estructura y el funcionamiento de tu organización.
                 </p>
-                <ul class="list-disc list-inside text-left text-slate-600 space-y-2 mb-6 w-full">
-                    <li>Diccionario de Competencias.</li>
-                    <li>Manual de Organización y Funciones (MOF).</li>
-                    <li>Perfiles de Cargo detallados.</li>
-                    <li>Definición de estructuras y roles.</li>
-                </ul>
-                <a href="contacto.html" class="mt-auto inline-block bg-orange-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-orange-700 transition-transform transform hover:scale-105">
-                    Consultar Servicio
-                </a>
+                <!-- Contenido colapsable para detalles -->
+                <details class="text-left text-slate-600 space-y-2 mb-6 w-full" open>
+                    <summary class="font-bold text-orange-800 cursor-pointer list-none flex justify-between items-center">
+                        Puntos clave del servicio
+                        <i class="fa-solid fa-chevron-down arrow-icon transition-transform"></i>
+                    </summary>
+                    <ul class="list-disc list-inside mt-2">
+                        <li>Diccionario de Competencias.</li>
+                        <li>Manual de Organización y Funciones (MOF).</li>
+                        <li>Perfiles de Cargo detallados.</li>
+                        <li>Definición de estructuras y roles.</li>
+                    </ul>
+                </details>
+                <button data-service="Instrumentos Organizacionales" class="mt-auto inline-block bg-orange-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-orange-700 transition-transform transform hover:scale-105 open-modal-button">
+                    Consultar
+                </button>
             </div>
 
             <!-- Servicio 3: Talento y Liderazgo (Gestión del Desempeño) -->
-            <div class="bg-white p-6 rounded-xl shadow-lg border border-blue-100 flex flex-col items-center text-center">
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-blue-100 flex flex-col items-center text-center transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
                 <div class="bg-blue-100 text-blue-700 rounded-full w-16 h-16 flex items-center justify-center text-3xl mb-4">
                     <i class="fa-solid fa-chart-line"></i>
                 </div>
                 <h2 class="text-xl font-bold text-blue-800 mb-3">Talento y Liderazgo: Gestión del Desempeño</h2>
                 <p class="text-slate-600 mb-4">
-                    Desarrollamos estrategias para potenciar el rendimiento individual y colectivo en tu equipo.
+                    Te ayudo a desarrollar estrategias para potenciar el rendimiento individual y colectivo en tu equipo.
                 </p>
-                <ul class="list-disc list-inside text-left text-slate-600 space-y-2 mb-6 w-full">
-                    <li>Diseño e implementación de Evaluación del Desempeño.</li>
-                    <li>Planes de potenciación estratégica del rendimiento.</li>
-                    <li>Feedback 360 y desarrollo de habilidades de liderazgo.</li>
-                    <li>Programas de coaching ejecutivo.</li>
-                </ul>
-                <a href="contacto.html" class="mt-auto inline-block bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-blue-700 transition-transform transform hover:scale-105">
-                    Consultar Servicio
-                </a>
+                <!-- Contenido colapsable para detalles -->
+                <details class="text-left text-slate-600 space-y-2 mb-6 w-full" open>
+                    <summary class="font-bold text-blue-800 cursor-pointer list-none flex justify-between items-center">
+                        Puntos clave del servicio
+                        <i class="fa-solid fa-chevron-down arrow-icon transition-transform"></i>
+                    </summary>
+                    <ul class="list-disc list-inside mt-2">
+                        <li>Diseño e implementación de Evaluación del Desempeño.</li>
+                        <li>Planes de potenciación estratégica del rendimiento.</li>
+                        <li>Feedback 360 y desarrollo de habilidades de liderazgo.</li>
+                        <li>Programas de coaching ejecutivo.</li>
+                    </ul>
+                </details>
+                <button data-service="Gestión del Desempeño" class="mt-auto inline-block bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-blue-700 transition-transform transform hover:scale-105 open-modal-button">
+                    Consultar
+                </button>
             </div>
 
             <!-- Servicio 4: Talento y Liderazgo (Mapeo de Talento y Sucesión) -->
-            <div class="bg-white p-6 rounded-xl shadow-lg border border-purple-100 flex flex-col items-center text-center">
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-purple-100 flex flex-col items-center text-center transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
                 <div class="bg-purple-100 text-purple-700 rounded-full w-16 h-16 flex items-center justify-center text-3xl mb-4">
                     <i class="fa-solid fa-sitemap"></i>
                 </div>
                 <h2 class="text-xl font-bold text-purple-800 mb-3">Talento y Liderazgo: Mapeo de Talento y Sucesión</h2>
                 <p class="text-slate-600 mb-4">
-                    Identificamos y preparamos a los futuros líderes de tu organización para asegurar la continuidad y el crecimiento.
+                    Trabajo contigo para identificar y preparar a los futuros líderes de tu organización, asegurando la continuidad y el crecimiento.
                 </p>
-                <ul class="list-disc list-inside text-left text-slate-600 space-y-2 mb-6 w-full">
-                    <li>Detección de alto potencial.</li>
-                    <li>Planes de desarrollo de carrera y sucesión.</li>
-                    <li>Evaluación de liderazgo y potencial.</li>
-                    <li>Estrategias de retención de talento clave.</li>
-                </ul>
-                <a href="contacto.html" class="mt-auto inline-block bg-purple-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-purple-700 transition-transform transform hover:scale-105">
-                    Consultar Servicio
-                </a>
+                <!-- Contenido colapsable para detalles -->
+                <details class="text-left text-slate-600 space-y-2 mb-6 w-full" open>
+                    <summary class="font-bold text-purple-800 cursor-pointer list-none flex justify-between items-center">
+                        Puntos clave del servicio
+                        <i class="fa-solid fa-chevron-down arrow-icon transition-transform"></i>
+                    </summary>
+                    <ul class="list-disc list-inside mt-2">
+                        <li>Detección de alto potencial.</li>
+                        <li>Planes de desarrollo de carrera y sucesión.</li>
+                        <li>Evaluación de liderazgo y potencial.</li>
+                        <li>Estrategias de retención de talento clave.</li>
+                    </ul>
+                </details>
+                <button data-service="Mapeo de Talento y Sucesión" class="mt-auto inline-block bg-purple-600 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-purple-700 transition-transform transform hover:scale-105 open-modal-button">
+                    Consultar
+                </button>
             </div>
 
         </div>
 
         <!-- Sección de Llamada a la Acción General para Empresas -->
         <div class="mt-12 text-center bg-teal-50 p-8 rounded-xl shadow-xl border border-teal-100">
-            <h2 class="text-2xl font-bold text-teal-800">¿Listo/a para potenciar el talento en tu empresa?</h2>
-            <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Conversemos sobre las necesidades específicas de tu organización y cómo podemos diseñar una solución a medida.</p>
+            <h2 class="text-2xl font-bold text-teal-800">¿Listo para potenciar el talento de tu empresa?</h2>
+            <p class="mt-2 text-slate-600 max-w-2xl mx-auto">Conversemos sobre las necesidades de tu organización. Juntos, podemos diseñar una solución a medida para tu equipo.</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
-                <a href="contacto.html" class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
-                    Contactar para Servicios Empresas
-                </a>
+                <button class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105 open-modal-button" data-service="General">
+                    Hablemos de tu empresa
+                </button>
             </div>
         </div>
 
@@ -129,6 +179,34 @@
         © 2025 Juan José Jaccard. Todos los derechos reservados.
     </footer>
 
+    <!-- Modal para el formulario de contacto -->
+    <div id="contact-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-2xl max-w-lg w-full relative">
+            <button id="close-modal-button" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold text-teal-800 mb-2">Consulta de Servicio</h3>
+            <p id="modal-service-title" class="text-slate-600 mb-6 italic"></p>
+            
+            <form id="modal-contact-form">
+                <div class="mb-4">
+                    <label for="name" class="block text-slate-700 font-medium mb-2">Nombre Completo</label>
+                    <input type="text" id="name" name="name" required class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors">
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-slate-700 font-medium mb-2">Correo Electrónico</label>
+                    <input type="email" id="email" name="email" required class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors">
+                </div>
+                <div class="mb-4">
+                    <label for="message" class="block text-slate-700 font-medium mb-2">Mensaje</label>
+                    <textarea id="message" name="message" rows="4" required class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"></textarea>
+                </div>
+                <div id="modal-form-message" class="modal-message hidden"></div>
+                <button type="submit" id="modal-submit-button" class="w-full bg-teal-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-teal-700 transition-transform transform hover:scale-105">
+                    Enviar Consulta
+                </button>
+            </form>
+        </div>
+    </div>
+    
     <script>
         // Función para cargar la barra de navegación
         async function loadNavbar() {
@@ -162,6 +240,53 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Cargar la barra de navegación primero
             loadNavbar();
+
+            // --- Lógica del modal de contacto ---
+            const modal = document.getElementById('contact-modal');
+            const openModalButtons = document.querySelectorAll('.open-modal-button');
+            const closeModalButton = document.getElementById('close-modal-button');
+            const modalServiceTitle = document.getElementById('modal-service-title');
+            const modalContactForm = document.getElementById('modal-contact-form');
+            const modalFormMessage = document.getElementById('modal-form-message');
+
+            openModalButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const serviceName = this.getAttribute('data-service');
+                    modalServiceTitle.textContent = `Servicio: ${serviceName}`;
+                    modal.classList.remove('hidden');
+                });
+            });
+
+            closeModalButton.addEventListener('click', function() {
+                modal.classList.add('hidden');
+                modalContactForm.reset();
+                modalFormMessage.classList.add('hidden');
+            });
+
+            // Cerrar el modal al hacer clic fuera de él
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                    modalContactForm.reset();
+                    modalFormMessage.classList.add('hidden');
+                }
+            });
+
+            // Lógica de envío del formulario dentro del modal (simulado)
+            modalContactForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const submitButton = document.getElementById('modal-submit-button');
+                submitButton.disabled = true;
+                
+                // Simulación de envío exitoso
+                setTimeout(() => {
+                    modalFormMessage.textContent = '¡Mensaje enviado con éxito! Me pondré en contacto contigo lo antes posible.';
+                    modalFormMessage.className = 'modal-message success';
+                    modalFormMessage.classList.remove('hidden');
+                    modalContactForm.reset();
+                    submitButton.disabled = false;
+                }, 1500); // Retraso de 1.5 segundos para simular el envío
+            });
         });
     </script>
 </body>
