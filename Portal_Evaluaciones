@@ -1,0 +1,1596 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Download, 
+  Printer, 
+  Trash2, 
+  User, 
+  Briefcase, 
+  ArrowRight, 
+  Search, 
+  FileText, 
+  CheckCircle, 
+  Share2, 
+  Sparkles, 
+  Eye, 
+  Info, 
+  BarChart2, 
+  RefreshCw,
+  Plus,
+  Send,
+  Clipboard,
+  ExternalLink,
+  ChevronRight,
+  ShieldAlert,
+  X,
+  FileSpreadsheet,
+  Layers,
+  Settings,
+  HelpCircle
+} from 'lucide-react';
+import { initializeApp, getApps } from 'firebase/app';
+import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, collection, addDoc, onSnapshot, query, doc, deleteDoc, updateDoc, getDoc } from 'firebase/firestore';
+
+const firebaseConfigRaw = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'jaccard-disc-prod';
+
+let db = null;
+let auth = null;
+
+if (firebaseConfigRaw) {
+  try {
+    const config = JSON.parse(firebaseConfigRaw);
+    if (getApps().length === 0) {
+      const app = initializeApp(config);
+      auth = getAuth(app);
+      db = getFirestore(app);
+    }
+  } catch (e) {
+    console.error("Error al inicializar Firebase:", e);
+  }
+}
+
+const DISC_QUESTIONS = [
+  { id: 1, options: [
+    { text: "Persuasivo(a)", plus: "I", minus: "I" },
+    { text: "Gentil", plus: "S", minus: "S" },
+    { text: "Humilde", plus: "C", minus: "C" },
+    { text: "Original", plus: "D", minus: "D" }
+  ]},
+  { id: 2, options: [
+    { text: "Agresivo(a)", plus: "D", minus: "D" },
+    { text: "Alma de la fiesta", plus: "I", minus: "I" },
+    { text: "Comodino(a)", plus: "S", minus: "S" },
+    { text: "Temeroso(a)", plus: "C", minus: "C" }
+  ]},
+  { id: 3, options: [
+    { text: "Agradable", plus: "I", minus: "I" },
+    { text: "Temeroso de Dios", plus: "C", minus: "C" },
+    { text: "Tenaz", plus: "D", minus: "D" },
+    { text: "Atractivo(a)", plus: "S", minus: "S" }
+  ]},
+  { id: 4, options: [
+    { text: "Cauteloso(a)", plus: "C", minus: "C" },
+    { text: "Determinado(a)", plus: "D", minus: "D" },
+    { text: "Convincente", plus: "I", minus: "I" },
+    { text: "Bonachón / Amable", plus: "S", minus: "S" }
+  ]},
+  { id: 5, options: [
+    { text: "Dócil", plus: "C", minus: "C" },
+    { text: "Atrevido(a)", plus: "D", minus: "D" },
+    { text: "Leal", plus: "S", minus: "S" },
+    { text: "Encantador(a)", plus: "I", minus: "I" }
+  ]},
+  { id: 6, options: [
+    { text: "Ecuánime", plus: "S", minus: "S" },
+    { text: "Preciso(a)", plus: "C", minus: "C" },
+    { text: "Audaz", plus: "D", minus: "D" },
+    { text: "Inspirador(a)", plus: "I", minus: "I" }
+  ]},
+  { id: 7, options: [
+    { text: "Expresivo(a)", plus: "I", minus: "I" },
+    { text: "Respetuoso(a)", plus: "C", minus: "C" },
+    { text: "Dominante", plus: "D", minus: "D" },
+    { text: "Sensible", plus: "S", minus: "S" }
+  ]},
+  { id: 8, options: [
+    { text: "Extrovertido(a)", plus: "I", minus: "I" },
+    { text: "Precavido(a)", plus: "C", minus: "C" },
+    { text: "Constante / Paciente", plus: "S", minus: "S" },
+    { text: "Impaciente", plus: "D", minus: "D" }
+  ]},
+  { id: 9, options: [
+    { text: "Discreto(a)", plus: "C", minus: "C" },
+    { text: "Complaciente", plus: "S", minus: "S" },
+    { text: "Encantador(a)", plus: "I", minus: "I" },
+    { text: "Insistente", plus: "D", minus: "D" }
+  ]},
+  { id: 10, options: [
+    { text: "Valeroso(a)", plus: "D", minus: "D" },
+    { text: "Anima a los demás", plus: "I", minus: "I" },
+    { text: "Pacífico(a)", plus: "S", minus: "S" },
+    { text: "Perfeccionista", plus: "C", minus: "C" }
+  ]},
+  { id: 11, options: [
+    { text: "Reservado(a)", plus: "C", minus: "C" },
+    { text: "Atento(a)", plus: "S", minus: "S" },
+    { text: "Osado(a)", plus: "D", minus: "D" },
+    { text: "Alegre", plus: "I", minus: "I" }
+  ]},
+  { id: 12, options: [
+    { text: "Estimulante", plus: "I", minus: "I" },
+    { text: "Gentil / Amable", plus: "S", minus: "S" },
+    { text: "Perceptivo(a)", plus: "C", minus: "C" },
+    { text: "Independiente", plus: "D", minus: "D" }
+  ]},
+  { id: 13, options: [
+    { text: "Competitivo(a)", plus: "D", minus: "D" },
+    { text: "Considerado(a)", plus: "S", minus: "S" },
+    { text: "Alegre", plus: "I", minus: "I" },
+    { text: "Sagaz", plus: "C", minus: "C" }
+  ]},
+  { id: 14, options: [
+    { text: "Meticuloso(a)", plus: "C", minus: "C" },
+    { text: "Obediente", plus: "S", minus: "S" },
+    { text: "Ideas Firmes", plus: "D", minus: "D" },
+    { text: "Alentador(a)", plus: "I", minus: "I" }
+  ]},
+  { id: 15, options: [
+    { text: "Popular", plus: "I", minus: "I" },
+    { text: "Reflexivo(a)", plus: "C", minus: "C" },
+    { text: "Tenaz", plus: "D", minus: "D" },
+    { text: "Calmado(a)", plus: "S", minus: "S" }
+  ]},
+  { id: 16, options: [
+    { text: "Analítico(a)", plus: "C", minus: "C" },
+    { text: "Audaz", plus: "D", minus: "D" },
+    { text: "Leal", plus: "S", minus: "S" },
+    { text: "Promotor(a)", plus: "I", minus: "I" }
+  ]},
+  { id: 17, options: [
+    { text: "Sociable", plus: "I", minus: "I" },
+    { text: "Paciente", plus: "S", minus: "S" },
+    { text: "Autosuficiente", plus: "D", minus: "D" },
+    { text: "Certero(a)", plus: "C", minus: "C" }
+  ]},
+  { id: 18, options: [
+    { text: "Adaptable", plus: "S", minus: "S" },
+    { text: "Resuelto(a)", plus: "D", minus: "D" },
+    { text: "Prevenido(a)", plus: "C", minus: "C" },
+    { text: "Vivaz", plus: "I", minus: "I" }
+  ]},
+  { id: 19, options: [
+    { text: "Agresivo(a)", plus: "D", minus: "D" },
+    { text: "Impetuoso(a)", plus: "I", minus: "I" },
+    { text: "Amistoso(a)", plus: "S", minus: "S" },
+    { text: "Discerniente", plus: "C", minus: "C" }
+  ]},
+  { id: 20, options: [
+    { text: "De trato fácil", plus: "I", minus: "I" },
+    { text: "Compasivo(a)", plus: "S", minus: "S" },
+    { text: "Cauto(a)", plus: "C", minus: "C" },
+    { text: "Habla directo", plus: "D", minus: "D" }
+  ]},
+  { id: 21, options: [
+    { text: "Evaluador(a)", plus: "C", minus: "C" },
+    { text: "Generoso(a)", plus: "I", minus: "I" },
+    { text: "Persistente", plus: "D", minus: "D" },
+    { text: "Colaborador(a)", plus: "S", minus: "S" }
+  ]},
+  { id: 22, options: [
+    { text: "Impulsivo(a)", plus: "I", minus: "I" },
+    { text: "Cuida los Detalles", plus: "C", minus: "C" },
+    { text: "Enérgico(a)", plus: "D", minus: "D" },
+    { text: "Tranquilo(a)", plus: "S", minus: "S" }
+  ]},
+  { id: 23, options: [
+    { text: "Sociable", plus: "I", minus: "I" },
+    { text: "Sistemático(a)", plus: "C", minus: "C" },
+    { text: "Vigoroso(a)", plus: "D", minus: "D" },
+    { text: "Tolerante", plus: "S", minus: "S" }
+  ]},
+  { id: 24, options: [
+    { text: "Cautivador(a)", plus: "I", minus: "I" },
+    { text: "Contento(a)", plus: "S", minus: "S" },
+    { text: "Exigente", plus: "D", minus: "D" },
+    { text: "Apegado a normas", plus: "C", minus: "C" }
+  ]},
+  { id: 25, options: [
+    { text: "Le agrada discutir", plus: "D", minus: "D" },
+    { text: "Metódico(a)", plus: "C", minus: "C" },
+    { text: "Comedido(a)", plus: "S", minus: "S" },
+    { text: "Desenvuelto(a)", plus: "I", minus: "I" }
+  ]},
+  { id: 26, options: [
+    { text: "Jovial", plus: "I", minus: "I" },
+    { text: "Preciso(a)", plus: "C", minus: "C" },
+    { text: "Directo(a)", plus: "D", minus: "D" },
+    { text: "Ecuánime", plus: "S", minus: "S" }
+  ]},
+  { id: 27, options: [
+    { text: "Inquieto(a)", plus: "D", minus: "D" },
+    { text: "Amable", plus: "S", minus: "S" },
+    { text: "Elocuente", plus: "I", minus: "I" },
+    { text: "Cuidadoso(a)", plus: "C", minus: "C" }
+  ]},
+  { id: 28, options: [
+    { text: "Prudente", plus: "C", minus: "C" },
+    { text: "Pionero(a)", plus: "D", minus: "D" },
+    { text: "Animado(a)", plus: "I", minus: "I" },
+    { text: "Espontáneo(a)", plus: "S", minus: "S" }
+  ]}
+];
+
+const PATTERNS_DB = {
+  "D": {
+    name: "Dominancia / Empuje (D Alto)",
+    desc: "Orientado a resultados, competitivo, directo y asertivo. Le gustan los desafíos y resolver problemas complejos bajo presión.",
+    strengths: ["Toma decisiones rápidas.", "Orientado a metas y resultados.", "Liderazgo natural en crisis.", "Alta iniciativa."],
+    weaknesses: ["Puede parecer impaciente o autoritario.", "Suele descuidar los detalles.", "Demanda demasiado de los demás.", "Le cuesta delegar el control absoluto."],
+    environment: "Entornos competitivos, dinámicos, con alta autonomía, metas claras e incentivos por desempeño."
+  },
+  "I": {
+    name: "Influencia / Relación (I Alto)",
+    desc: "Comunicativo, persuasivo, optimista y entusiasta. Excelente para motivar a otros, generar redes de contacto y trabajar en equipo.",
+    strengths: ["Excelente comunicación verbal.", "Gran empatía y relaciones públicas.", "Optimismo contagioso.", "Creativo en la resolución de conflictos."],
+    weaknesses: ["Tiende a ser desorganizado.", "Dificultad para concentrarse en tareas monótonas.", "Le cuesta decir 'no'.", "Busca demasiada aprobación social."],
+    environment: "Entornos colaborativos, de atención al cliente, ventas, liderazgo de equipos y donde se valore la creatividad."
+  },
+  "S": {
+    name: "Constancia / Soporte (S Alto)",
+    desc: "Paciente, leal, constante y calmado. Busca la armonía en su entorno de trabajo, valora los procesos claros y es un excelente apoyo en el equipo.",
+    strengths: ["Excelente escucha activa.", "Altamente confiable y metódico.", "Trabajador en equipo leal.", "Maneja muy bien las rutinas."],
+    weaknesses: ["Resistente a los cambios abruptos.", "Le cuesta confrontar directamente.", "Puede sacrificar su opinión por mantener la paz.", "Suele acumular tensión emocional."],
+    environment: "Entornos estables, predictibles, estructurados, con buen clima laboral y metas cooperativas."
+  },
+  "C": {
+    name: "Cumplimiento / Apego (C Alto)",
+    desc: "Analítico, preciso, detallista y orientado a la calidad. Se asegura de que se cumplan las normas, los procesos y los estándares técnicos elevados.",
+    strengths: ["Alta precisión en el análisis de datos.", "Planificación rigurosa.", "Apego a normativas de calidad.", "Pensamiento crítico profundo."],
+    weaknesses: ["Parálisis por análisis.", "Puede parecer distante o poco comunicativo.", "Dificultad para tolerar la imperfección.", "Le asusta cometer errores públicos."],
+    environment: "Entornos técnicos, de auditoría, desarrollo de software, finanzas, control de calidad y planeación estratégica."
+  }
+};
+
+const PATTERNS_COMBINATIONS = [
+  { key: "DI", name: "El Motivador / Emprendedor", desc: "Altamente activo, empuja hacia metas usando el carisma y la persuasión. Ideal para desarrollo de nuevos negocios y liderazgo comercial." },
+  { key: "DS", name: "El Realizador Orientado", desc: "Combina el empuje con la paciencia de ejecución. Concreta planes complejos con tenacidad y baja rotación." },
+  { key: "DC", name: "El Creador de Estructura", desc: "Busca resultados perfectos mediante el cumplimiento estricto. Perfil de directores técnicos, ingenieros jefes o gerentes de operaciones." },
+  { key: "ID", name: "El Promotor Convincente", desc: "Altamente social con un toque competitivo. Consigue que las cosas se hagan a través del encanto y de la asertividad." },
+  { key: "IS", name: "El Consejero / Facilitador", desc: "El mejor mediador de equipos. Es cálido, sabe escuchar y promueve un ambiente de alta cohesión y felicidad corporativa." },
+  { key: "IC", name: "El Comunicador Técnico", desc: "Sabe explicar datos complejos de forma amena. Ideal para consultores, relatores, capacitadores técnicos y marketing." },
+  { key: "SD", name: "El Ejecutor Silencioso", desc: "Trabajador incansable que responde a directrices claras pero posee la fuerza para liderar cuando es estrictamente necesario." },
+  { key: "SI", name: "El Colaborador Armónico", desc: "Busca siempre el bienestar colectivo y es constante en sus labores del día a día. Estabilidad pura para la organización." },
+  { key: "SC", name: "El Especialista Metódico", desc: "El pilar operativo de alta precisión. Trabaja bajo procedimientos definidos de manera impecable y constante." },
+  { key: "CD", name: "El Diseñador Exigente", desc: "Analiza el riesgo detalladamente antes de actuar. Perfil ideal para contraloría, finanzas complejas o auditoría legal." },
+  { key: "CI", name: "El Evaluador Comunicativo", desc: "Utiliza datos duros y análisis precisos para convencer o negociar con argumentos irrefutables." },
+  { key: "CS", name: "El Perfeccionista Sistemático", desc: "Altamente orientado a seguir el manual de operaciones a la perfección para garantizar la nula presencia de fallas." }
+];
+
+export default function App() {
+  // --- ESTADOS DE LA APLICACIÓN ---
+  const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [currentView, setCurrentView] = useState('advisor'); // 'advisor' o 'candidate'
+  const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard', 'manual', 'reports', 'multitest-guide'
+  
+  // Selector de Test Activo (Permite expandir a Kostick, Moss, etc.)
+  const [selectedTestType, setSelectedTestType] = useState('disc'); 
+
+  // Estados de candidatos y tests en tiempo real
+  const [testList, setTestList] = useState([]);
+  const [loadingTests, setLoadingTests] = useState(false);
+  
+  // Estado para creación de nuevos tests
+  const [newCandidateName, setNewCandidateName] = useState('');
+  const [newCandidatePosition, setNewCandidatePosition] = useState('');
+  
+  // Estado para visualización de informes
+  const [selectedReport, setSelectedReport] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Estado para responder el test (Vista Candidato)
+  const [candidateTestId, setCandidateTestId] = useState(null);
+  const [candidateTestData, setCandidateTestData] = useState(null);
+  const [candidateAnswers, setCandidateAnswers] = useState({}); 
+  const [testCompleted, setTestCompleted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // Estado para Corrector Manual Rápido 
+  const [manualAnswers, setManualAnswers] = useState({});
+  const [manualCandidateName, setManualCandidateName] = useState('Candidato Manual');
+  const [manualCandidatePosition, setManualCandidatePosition] = useState('Puesto Genérico');
+
+  // Modal personalizado para confirmaciones seguras (evita usar window.confirm)
+  const [deleteConfirmation, setDeleteConfirmation] = useState({ isOpen: false, id: null });
+
+  // Notificaciones flotantes
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
+
+  useEffect(() => {
+    const initAuth = async () => {
+      if (!auth) {
+        setAuthLoading(false);
+        return;
+      }
+      try {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+      } catch (err) {
+        console.error("Fallo de autenticación Firebase:", err);
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+    initAuth();
+
+    if (auth) {
+      const unsubscribe = onAuthStateChanged(auth, (usr) => {
+        setUser(usr);
+      });
+      return () => unsubscribe();
+    }
+  }, []);
+
+  // Revisar si la URL tiene un testId para cargarlo inmediatamente como Candidato
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const testId = params.get('testId');
+    if (testId) {
+      setCandidateTestId(testId);
+      setCurrentView('candidate');
+      fetchCandidateTest(testId);
+    }
+  }, [user]);
+
+  // Suscripción a la colección de Tests en tiempo real
+  useEffect(() => {
+    if (!user || !db) return;
+    setLoadingTests(true);
+    const qCol = collection(db, 'artifacts', appId, 'public', 'data', 'tests');
+    
+    const unsubscribe = onSnapshot(qCol, (snapshot) => {
+      const list = [];
+      snapshot.forEach((docSnap) => {
+        list.push({ id: docSnap.id, ...docSnap.data() });
+      });
+      list.sort((a, b) => b.createdAt - a.createdAt);
+      setTestList(list);
+      setLoadingTests(false);
+    }, (error) => {
+      console.error("Error cargando tests:", error);
+      setLoadingTests(false);
+    });
+
+    return () => unsubscribe();
+  }, [user]);
+
+  const fetchCandidateTest = async (tId) => {
+    if (!db) return;
+    try {
+      const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tests', tId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.status === 'completed') {
+          setTestCompleted(true);
+        }
+        setCandidateTestData(data);
+        if (data.testType) {
+          setSelectedTestType(data.testType);
+        }
+      } else {
+        setErrorMessage("La evaluación solicitada no existe o el enlace ha caducado.");
+      }
+    } catch (e) {
+      setErrorMessage("Error de conexión al cargar la evaluación.");
+    }
+  };
+
+  const createNewTestLink = async (e) => {
+    e.preventDefault();
+    if (!newCandidateName.trim()) {
+      showToast("Ingresa el nombre del candidato", "error");
+      return;
+    }
+    if (!db) {
+      showToast("La base de datos no está activa.", "error");
+      return;
+    }
+
+    try {
+      const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'tests');
+      const docData = {
+        candidateName: newCandidateName.trim(),
+        position: newCandidatePosition.trim() || 'No especificado',
+        testType: selectedTestType, // Guarda qué tipo de test es (disc, kostick, moss, etc.)
+        status: 'pending',
+        createdAt: Date.now(),
+        answers: null,
+        scores: null
+      };
+      
+      await addDoc(colRef, docData);
+      setNewCandidateName('');
+      setNewCandidatePosition('');
+      showToast(`Evaluación creada con éxito para ${docData.candidateName}`);
+    } catch (err) {
+      console.error(err);
+      showToast("Error al crear la evaluación", "error");
+    }
+  };
+
+  const deleteTestRecord = async () => {
+    const id = deleteConfirmation.id;
+    if (!db || !id) return;
+    try {
+      await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tests', id));
+      showToast("Registro eliminado con éxito");
+      if (selectedReport && selectedReport.id === id) {
+        setSelectedReport(null);
+      }
+      setDeleteConfirmation({ isOpen: false, id: null });
+    } catch (err) {
+      showToast("Error al eliminar", "error");
+    }
+  };
+
+  const submitCandidateAnswers = async () => {
+    if (selectedTestType !== 'disc') {
+      showToast("Prueba de demostración enviada.", "success");
+      setTestCompleted(true);
+      return;
+    }
+
+    const missing = [];
+    for (let i = 1; i <= 28; i++) {
+      const ans = candidateAnswers[i];
+      if (!ans || ans.plus === undefined || ans.minus === undefined) {
+        missing.push(i);
+      }
+    }
+
+    if (missing.length > 0) {
+      showToast(`Responde MÁS (+) y MENOS (-) en las preguntas: ${missing.slice(0, 5).join(', ')}${missing.length > 5 ? '...' : ''}`, "error");
+      return;
+    }
+
+    const scores = calculateDISCScores(candidateAnswers);
+
+    if (db && candidateTestId) {
+      try {
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'tests', candidateTestId);
+        await updateDoc(docRef, {
+          status: 'completed',
+          answers: candidateAnswers,
+          scores: scores,
+          completedAt: Date.now()
+        });
+        setTestCompleted(true);
+        showToast("¡Respuestas enviadas correctamente! Muchas gracias.");
+      } catch (err) {
+        showToast("Error al guardar respuestas en el servidor.", "error");
+      }
+    } else {
+      showToast("Guardado de simulación completado.");
+    }
+  };
+
+  const calculateDISCScores = (answersMap) => {
+    const plusCounts = { D: 0, I: 0, S: 0, C: 0 };
+    const minusCounts = { D: 0, I: 0, S: 0, C: 0 };
+
+    DISC_QUESTIONS.forEach((q) => {
+      const qAns = answersMap[q.id];
+      if (qAns) {
+        if (qAns.plus !== undefined) {
+          const factorPlus = q.options[qAns.plus].plus;
+          if (plusCounts[factorPlus] !== undefined) plusCounts[factorPlus]++;
+        }
+        if (qAns.minus !== undefined) {
+          const factorMinus = q.options[qAns.minus].minus;
+          if (minusCounts[factorMinus] !== undefined) minusCounts[factorMinus]++;
+        }
+      }
+    });
+
+    const diffScores = {
+      D: plusCounts.D - minusCounts.D,
+      I: plusCounts.I - minusCounts.I,
+      S: plusCounts.S - minusCounts.S,
+      C: plusCounts.C - minusCounts.C
+    };
+
+    const toPercentile = (val, factor, type) => {
+      let raw = val;
+      if (type === 'plus') {
+        if (factor === 'D') return Math.min(100, Math.max(5, raw * 7 + 10));
+        if (factor === 'I') return Math.min(100, Math.max(5, raw * 7 + 15));
+        if (factor === 'S') return Math.min(100, Math.max(5, raw * 6 + 12));
+        if (factor === 'C') return Math.min(100, Math.max(5, raw * 7 + 8));
+      } else if (type === 'minus') {
+        if (factor === 'D') return Math.min(100, Math.max(5, raw * 7 + 8));
+        if (factor === 'I') return Math.min(100, Math.max(5, raw * 8 + 10));
+        if (factor === 'S') return Math.min(100, Math.max(5, raw * 7 + 12));
+        if (factor === 'C') return Math.min(100, Math.max(5, raw * 6 + 15));
+      } else { 
+        const shifted = raw + 15; 
+        return Math.min(100, Math.max(1, Math.round((shifted / 30) * 100)));
+      }
+      return 50;
+    };
+
+    const percentiles = {
+      plus: {
+        D: toPercentile(plusCounts.D, 'D', 'plus'),
+        I: toPercentile(plusCounts.I, 'I', 'plus'),
+        S: toPercentile(plusCounts.S, 'S', 'plus'),
+        C: toPercentile(plusCounts.C, 'C', 'plus'),
+      },
+      minus: {
+        D: toPercentile(minusCounts.D, 'D', 'minus'),
+        I: toPercentile(minusCounts.I, 'I', 'minus'),
+        S: toPercentile(minusCounts.S, 'S', 'minus'),
+        C: toPercentile(minusCounts.C, 'C', 'minus'),
+      },
+      diff: {
+        D: toPercentile(diffScores.D, 'D', 'diff'),
+        I: toPercentile(diffScores.I, 'I', 'diff'),
+        S: toPercentile(diffScores.S, 'S', 'diff'),
+        C: toPercentile(diffScores.C, 'C', 'diff'),
+      }
+    };
+
+    const sortedFactors = Object.entries(percentiles.diff).sort((a, b) => b[1] - a[1]);
+    const primaryFactor = sortedFactors[0][0];
+    const secondaryFactor = sortedFactors[1][1] > 60 ? sortedFactors[1][0] : '';
+    const combinationKey = secondaryFactor ? `${primaryFactor}${secondaryFactor}` : primaryFactor;
+
+    return {
+      plus: plusCounts,
+      minus: minusCounts,
+      diff: diffScores,
+      percentiles,
+      primaryFactor,
+      combinationKey
+    };
+  };
+
+  const copyTestLink = (tId) => {
+    const origin = window.location.origin + window.location.pathname;
+    const link = `${origin}?testId=${tId}`;
+    
+    const el = document.createElement('textarea');
+    el.value = link;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+
+    showToast("¡Enlace único copiado! Envíalo a tu candidato por WhatsApp o Correo.");
+  };
+
+  // Filtrar los tests creados según el buscador y tipo de test activo
+  const filteredTests = testList.filter(test => {
+    const searchLower = searchTerm.toLowerCase();
+    const matchesSearch = test.candidateName.toLowerCase().includes(searchLower) || 
+                          test.position.toLowerCase().includes(searchLower);
+    const matchesTestType = test.testType ? test.testType === selectedTestType : selectedTestType === 'disc';
+    return matchesSearch && matchesTestType;
+  });
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col antialiased">
+      
+      {/* HEADER PRINCIPAL */}
+      <header className="bg-gradient-to-r from-slate-900 via-indigo-950 to-indigo-900 text-white shadow-md print:hidden px-4 py-4 md:py-6">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-3">
+            <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg border border-indigo-400/30">
+              <Sparkles className="w-6 h-6 text-indigo-100" />
+            </div>
+            <div>
+              <h1 className="text-xl md:text-2xl font-bold tracking-tight">Jaccard Asesorías</h1>
+              <p className="text-xs text-indigo-200">Portal Integral de Correctores y Evaluaciones Psicométricas</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {currentView === 'candidate' ? (
+              <button 
+                onClick={() => {
+                  setCurrentView('advisor');
+                  setActiveTab('dashboard');
+                }}
+                className="text-xs font-semibold px-4 py-2 bg-slate-800/80 hover:bg-slate-800 border border-slate-700/50 rounded-lg text-indigo-300 transition-all"
+              >
+                Volver a Consola Consultor
+              </button>
+            ) : (
+              <span className="text-xs font-medium px-3.5 py-1.5 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-full flex items-center gap-2">
+                <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                Consola Consultor Activa
+              </span>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* SECTOR MULTITEST DE PRUEBAS EN ADVISOR */}
+      {currentView === 'advisor' && (
+        <div className="bg-white border-b border-slate-200/80 py-3 px-4 print:hidden">
+          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Layers className="w-4.5 h-4.5 text-indigo-600" />
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Test Activo:</span>
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  onClick={() => { setSelectedTestType('disc'); setSelectedReport(null); }}
+                  className={`px-3 py-1 text-xs font-bold rounded-lg transition-all ${
+                    selectedTestType === 'disc' 
+                      ? 'bg-indigo-600 text-white shadow-sm' 
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
+                  }`}
+                >
+                  DISC / Cleaver
+                </button>
+                <button
+                  onClick={() => { setSelectedTestType('kostick'); setSelectedReport(null); }}
+                  className={`px-3 py-1 text-xs font-bold rounded-lg transition-all ${
+                    selectedTestType === 'kostick' 
+                      ? 'bg-indigo-600 text-white shadow-sm' 
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
+                  }`}
+                >
+                  Kostick (Demo)
+                </button>
+                <button
+                  onClick={() => { setSelectedTestType('moss'); setSelectedReport(null); }}
+                  className={`px-3 py-1 text-xs font-bold rounded-lg transition-all ${
+                    selectedTestType === 'moss' 
+                      ? 'bg-indigo-600 text-white shadow-sm' 
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
+                  }`}
+                >
+                  Moss (Demo)
+                </button>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setActiveTab('multitest-guide')}
+              className="flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100/80 px-3 py-1 rounded-lg transition-all"
+            >
+              <HelpCircle className="w-3.5 h-3.5" />
+              ¿Cómo enviar y almacenar?
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* VISTA ADMINISTRADOR */}
+      {currentView === 'advisor' && (
+        <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6 print:block">
+          
+          {/* Navegación Lateral */}
+          <aside className="lg:col-span-1 flex flex-col gap-3 print:hidden">
+            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200/60">
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Opciones de la Prueba</h3>
+              <nav className="flex flex-col gap-1.5">
+                <button
+                  onClick={() => { setActiveTab('dashboard'); setSelectedReport(null); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all ${
+                    activeTab === 'dashboard' 
+                      ? 'bg-indigo-50 text-indigo-700 border-l-4 border-indigo-600' 
+                      : 'text-slate-600 hover:bg-slate-50'
+                  }`}
+                >
+                  <Send className="w-4 h-4" />
+                  Enviar Evaluaciones
+                </button>
+
+                <button
+                  onClick={() => { setActiveTab('manual'); setSelectedReport(null); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all ${
+                    activeTab === 'manual' 
+                      ? 'bg-indigo-50 text-indigo-700 border-l-4 border-indigo-600' 
+                      : 'text-slate-600 hover:bg-slate-50'
+                  }`}
+                >
+                  <Plus className="w-4 h-4" />
+                  Corrector Manual
+                </button>
+
+                <button
+                  onClick={() => { setActiveTab('reports'); }}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold transition-all ${
+                    activeTab === 'reports' 
+                      ? 'bg-indigo-50 text-indigo-700 border-l-4 border-indigo-600' 
+                      : 'text-slate-600 hover:bg-slate-50'
+                  }`}
+                >
+                  <FileText className="w-4 h-4" />
+                  Respuestas Guardadas ({testList.filter(t => t.status === 'completed' && (t.testType ? t.testType === selectedTestType : selectedTestType === 'disc')).length})
+                </button>
+              </nav>
+            </div>
+
+            <div className="bg-indigo-900/5 border border-indigo-900/10 p-4 rounded-xl text-xs flex flex-col gap-2">
+              <span className="font-bold flex items-center gap-1.5 text-indigo-900">
+                <Info className="w-3.5 h-3.5 flex-shrink-0" />
+                Base de Datos Activa
+              </span>
+              <p className="leading-relaxed text-indigo-950/80">
+                Todos los datos, candidatos y respuestas de <strong>{selectedTestType.toUpperCase()}</strong> están sincronizados automáticamente con tu cuenta de Firestore. No requieres almacenamiento manual adicional.
+              </p>
+            </div>
+          </aside>
+
+          {/* Área Principal de Contenido */}
+          <section className="lg:col-span-3 space-y-6 print:m-0">
+            
+            {/* GUÍA DE ONBOARDING SOBRE CÓMO ENVIAR Y ALMACENAR */}
+            {activeTab === 'multitest-guide' && (
+              <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-6">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <HelpCircle className="w-5 h-5 text-indigo-600" />
+                    Cómo Enviar Tests y Guardar los Resultados
+                  </h2>
+                  <p className="text-slate-400 text-sm mt-1">
+                    La plataforma automatiza el flujo de recolección y corrección de evaluaciones psicométricas de Jaccard Asesorías.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl space-y-2">
+                    <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center font-bold text-indigo-700 text-sm">1</div>
+                    <h4 className="font-bold text-xs text-slate-700">Registrar Candidato</h4>
+                    <p className="text-xs text-slate-500 leading-relaxed">
+                      Entra a <strong>"Enviar Test"</strong>, ingresa el nombre de la persona y el cargo. Presiona "Crear".
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl space-y-2">
+                    <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center font-bold text-indigo-700 text-sm">2</div>
+                    <h4 className="font-bold text-xs text-slate-700">Compartir Enlace Único</h4>
+                    <p className="text-xs text-slate-500 leading-relaxed">
+                      El sistema genera una clave especial de seguimiento. Haz clic en <strong>"Copiar Enlace"</strong> y envíaselo por WhatsApp o Mail.
+                    </p>
+                  </div>
+
+                  <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl space-y-2">
+                    <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center font-bold text-indigo-700 text-sm">3</div>
+                    <h4 className="font-bold text-xs text-slate-700">Recibir Corrección</h4>
+                    <p className="text-xs text-slate-500 leading-relaxed">
+                      Cuando el candidato complete el test en su celular o PC, sus respuestas irán directo a tu panel para descargar o imprimir el informe.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-indigo-50 border border-indigo-100 rounded-xl flex items-start gap-3">
+                  <Sparkles className="w-5 h-5 text-indigo-600 flex-shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <h4 className="text-xs font-bold text-indigo-950">¿Por qué es seguro?</h4>
+                    <p className="text-xs text-indigo-800 leading-relaxed">
+                      Los candidatos que abren el enlace con el ID único jamás podrán ver el panel de administración, la lista de otros candidatos ni tus informes internos. La privacidad de Jaccard Asesorías está garantizada.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setActiveTab('dashboard')}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition-all"
+                >
+                  Ir al Gestor de Evaluaciones
+                </button>
+              </div>
+            )}
+
+            {/* ENVIAR TEST / CONTROL PANEL */}
+            {activeTab === 'dashboard' && !selectedReport && (
+              <div className="space-y-6">
+                
+                {/* Registro */}
+                <div className="bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-slate-200/80">
+                  <h2 className="text-lg font-bold text-slate-800 mb-1 flex items-center gap-2">
+                    <User className="w-5 h-5 text-indigo-600" />
+                    Registrar Candidato para {selectedTestType.toUpperCase()}
+                  </h2>
+                  <p className="text-slate-400 text-xs mb-5">
+                    Crea una invitación de evaluación personalizada conectada en tiempo real.
+                  </p>
+
+                  <form onSubmit={createNewTestLink} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                    <div className="md:col-span-2 space-y-1.5">
+                      <label className="text-xs font-bold text-slate-600 uppercase">Nombre Completo del Evaluado</label>
+                      <input 
+                        type="text" 
+                        placeholder="Ej: Carolina Jaccard" 
+                        value={newCandidateName}
+                        onChange={(e) => setNewCandidateName(e.target.value)}
+                        className="w-full text-sm px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-indigo-500 outline-none transition-all"
+                        required
+                      />
+                    </div>
+                    <div className="md:col-span-2 space-y-1.5">
+                      <label className="text-xs font-bold text-slate-600 uppercase">Cargo / Puesto de Referencia</label>
+                      <input 
+                        type="text" 
+                        placeholder="Ej: Key Account Manager" 
+                        value={newCandidatePosition}
+                        onChange={(e) => setNewCandidatePosition(e.target.value)}
+                        className="w-full text-sm px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-indigo-500 outline-none transition-all"
+                      />
+                    </div>
+                    <div className="md:col-span-1">
+                      <button
+                        type="submit"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-indigo-100 transition-all"
+                      >
+                        <Plus className="w-4 h-4" />
+                        Crear Link
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
+                {/* Listado de Seguimiento */}
+                <div className="bg-white rounded-2xl shadow-sm border border-slate-200/85 overflow-hidden">
+                  <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                      <h3 className="font-bold text-slate-800">Candidatos Activos en {selectedTestType.toUpperCase()}</h3>
+                      <p className="text-slate-400 text-xs">Monitoreo del estado de cada evaluación enviada.</p>
+                    </div>
+                    <div className="relative w-full sm:w-64">
+                      <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+                      <input 
+                        type="text" 
+                        placeholder="Buscar por candidato..." 
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full text-xs pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white outline-none transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  {loadingTests ? (
+                    <div className="p-12 text-center text-slate-400 flex flex-col items-center gap-3">
+                      <RefreshCw className="w-8 h-8 animate-spin text-indigo-500" />
+                      <span className="text-sm">Sincronizando con base de datos de Jaccard...</span>
+                    </div>
+                  ) : filteredTests.length === 0 ? (
+                    <div className="p-12 text-center text-slate-400">
+                      <FileText className="w-12 h-12 mx-auto mb-3 text-slate-300" />
+                      <p className="text-sm font-medium">No hay evaluaciones registradas para {selectedTestType.toUpperCase()}</p>
+                      <p className="text-xs mt-1">Registra tu primer candidato para generar su enlace.</p>
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="bg-slate-50 text-slate-500 text-[11px] font-bold uppercase border-b border-slate-100">
+                            <th className="px-6 py-3.5">Candidato</th>
+                            <th className="px-6 py-3.5">Cargo</th>
+                            <th className="px-6 py-3.5 text-center">Estado de Respuesta</th>
+                            <th className="px-6 py-3.5">Enlace para el Candidato</th>
+                            <th className="px-6 py-3.5 text-right">Controles</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100 text-sm">
+                          {filteredTests.map((test) => (
+                            <tr key={test.id} className="hover:bg-slate-50/50 transition-all">
+                              <td className="px-6 py-4">
+                                <div className="font-semibold text-slate-800">{test.candidateName}</div>
+                                <div className="text-[10px] text-slate-400">Creado: {new Date(test.createdAt).toLocaleDateString()}</div>
+                              </td>
+                              <td className="px-6 py-4 text-slate-600 font-medium">{test.position}</td>
+                              <td className="px-6 py-4 text-center">
+                                {test.status === 'completed' ? (
+                                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-full border border-emerald-100">
+                                    <CheckCircle className="w-3.5 h-3.5" />
+                                    Completado
+                                  </span>
+                                ) : (
+                                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 text-xs font-semibold rounded-full border border-amber-100">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                                    Esperando Respuestas
+                                  </span>
+                                )}
+                              </td>
+                              <td className="px-6 py-4">
+                                {test.status === 'pending' ? (
+                                  <div className="flex items-center gap-2">
+                                    <button
+                                      onClick={() => copyTestLink(test.id)}
+                                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold rounded-lg transition-all"
+                                    >
+                                      <Clipboard className="w-3.5 h-3.5" />
+                                      Copiar Link Único
+                                    </button>
+                                    <a
+                                      href={`?testId=${test.id}`}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition-all"
+                                      title="Simular pantalla de Candidato"
+                                    >
+                                      <ExternalLink className="w-3.5 h-3.5" />
+                                    </a>
+                                  </div>
+                                ) : (
+                                  <span className="text-xs text-slate-400 font-medium">Respuestas enviadas y corregidas</span>
+                                )}
+                              </td>
+                              <td className="px-6 py-4 text-right flex items-center justify-end gap-2">
+                                {test.status === 'completed' && (
+                                  <button
+                                    onClick={() => setSelectedReport(test)}
+                                    className="p-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-lg transition-all"
+                                    title="Consultar Informe"
+                                  >
+                                    <Eye className="w-4 h-4" />
+                                  </button>
+                                )}
+                                <button
+                                  onClick={() => setDeleteConfirmation({ isOpen: true, id: test.id })}
+                                  className="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg transition-all"
+                                  title="Eliminar registro de la base de datos"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* CORRECTOR MANUAL RÁPIDO */}
+            {activeTab === 'manual' && (
+              <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-6">
+                <div className="border-b border-slate-100 pb-4">
+                  <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <Plus className="w-5 h-5 text-indigo-600" />
+                    Corrector Manual: Plantilla de Papel ({selectedTestType.toUpperCase()})
+                  </h2>
+                  <p className="text-slate-400 text-sm mt-1">
+                    Marca las respuestas obtenidas físicamente para procesar la corrección matemática automática de {selectedTestType.toUpperCase()}.
+                  </p>
+                </div>
+
+                {selectedTestType !== 'disc' ? (
+                  <div className="p-8 text-center text-slate-500 bg-slate-50 border border-slate-100 rounded-2xl">
+                    <Layers className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                    <h3 className="font-bold text-slate-700">Corrector Manual de {selectedTestType.toUpperCase()} (Demo)</h3>
+                    <p className="text-xs text-slate-400 mt-1">El procesador para Kostick / Moss se encuentra en etapa de diseño del cuestionario.</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl">
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-slate-500 uppercase">Nombre del Candidato</label>
+                        <input 
+                          type="text" 
+                          value={manualCandidateName}
+                          onChange={(e) => setManualCandidateName(e.target.value)}
+                          className="w-full text-sm px-3 py-2 bg-white border border-slate-200 rounded-lg outline-none"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-slate-500 uppercase">Cargo</label>
+                        <input 
+                          type="text" 
+                          value={manualCandidatePosition}
+                          onChange={(e) => setManualCandidatePosition(e.target.value)}
+                          className="w-full text-sm px-3 py-2 bg-white border border-slate-200 rounded-lg outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                      {DISC_QUESTIONS.map((q) => {
+                        const ans = manualAnswers[q.id] || {};
+                        return (
+                          <div key={q.id} className="border border-slate-100 rounded-xl p-3 bg-slate-50/50 hover:bg-slate-50 transition-all flex items-start gap-3">
+                            <div className="w-7 h-7 bg-indigo-100 rounded-full flex items-center justify-center text-xs font-bold text-indigo-700 flex-shrink-0 mt-0.5">
+                              {q.id}
+                            </div>
+                            <div className="flex-1 space-y-2">
+                              {q.options.map((opt, optIndex) => (
+                                <div key={optIndex} className="flex justify-between items-center text-xs">
+                                  <span className="text-slate-700 font-medium">{opt.text}</span>
+                                  <div className="flex gap-2">
+                                    <button
+                                      onClick={() => {
+                                        const current = manualAnswers[q.id] || {};
+                                        const newMinus = current.minus === optIndex ? undefined : current.minus;
+                                        setManualAnswers({
+                                          ...manualAnswers,
+                                          [q.id]: { ...current, plus: optIndex, minus: newMinus }
+                                        });
+                                      }}
+                                      className={`px-2.5 py-1 rounded text-[10px] font-bold uppercase transition-all ${
+                                        ans.plus === optIndex 
+                                          ? 'bg-emerald-500 text-white' 
+                                          : 'bg-white text-slate-400 hover:bg-slate-200 border border-slate-200'
+                                      }`}
+                                    >
+                                      + MÁS
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        const current = manualAnswers[q.id] || {};
+                                        const newPlus = current.plus === optIndex ? undefined : current.plus;
+                                        setManualAnswers({
+                                          ...manualAnswers,
+                                          [q.id]: { ...current, minus: optIndex, plus: newPlus }
+                                        });
+                                      }}
+                                      className={`px-2.5 py-1 rounded text-[10px] font-bold uppercase transition-all ${
+                                        ans.minus === optIndex 
+                                          ? 'bg-rose-500 text-white' 
+                                          : 'bg-white text-slate-400 hover:bg-slate-200 border border-slate-200'
+                                      }`}
+                                    >
+                                      - MENOS
+                                    </button>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="pt-4 flex justify-between gap-4 border-t border-slate-100">
+                      <button
+                        onClick={() => {
+                          setManualAnswers({});
+                          showToast("Campos del corrector manual reiniciados.");
+                        }}
+                        className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-sm font-semibold transition-all"
+                      >
+                        Limpiar Campos
+                      </button>
+                      <button
+                        onClick={() => {
+                          const missing = [];
+                          for (let i = 1; i <= 28; i++) {
+                            const ans = manualAnswers[i];
+                            if (!ans || ans.plus === undefined || ans.minus === undefined) {
+                              missing.push(i);
+                            }
+                          }
+                          if (missing.length > 0) {
+                            showToast(`Completa los datos en las preguntas: ${missing.slice(0, 5).join(', ')}`, "error");
+                            return;
+                          }
+
+                          const calculatedScores = calculateDISCScores(manualAnswers);
+                          setSelectedReport({
+                            id: 'manual-preview',
+                            candidateName: manualCandidateName,
+                            position: manualCandidatePosition,
+                            createdAt: Date.now(),
+                            scores: calculatedScores,
+                            status: 'completed',
+                            isManual: true,
+                            testType: 'disc'
+                          });
+                        }}
+                        className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-indigo-100 transition-all"
+                      >
+                        Ver Informe Calculado
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* RESPUESTAS GUARDADAS */}
+            {activeTab === 'reports' && !selectedReport && (
+              <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-4">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-800">Historial de Evaluaciones: {selectedTestType.toUpperCase()}</h2>
+                  <p className="text-slate-400 text-sm mt-1">
+                    Selecciona una de las evaluaciones completas guardadas de {selectedTestType.toUpperCase()} para visualizar su diagnóstico.
+                  </p>
+                </div>
+
+                {selectedTestType !== 'disc' ? (
+                  <div className="p-12 text-center text-slate-400 border border-dashed border-slate-200 rounded-xl">
+                    <Layers className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                    <p className="text-sm font-semibold">Base de datos de {selectedTestType.toUpperCase()} (Demo)</p>
+                    <p className="text-xs mt-1">Cuando habilites este test, los candidatos respondidos se sincronizarán en este apartado.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {testList.filter(t => t.status === 'completed' && (t.testType ? t.testType === 'disc' : true)).length === 0 ? (
+                      <div className="col-span-2 p-12 text-center text-slate-400 border border-dashed border-slate-200 rounded-xl">
+                        <FileSpreadsheet className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                        <p className="text-sm font-semibold">No hay informes finalizados aún en DISC.</p>
+                        <p className="text-xs mt-1">Sincronización en la nube lista para recibir datos.</p>
+                      </div>
+                    ) : (
+                      testList.filter(t => t.status === 'completed' && (t.testType ? t.testType === 'disc' : true)).map((report) => (
+                        <div 
+                          key={report.id}
+                          onClick={() => setSelectedReport(report)}
+                          className="p-4 border border-slate-200 hover:border-indigo-400/85 bg-white hover:bg-indigo-50/10 rounded-xl cursor-pointer shadow-sm hover:shadow-md transition-all flex items-start gap-4"
+                        >
+                          <div className="bg-indigo-100 p-2.5 rounded-xl text-indigo-700 flex-shrink-0">
+                            <BarChart2 className="w-5 h-5" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-bold text-slate-800 truncate">{report.candidateName}</h4>
+                            <p className="text-xs text-slate-500 font-medium truncate mb-1">{report.position}</p>
+                            <div className="flex items-center justify-between mt-3 text-[10px] text-slate-400">
+                              <span>Finalizado: {new Date(report.completedAt || report.createdAt).toLocaleDateString()}</span>
+                              <span className="text-indigo-600 font-semibold flex items-center gap-0.5">
+                                Consultar
+                                <ChevronRight className="w-3.5 h-3.5" />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* INFORME CONDUCTUAL DETALLADO */}
+            {selectedReport && (
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-200/90 overflow-hidden print:shadow-none print:border-none space-y-6">
+                
+                {/* Cabecera del Reporte */}
+                <div className="bg-slate-900 text-white p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b-4 border-indigo-600 print:bg-white print:text-slate-900 print:p-2 print:border-b-2">
+                  <div className="space-y-1">
+                    <span className="text-indigo-400 text-xs font-bold uppercase tracking-widest print:text-indigo-600">INFORME CONDUCTUAL CLEAVER (DISC)</span>
+                    <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white print:text-slate-900">{selectedReport.candidateName}</h2>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate-300 print:text-slate-600 font-medium">
+                      <span className="flex items-center gap-1.5">
+                        <Briefcase className="w-4 h-4 text-indigo-300 print:text-indigo-600" />
+                        {selectedReport.position}
+                      </span>
+                      <span>•</span>
+                      <span>Fecha: {new Date(selectedReport.completedAt || selectedReport.createdAt).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 print:hidden">
+                    <button
+                      onClick={handlePrint}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition-all shadow-md shadow-indigo-900/35"
+                    >
+                      <Printer className="w-4 h-4" />
+                      Imprimir o Guardar PDF
+                    </button>
+                    <button
+                      onClick={() => setSelectedReport(null)}
+                      className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl border border-slate-700"
+                    >
+                      Volver
+                    </button>
+                  </div>
+                </div>
+
+                {/* Contenido del Reporte */}
+                <div className="p-6 md:p-8 space-y-8 print:p-2">
+                  
+                  {/* Bloque 1: Gráficas de los Perfiles */}
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                      <BarChart2 className="w-4.5 h-4.5 text-indigo-600" />
+                      Gráficos de Perfiles Cleaver (Percentiles de Autoimagen)
+                    </h3>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {/* Perfil I */}
+                      <div className="p-4 border border-slate-100 rounded-xl bg-slate-50/50 flex flex-col items-center">
+                        <div className="text-center mb-3">
+                          <h4 className="text-xs font-bold text-slate-700 uppercase">Perfil I: Máscara / Diario (+)</h4>
+                          <p className="text-[10px] text-slate-400">Comportamiento público</p>
+                        </div>
+                        {renderDISCLineGraph(selectedReport.scores.percentiles.plus)}
+                      </div>
+
+                      {/* Perfil II */}
+                      <div className="p-4 border border-slate-100 rounded-xl bg-slate-50/50 flex flex-col items-center">
+                        <div className="text-center mb-3">
+                          <h4 className="text-xs font-bold text-slate-700 uppercase">Perfil II: Bajo Presión (-)</h4>
+                          <p className="text-[10px] text-slate-400">Reacción bajo conflicto</p>
+                        </div>
+                        {renderDISCLineGraph(selectedReport.scores.percentiles.minus)}
+                      </div>
+
+                      {/* Perfil III */}
+                      <div className="p-4 border border-slate-100 rounded-xl bg-slate-50/50 flex flex-col items-center">
+                        <div className="text-center mb-3">
+                          <h4 className="text-xs font-bold text-slate-700 uppercase">Perfil III: Autoimagen (Total)</h4>
+                          <p className="text-[10px] text-slate-400">Estilo conductual real</p>
+                        </div>
+                        {renderDISCLineGraph(selectedReport.scores.percentiles.diff)}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bloque 2: Interpretación del Perfil Predominante */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="md:col-span-2 space-y-4">
+                      <div className="bg-indigo-50/70 p-5 rounded-2xl border border-indigo-100">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Sparkles className="w-5 h-5 text-indigo-600" />
+                          <h4 className="font-bold text-indigo-950 text-base">
+                            Patrón: {PATTERNS_COMBINATIONS.find(p => p.key === selectedReport.scores.combinationKey)?.name || PATTERNS_DB[selectedReport.scores.primaryFactor]?.name || 'Perfil Personalizado'}
+                          </h4>
+                        </div>
+                        <p className="text-slate-700 text-sm leading-relaxed">
+                          {PATTERNS_COMBINATIONS.find(p => p.key === selectedReport.scores.combinationKey)?.desc || PATTERNS_DB[selectedReport.scores.primaryFactor]?.desc || 'Este perfil muestra características únicas con combinaciones personalizadas de factores DISC.'}
+                        </p>
+                      </div>
+
+                      {/* Fortalezas y Áreas de Desarrollo */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="border border-slate-100 p-4 rounded-xl space-y-2">
+                          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">FORTALEZAS CLAVE</span>
+                          <ul className="text-xs text-slate-600 space-y-1.5 list-disc pl-4 pt-1">
+                            {(PATTERNS_DB[selectedReport.scores.primaryFactor]?.strengths || []).map((st, i) => (
+                              <li key={i}>{st}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="border border-slate-100 p-4 rounded-xl space-y-2">
+                          <span className="text-xs font-bold text-rose-700 bg-rose-50 px-2.5 py-1 rounded-full border border-rose-100">ÁREAS DE MEJORA</span>
+                          <ul className="text-xs text-slate-600 space-y-1.5 list-disc pl-4 pt-1">
+                            {(PATTERNS_DB[selectedReport.scores.primaryFactor]?.weaknesses || []).map((wk, i) => (
+                              <li key={i}>{wk}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Ambiente Óptimo de Trabajo */}
+                    <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 flex flex-col justify-between">
+                      <div className="space-y-3">
+                        <h4 className="font-bold text-slate-800 text-xs uppercase tracking-widest flex items-center gap-1.5 text-slate-400">
+                          <Briefcase className="w-4 h-4 text-indigo-600" />
+                          Ambiente de Trabajo Ideal
+                        </h4>
+                        <p className="text-xs text-slate-600 leading-relaxed">
+                          {PATTERNS_DB[selectedReport.scores.primaryFactor]?.environment || "Requiere un ambiente adaptado al perfil del colaborador."}
+                        </p>
+                      </div>
+
+                      <div className="border-t border-slate-200/80 pt-4 mt-4 text-[11px] text-slate-500">
+                        <p className="font-semibold text-slate-700 mb-1">Puntaje Bruto de Referencia:</p>
+                        <div className="grid grid-cols-4 text-center">
+                          <div className="bg-white py-1 border border-slate-200 rounded-l">D: {selectedReport.scores.diff.D}</div>
+                          <div className="bg-white py-1 border-y border-r border-slate-200">I: {selectedReport.scores.diff.I}</div>
+                          <div className="bg-white py-1 border-y border-r border-slate-200">S: {selectedReport.scores.diff.S}</div>
+                          <div className="bg-white py-1 border-y border-r border-slate-200 rounded-r">C: {selectedReport.scores.diff.C}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Nota confidencial */}
+                  <div className="p-4 bg-slate-50 text-[11px] text-slate-400 rounded-xl leading-relaxed">
+                    <strong>Nota Confidencial de Jaccard Asesorías:</strong> Los resultados reflejados en este informe conductual son una estimación científica basada en el modelo Cleaver de 28 tétradas. Deben utilizarse únicamente como un elemento de apoyo complementario en procesos de selección, desarrollo de equipos y coaching, y nunca como factor absoluto de exclusión o contratación de personal.
+                  </div>
+
+                </div>
+              </div>
+            )}
+          </section>
+        </main>
+      )}
+
+      {/* VISTA CANDIDATO (CUANDO EL CANDIDATO ABRE SU ENLACE ÚNICO) */}
+      {currentView === 'candidate' && (
+        <main className="flex-1 max-w-4xl w-full mx-auto p-4 md:p-8 flex flex-col items-center justify-center">
+          {errorMessage ? (
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center space-y-4 max-w-md">
+              <ShieldAlert className="w-12 h-12 text-rose-500 mx-auto" />
+              <h3 className="text-lg font-bold text-slate-800">Evaluación no disponible</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">{errorMessage}</p>
+            </div>
+          ) : testCompleted ? (
+            <div className="bg-white p-8 md:p-12 rounded-3xl shadow-lg border border-slate-200/80 text-center space-y-6 max-w-lg">
+              <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-inner shadow-emerald-50">
+                <CheckCircle className="w-9 h-9" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-2xl font-bold text-slate-800">¡Test Finalizado con éxito!</h3>
+                <p className="text-sm text-slate-500 leading-relaxed">
+                  Muchas gracias, <strong>{candidateTestData?.candidateName || 'Candidato'}</strong>. Tus respuestas han sido registradas de forma confidencial y segura para el equipo de <strong>Jaccard Asesorías</strong>.
+                </p>
+              </div>
+              <p className="text-xs text-slate-400">Ya puedes cerrar esta pestaña de forma segura.</p>
+            </div>
+          ) : (
+            <div className="w-full space-y-6">
+              
+              {/* Encabezado del test */}
+              <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60 space-y-3">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                  <div>
+                    <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest">TEST DE COMPORTAMIENTO CLEAVER</span>
+                    <h2 className="text-xl font-bold text-slate-800">Bienvenido(a), {candidateTestData?.candidateName}</h2>
+                  </div>
+                  <div className="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-semibold rounded-full border border-slate-200">
+                    Cargo de Postulación: {candidateTestData?.position}
+                  </div>
+                </div>
+
+                {/* Instrucciones */}
+                <div className="text-xs md:text-sm text-slate-500 space-y-2 leading-relaxed bg-indigo-50/50 p-4 rounded-xl border border-indigo-100/60">
+                  <p className="font-semibold text-indigo-950 flex items-center gap-1.5">
+                    <Info className="w-4 h-4 text-indigo-600" />
+                    Instrucciones importantes:
+                  </p>
+                  <p>
+                    A continuación, encontrarás 28 grupos de 4 conceptos cada uno. Analízalos y marca:
+                  </p>
+                  <ul className="list-disc pl-4 space-y-1">
+                    <li>La opción que <strong>MÁS (+)</strong> describa tu forma de ser en el trabajo.</li>
+                    <li>La opción que <strong>MENOS (-)</strong> describa tu actitud o personalidad en el trabajo.</li>
+                  </ul>
+                  <p className="font-medium text-slate-600">No hay respuestas buenas ni malas. Sé espontáneo(a) y honesto(a).</p>
+                </div>
+              </div>
+
+              {/* Listado de Preguntas */}
+              <div className="space-y-4">
+                {DISC_QUESTIONS.map((q) => {
+                  const ans = candidateAnswers[q.id] || {};
+                  const isCompleted = ans.plus !== undefined && ans.minus !== undefined;
+                  
+                  return (
+                    <div 
+                      key={q.id} 
+                      className={`p-5 rounded-2xl shadow-sm border transition-all ${
+                        isCompleted 
+                          ? 'bg-white border-indigo-100' 
+                          : 'bg-white border-slate-200/80 hover:border-slate-300'
+                      }`}
+                    >
+                      <div className="flex justify-between items-center mb-4">
+                        <span className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                          <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
+                            isCompleted ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'
+                          }`}>
+                            {q.id}
+                          </span>
+                          Bloque {q.id} de 28
+                        </span>
+                        {isCompleted && (
+                          <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100 uppercase tracking-wider">Listo</span>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        {q.options.map((opt, optIdx) => {
+                          const isSelectedPlus = ans.plus === optIdx;
+                          const isSelectedMinus = ans.minus === optIdx;
+
+                          return (
+                            <div 
+                              key={optIdx}
+                              className={`p-3 rounded-xl border flex flex-row md:flex-col justify-between items-center gap-2 transition-all ${
+                                isSelectedPlus 
+                                  ? 'bg-emerald-50/50 border-emerald-300/80 shadow-sm' 
+                                  : isSelectedMinus 
+                                    ? 'bg-rose-50/50 border-rose-300/80 shadow-sm' 
+                                    : 'bg-slate-50/50 border-slate-100 hover:bg-slate-50'
+                              }`}
+                            >
+                              <span className="text-sm font-semibold text-slate-700 md:text-center">{opt.text}</span>
+                              
+                              <div className="flex gap-2.5">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const nextMinus = isSelectedMinus ? undefined : ans.minus;
+                                    setCandidateAnswers({
+                                      ...candidateAnswers,
+                                      [q.id]: { plus: optIdx, minus: nextMinus }
+                                    });
+                                  }}
+                                  className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-all border ${
+                                    isSelectedPlus 
+                                      ? 'bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-200' 
+                                      : 'bg-white hover:bg-slate-100 text-slate-500 border-slate-200'
+                                  }`}
+                                >
+                                  + MÁS
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const nextPlus = isSelectedPlus ? undefined : ans.plus;
+                                    setCandidateAnswers({
+                                      ...candidateAnswers,
+                                      [q.id]: { plus: nextPlus, minus: optIdx }
+                                    });
+                                  }}
+                                  className={`text-xs font-bold px-3 py-1.5 rounded-lg transition-all border ${
+                                    isSelectedMinus 
+                                      ? 'bg-rose-600 text-white border-rose-600 shadow-md shadow-rose-200' 
+                                      : 'bg-white hover:bg-slate-100 text-slate-500 border-slate-200'
+                                  }`}
+                                >
+                                  - MENOS
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Botón de Enviar */}
+              <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200/80 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div className="text-xs text-slate-400">
+                  Asegúrate de que los 28 bloques de conceptos muestren la etiqueta verde de "Listo".
+                </div>
+                <button
+                  onClick={submitCandidateAnswers}
+                  className="w-full sm:w-auto px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-150 transition-all flex items-center justify-center gap-2"
+                >
+                  <CheckCircle className="w-5 h-5" />
+                  Finalizar & Enviar Test
+                </button>
+              </div>
+            </div>
+          )}
+        </main>
+      )}
+
+      {/* NOTIFICACIONES TOAST FLOTANTES */}
+      {toast && (
+        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4.5 py-3.5 rounded-xl shadow-2xl border text-sm font-semibold transition-all animate-bounce ${
+          toast.type === 'error' 
+            ? 'bg-rose-50 border-rose-200 text-rose-800' 
+            : 'bg-emerald-50 border-emerald-200 text-emerald-800'
+        }`}>
+          <span>{toast.message}</span>
+          <button onClick={() => setToast(null)} className="hover:opacity-70">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
+      {/* MODAL PERSONALIZADO DE CONFIRMACIÓN DE BORRADO (REEMPLAZA EL CONFIRM NATIVO) */}
+      {deleteConfirmation.isOpen && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fadeIn">
+          <div className="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+            <div className="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center">
+              <ShieldAlert className="w-6 h-6" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="font-bold text-slate-800 text-base">¿Eliminar esta evaluación?</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Esta acción no se puede deshacer y borrará permanentemente el registro del candidato y sus respuestas de la base de datos de Jaccard Asesorías.
+              </p>
+            </div>
+            <div className="flex gap-2 pt-2">
+              <button
+                onClick={() => setDeleteConfirmation({ isOpen: false, id: null })}
+                className="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={deleteTestRecord}
+                className="flex-1 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition-all shadow-md shadow-rose-200"
+              >
+                Confirmar Borrado
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* FOOTER */}
+      <footer className="bg-slate-900 border-t border-slate-800 text-slate-400 text-xs py-6 px-4 text-center mt-auto print:hidden">
+        <p>© {new Date().getFullYear()} Jaccard Asesorías. Todos los derechos reservados.</p>
+        <p className="text-slate-600 mt-1">Plataforma de Diagnóstico Psicométrico Cleaver Web.</p>
+      </footer>
+    </div>
+  );
+}
+
+// --- FUNCIÓN DE DIBUJADO DE LAS GRÁFICAS CLEAVER CON SVG ---
+function renderDISCLineGraph(scores) {
+  const dVal = scores.D || 10;
+  const iVal = scores.I || 10;
+  const sVal = scores.S || 10;
+  const cVal = scores.C || 10;
+
+  const xCoords = { D: 35, I: 90, S: 145, C: 200 };
+
+  const getY = (val) => {
+    const minVal = 0;
+    const maxVal = 100;
+    const minPixel = 180;
+    const maxPixel = 20;
+    return minPixel - ((val - minVal) / (maxVal - minVal)) * (minPixel - maxPixel);
+  };
+
+  const dY = getY(dVal);
+  const iY = getY(iVal);
+  const sY = getY(sVal);
+  const cY = getY(cVal);
+
+  return (
+    <svg width="240" height="220" className="bg-white rounded-lg border border-slate-100">
+      <line x1="20" y1="180" x2="220" y2="180" stroke="#f1f5f9" strokeWidth="1.5" />
+      <line x1="20" y1="140" x2="220" y2="140" stroke="#e2e8f0" strokeWidth="1" strokeDasharray="3 3" />
+      <line x1="20" y1="100" x2="220" y2="100" stroke="#cbd5e1" strokeWidth="1.5" /> 
+      <line x1="20" y1="60" x2="220" y2="60" stroke="#e2e8f0" strokeWidth="1" strokeDasharray="3 3" />
+      <line x1="20" y1="20" x2="220" y2="20" stroke="#f1f5f9" strokeWidth="1.5" />
+
+      <text x="10" y="104" fill="#94a3b8" fontSize="8" textAnchor="end">50%</text>
+      <text x="10" y="24" fill="#94a3b8" fontSize="8" textAnchor="end">100%</text>
+      <text x="10" y="184" fill="#94a3b8" fontSize="8" textAnchor="end">0%</text>
+
+      <line x1={xCoords.D} y1="20" x2={xCoords.D} y2="180" stroke="#f1f5f9" strokeWidth="1" />
+      <line x1={xCoords.I} y1="20" x2={xCoords.I} y2="180" stroke="#f1f5f9" strokeWidth="1" />
+      <line x1={xCoords.S} y1="20" x2={xCoords.S} y2="180" stroke="#f1f5f9" strokeWidth="1" />
+      <line x1={xCoords.C} y1="20" x2={xCoords.C} y2="180" stroke="#f1f5f9" strokeWidth="1" />
+
+      <path 
+        d={`M ${xCoords.D} ${dY} L ${xCoords.I} ${iY} L ${xCoords.S} ${sY} L ${xCoords.C} ${cY}`} 
+        fill="none" 
+        stroke="#4f46e5" 
+        strokeWidth="2.5" 
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+
+      <circle cx={xCoords.D} cy={dY} r="5" fill="#4f46e5" />
+      <rect x={xCoords.D - 12} y={dY - 18} width="24" height="12" rx="3" fill="#312e81" />
+      <text x={xCoords.D} y={dY - 9} fill="#ffffff" fontSize="8" fontWeight="bold" textAnchor="middle">{dVal}%</text>
+
+      <circle cx={xCoords.I} cy={iY} r="5" fill="#4f46e5" />
+      <rect x={xCoords.I - 12} y={iY - 18} width="24" height="12" rx="3" fill="#312e81" />
+      <text x={xCoords.I} y={iY - 9} fill="#ffffff" fontSize="8" fontWeight="bold" textAnchor="middle">{iVal}%</text>
+
+      <circle cx={xCoords.S} cy={sY} r="5" fill="#4f46e5" />
+      <rect x={xCoords.S - 12} y={sY - 18} width="24" height="12" rx="3" fill="#312e81" />
+      <text x={xCoords.S} y={sY - 9} fill="#ffffff" fontSize="8" fontWeight="bold" textAnchor="middle">{sVal}%</text>
+
+      <circle cx={xCoords.C} cy={cY} r="5" fill="#4f46e5" />
+      <rect x={xCoords.C - 12} y={cY - 18} width="24" height="12" rx="3" fill="#312e81" />
+      <text x={xCoords.C} y={cY - 9} fill="#ffffff" fontSize="8" fontWeight="bold" textAnchor="middle">{cVal}%</text>
+
+      <text x={xCoords.D} y="202" fill="#1e293b" fontSize="11" fontWeight="bold" textAnchor="middle">D</text>
+      <text x={xCoords.I} y="202" fill="#1e293b" fontSize="11" fontWeight="bold" textAnchor="middle">I</text>
+      <text x={xCoords.S} y="202" fill="#1e293b" fontSize="11" fontWeight="bold" textAnchor="middle">S</text>
+      <text x={xCoords.C} y="202" fill="#1e293b" fontSize="11" fontWeight="bold" textAnchor="middle">C</text>
+    </svg>
+  );
+}
